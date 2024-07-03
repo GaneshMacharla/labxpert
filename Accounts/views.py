@@ -22,7 +22,7 @@ def is_valid_phone(phone):
 def signup(request):
     return render(request,'Accounts/signup.html')
 
-def login(request):
+def login_user(request):
     return render(request,'Accounts/login.html')
 
 def registration_validation(request):
@@ -60,8 +60,8 @@ def registration_validation(request):
         user.save()
         #store some more information about the user into the database
         user_profile=Profile()
-        user_profile.user=user
-        # user_profile.phone=phone
+        user_profile.pin=user
+        user_profile.phone="0000-0000-00"
         # user_profile.address=address
         user_profile.fullname=fullname
         user_profile.save()
@@ -71,13 +71,14 @@ def registration_validation(request):
         return render(request,'Accounts/signup.html')
     
 
-def login_user(request):
+def login_validation(request):
     if request.method == 'POST':
         pin= request.POST.get('pin')
         password = request.POST.get('password') 
         #fingerprint = generate_fingerprint(request) 1
         # Authenticate the user
         user = authenticate(username=pin, password=password)
+        print(user)
         if user is not None:
             login(request,user)
             messages.success(request,'sucessfully logged in')
@@ -97,27 +98,29 @@ def logout_user(request):
 
 @login_required(redirect_field_name='login')
 def profile_view(request):
-    user_profile = get_object_or_404(Profile, user=request.user)
+    print(request.user)
+    user_profile = get_object_or_404(Profile, pin=request.user)
     # users=UserDetails.objects.filter(user=request.user)
     if not user_profile.image:
         user_profile.image="images/avatar7.png"
     # Prepare the details to pass to the template
-    details = { 'fullname': user_profile.fullname,'image':user_profile.image}
+    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone}
     # Render the profile template with the details
-    return render(request, 'Accounts/profile.html', details)
+    return render(request, 'Accounts/profile.html', details)        
 
 
 @login_required(redirect_field_name='login')
 def profile_update(request):
-    user=get_object_or_404(Profile,user=request.user)
+    user=get_object_or_404(Profile,pin=request.user)
     if not user.image:
         user.image="images/avatar7.png"
-    details={'fullname':user.fullname,'image':user.image}
+    details={'fullname':user.fullname,'image':user.image,'phone':user.phone}
     return render(request,'Accounts/profileupdate.html',details)
 
 @login_required(redirect_field_name='login')
 def profile_update_save(request):
     fullname=request.POST.get('fullname')
+    phone=request.POST.get('phone')
     # phone=request.POST.get('phone')
     # address=request.POST.get('address')
     # if not is_valid_phone(phone):
@@ -130,8 +133,9 @@ def profile_update_save(request):
     #     messages.error(request,'address cannot be empty')
     #     return redirect('profile-update-save')
     
-    user=get_object_or_404(Profile,user=request.user)
+    user=get_object_or_404(Profile,pin=request.user)
     user.fullname=fullname
+    user.phone=phone
     # user.phone=phone
     # user.address=address
     user.save()
@@ -139,7 +143,7 @@ def profile_update_save(request):
 
 @login_required(redirect_field_name='login')
 def profile_picture_update(request):
-    profile =get_object_or_404(Profile,user=request.user)
+    profile =get_object_or_404(Profile,pin=request.user)
     profile.image = request.FILES.get('image')
     profile.save()
     return redirect('profile-view')  # Redirect to the user's profile page after image update

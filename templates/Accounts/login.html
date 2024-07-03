@@ -26,6 +26,17 @@
       height: 10px;
     }
   </style>
+  <script>
+    // JavaScript code to hide the alert after 3 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const divTag = document.querySelector('.alert.alert-warning.alert-dismissible.fade.show');
+        setTimeout(function(){
+            if (divTag) {
+                divTag.style.display = "none";
+            }
+        }, 3000);
+    });
+</script>
 </head>
 
 <body>
@@ -51,12 +62,12 @@
                     </div>
                   </div>
                 </div>
-                <form action="../login/" method="POST">
+                <form action="../login-validation/" method="POST">
                   <div class="row gy-3 overflow-hidden">
                     {% csrf_token %}
                     <div class="col-12">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control custom-input" name="username" id="username" placeholder="name"
+                        <input type="text" class="form-control custom-input" name="pin" id="pin" placeholder="pin"
                           required>
                         <label for="pin" class="form-label">Pin Number</label>
                       </div>

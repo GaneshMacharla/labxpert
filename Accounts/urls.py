@@ -21,7 +21,11 @@ from . import views
 
 urlpatterns = [
     path('signup/',views.signup,name='signup'),
-    path('registration-validation/',views.registration_validation,name="registration_validation"),
-    path('login/',views.login,name='login'),
-    path('profile-view',views.profile_view,name='profile-view')
+    path('registration-validation/',views.registration_validation,name='registration_validation'),
+    path('login/',views.login_user ,name='login'),
+    path('profile-view/',views.profile_view,name='profile-view'),
+    path('login-validation/',views.login_validation,name='login-validation'),
+    path('profile-update/',views.profile_update,name='profile-update'),
+    path('profile-picture-update/',views.profile_picture_update,name='profile-picture-update'),
+    path('profile-update-save/',views.profile_update_save,name='profile-update-save'),
 ]

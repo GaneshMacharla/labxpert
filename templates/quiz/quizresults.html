@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+            margin-bottom: 20px;
+        }
+        .results-summary {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .results-summary div {
+            width: 48%;
+            padding: 15px;
+            background-color: #e9ecef;
+            text-align: center;
+            border-radius: 8px;
+            font-size: 18px;
+        }
+        .results-summary div.correct {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .results-summary div.wrong {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .section h2 {
+            border-bottom: 2px solid #343a40;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+            color: #343a40;
+            font-size: 22px;
+        }
+        .question {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .question.correct {
+            background-color: #d4edda;
+            border: 1px solid #c3e6cb;
+        }
+        .question.wrong {
+            background-color: #f8d7da;
+            border: 1px solid #f5c6cb;
+        }
+        .question p {
+            margin: 10px 0;
+        }
+        .correct-answer {
+            font-weight: bold;
+            color: #28a745;
+        }
+        .your-answer {
+            font-weight: bold;
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Results</h1>
+        <div class="results-summary">
+            <div class="correct"><strong>Correct Answers:</strong> {{ total_correct_answers }} / {{ num_questions }}</div>
+            <div class="wrong"><strong>Wrong Answers:</strong> {{ total_wrong_answers }} / {{ num_questions }}</div>
+        </div>
+
+        <div class="section">
+            <h2>Correct Answers</h2>
+            {% for question, answer in correct_answers.items %}
+                <div class="question correct">
+                    <p><strong>{{ forloop.counter }}. {{ question.question }}</strong></p>
+                    <p class="correct-answer">Your Answer: {{ answer }}</p>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="section">
+            <h2>Wrong Answers</h2>
+            {% for question, answer in wrong_answers.items %}
+                <div class="question wrong">
+                    <p><strong>{{ forloop.counter }}. {{ question.question }}</strong></p>
+                    <p class="your-answer">Your Answer: {{ answer }}</p>
+                    <p class="answer correct">Correct Answer: {{ corrected_answers|default_if_none:"No correct answer found" }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

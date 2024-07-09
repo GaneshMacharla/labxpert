@@ -1,177 +1,140 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LabXpert</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <style> 
+    <style>
         body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-}
-
-.header {
-    background: #228ea8;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 20px;
-    height: 40px;
-  
-}
-.header h1 {
-  font-family: "Audiowide", sans-serif;
-  color:aliceblue;
-}
-.nav-bar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: #187d85;
-   
-
-}
-
-.nav-bar button {
-    margin: 0 10px;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #3498DB;
-    color: white;
-    cursor: pointer;
-    font-size: 10px;
-      
-}
-
-.nav-bar button:hover {
-    background-color: #7a3db3;
-}
-
-.search-bar {
-    display: flex;
-    align-items: center;
-}
-
-.search-bar input[type="text"] {
-    width: 50%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    margin-right: 10px;
-}
-
-.search-bar button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    background-color: #3498DB;
-    color: white;
-    cursor: pointer;
-    font-size: 10px;
-}
-
-.search-bar button:hover {
-    background-color: #7a3db3;
-}
-
-.profile {
-    display: flex;
-    align-items: center;
-    color: white;
-}
-
-.profile-photo {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-}
-
-.content {
-    background-color: #aedadb;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    padding: 20px;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            margin: 0;
+            background-color: #f0f4f8;
+        }
+        .header {
+            background: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 30px;
+            height: 70px;
+        }
+        .header h1 {
+            font-family: 'Audiowide', sans-serif;
+            color: #ecf0f1;
+            font-size: 55px;
+        }
+        .nav-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #3498db;
+            height: 60px;
+            padding: 0 30px;
+        }
+        .nav-bar button {
+            margin-bottom: 5px;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+        }
+        .nav-bar button:hover {
+            background-color: #2980b9;
+        }
+        .profile {
+            display: flex;
+            justify-content: start;
+            align-items: center;
+            background-color: #262d34;
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 40px;
+            box-shadow: 0 4px 8px rgba(68, 66, 116, 0.1);
+            font-family: 'Times New Roman', Times, serif;
+            color: #ecf0f1;
+            height: 60px;
+            padding: 0 10px;
+        }
+        .profile-photo {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        .content {
+            background-color: #ffffff;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+            gap: 20px;
+            padding: 30px;
+            padding-right: 100pxx;
+            padding-left: 100px;
     
-}
-
-.module {
-    width: calc(33.33% - 20px); /* Each module takes 33.33% of the container minus margin */
-    margin: 20px 10px;
-    padding: 20px;
-    background-color: #3498DB;
-    color: white;
-    font-size: 18px;
-    border-radius: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-.module:hover {
-    background-color: #2980B9;
-    transform: translateY(-5px);
-}
-
-.module img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    margin-bottom: 10px;
-}
-
-.module-text {
-    font-size: 16px;
-    font-weight: bold;
-}
-
-.footer {
-    background: #2C3E50;
-    color: white;
-    text-align: center;
-    padding: 10px 0;
-    border-radius: 10px;
-    margin-top: 20px;
-}
-.Lab
-{
-    color:#efff0a;
-    font-size: 38px;
-}
-
-
+        }
+        .module {
+            padding: 20px;
+            color: white;
+            font-size: 18px;
+            border-radius: 10px;
+            height: 200pxx;
+            width:200px;
+            text-align: center;
+            cursor: pointer;
+            transition: background-color 0.4s, transform 0.4s;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .module:hover {
+            background-color: #2980b9;
+            transform: translateY(-7px);
+        }
+        .module img {
+                 height:180px;
+                 width:180px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+        }
+        .module-text {
+            font-size: 16px;
+            font-weight: bold;
+        }
+        .footer {
+            background: #2c3e50;
+            color: white;
+           
+          
+            padding: 10px 0;
+            margin-top: 20px;
+        }
+        .Lab {
+            color: #e3f70b;
+            font-size: 60px;
+        }
     </style>
-    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="header">
-        <h1>Lab<span class="Lab">X</span>pert</h1> 
-        <p>Learn with us..</p>
+        <h1>Lab<span class="Lab">X</span>pert</h1>
     </div>
     <div class="nav-bar">
-        <button onclick="location.href='index.html'">Home</button>
-        <button onclick="location.href='register.html'">Register</button>
-        <button onclick="location.href='login.html'">Login</button>
-        <button onclick="location.href='logout.html'">Logout</button>
-        <div class="search-bar">
-            <input type="text" placeholder="Search...">
-            <button type="button">Search</button>
-        </div>
         <div class="profile">
-            <a href="#"><img class="profile-photo" src="https://via.placeholder.com/40" alt="profile"></a>
-            <span>John Doe</span>
+            <span><b>Ajay Kumar</b></span>
+            <a href="#"><img class="profile-photo" src="https://via.placeholder.com/50" alt="profile"></a>
+        </div>
+        <div class="nav">
+            
+            <button onclick="location.href='register.html'">Register</button>
+            <button onclick="location.href='login.html'">Login</button>
+            <button onclick="location.href='logout.html'">Logout</button>
         </div>
     </div>
-
     <div class="content">
         <div class="module" onclick="location.href='quiz.html'">
             <img src="https://via.placeholder.com/150" alt="Quiz">
@@ -198,9 +161,20 @@
             <div class="module-text">Feedback</div>
         </div>
     </div>
-
     <div class="footer">
-        &copy; 2024 LabXpert. All rights reserved.
+        
+        <div style="padding-left:15px">
+        <h1>About us</h1>   
+        <p>M.Ganesh</p>
+        <p>B.Revanth</p>
+        <p>N.ajay</p>
+        <p>M.Lenin</p>
+        </div>
+        <div style=" display:flex; justify-content:center; "> <p  style=" display:flex; justify-content:center"> &copy; GPT Masabtank </p>
+         
+       
+    
+        </div>
     </div>
 </body>
 </html>

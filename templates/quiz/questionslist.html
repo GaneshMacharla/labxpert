@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Questions</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 90%;
+            max-width: 800px;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #343a40;
+        }
+        .question {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #dee2e6;
+            padding-bottom: 15px;
+        }
+        .choices {
+            margin-top: 10px;
+            padding-left: 20px;
+        }
+        .choices li {
+            list-style-type: none;
+            padding: 5px 0;
+        }
+        .choices input[type="radio"] {
+            margin-right: 10px;
+        }
+        .button-container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .button-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border-radius: 4px;
+        }
+        .button-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Quiz Questions</h1>
+        <p><strong>Quiz ID:</strong> {{ quiz_id }}</p>
+        <p><strong>Quiz Title:</strong>{{title}}</p>
+
+        <form action="../submit-answers/?quiz_id={{quiz_id}}&total_questions={{total_questions}}" method="POST">
+            {% comment %} <input type=number value={{total_questions}} name="numQuestions" readonly/> {% endcomment %}
+            {% csrf_token %}
+            {% for question, choices in questions_choices.items %}
+                <div class="question">
+                    <p><strong>{{ forloop.counter }}. {{ question.question }}</strong></p>
+                    <ul class="choices">
+                        {% for choice in choices %}
+                            <li>
+                                <input type="radio" id="choice{{ choice.id }}" name="question{{ forloop.parentloop.counter }}" value="{{ choice.id }}" required>
+                                <label for="choice{{ choice.id }}">{{ choice.choice }}</label>
+                            </li>
+                        {% endfor %} 
+                    </ul>
+                </div> 
+            {% endfor %}
+            <div class="button-container">
+                <button type="submit">Submit Answers</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

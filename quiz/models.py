@@ -1,0 +1,36 @@
+from django.db import models
+import uuid
+from django.contrib.auth.models import User
+
+# Create your models here.
+
+class Quiz(models.Model):
+    host=models.ForeignKey(User,on_delete=models.CASCADE)
+    title=models.CharField(max_length=200)
+    unique_id=models.UUIDField(default=uuid.uuid4,unique=True)
+
+    def __str__(self):
+        return self.title
+    
+class Question(models.Model):
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
+    question = models.CharField(max_length=200)
+
+ 
+    
+
+class Answer(models.Model):
+    question=models.ForeignKey(Question,on_delete=models.CASCADE,related_name='answers')
+    answer=models.CharField(max_length=200)
+    def __str__(self):
+        return self.answer
+
+class Choice(models.Model):
+    question=models.ForeignKey(Question,on_delete=models.CASCADE)
+    choice=models.CharField(max_length=200)
+
+
+
+    
+
+

@@ -9,7 +9,8 @@ https://docs.djangoproject.com/en/4.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.2/ref/settings/
 """
-
+# Optionally, you can customize the message tags
+from django.contrib.messages import constants as messages
 from pathlib import Path
 from django.conf.urls.static import static 
 
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     #myapps
     'home.apps.HomeConfig',
     'Accounts.apps.AccountsConfig',
+    'quiz.apps.QuizConfig',
 ]
 
 MIDDLEWARE = [
@@ -69,6 +71,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
             ],
+        
         },
     },
 ]
@@ -104,6 +107,15 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+MESSAGE_TAGS = {
+    messages.DEBUG: 'debug',
+    messages.INFO: 'info',
+    messages.SUCCESS: 'success',
+    messages.WARNING: 'warning',
+    messages.ERROR: 'error',
+}
 
 
 # Internationalization

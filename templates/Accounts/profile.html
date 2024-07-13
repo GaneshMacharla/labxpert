@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -8,181 +7,159 @@
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <style>
-      *{
-        padding:0px;
-        margin:0px;
-        box-sizing: border-box;
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-      }
-        body{
-            margin-top:20px;
-            color: #1a202c;
-            text-align: left;
-            background-color: #e2e8f0;    
+  <style>
+    * {
+      padding: 0;
+      margin: 0;
+      box-sizing: border-box;
+      font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    }
+    body {
+      margin-top: 20px;
+      color: #1a202c;
+      text-align: left;
+      background-color: #e2e8f0;
+    }
+    .main-body {
+      padding: 15px;
+    }
+    .card {
+      box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      word-wrap: break-word;
+      background-color: #fff;
+      background-clip: border-box;
+      border: 0 solid rgba(0,0,0,.125);
+      border-radius: .25rem;
+    }
+    .card-body {
+      flex: 1 1 auto;
+      min-height: 1px;
+      padding: 1rem;
+      max-height: 1000px;
+    }
+    .gutters-sm {
+      margin-right: -8px;
+      margin-left: -8px;
+    }
+    .gutters-sm>.col, .gutters-sm>[class*=col-] {
+      padding-right: 8px;
+      padding-left: 8px;
+    }
+    .mb-3, .my-3 {
+      margin-bottom: 1rem!important;
+    }
+    .bg-gray-300 {
+      background-color: #e2e8f0;
+    }
+    .h-100 {
+      height: 100%!important;
+    }
+    .shadow-none {
+      box-shadow: none!important;
+    }
+    .list-group-item {
+      list-style: decimal;
+      margin-left: 40px;
+    }
+    a {
+      text-decoration: none;
+    }
+  </style>
+  <script>
+    // JavaScript code to hide the alert after 3 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+      const divTag = document.querySelector('.alert.alert-warning.alert-dismissible.fade.show');
+      setTimeout(function() {
+        if (divTag) {
+          divTag.style.display = "none";
         }
-        .main-body {
-            padding: 15px;
-        }
-        .card {
-            box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
-        }
-        
-        .card {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            min-width: 0;
-            word-wrap: break-word;
-            background-color: #fff;
-            background-clip: border-box;
-            border: 0 solid rgba(0,0,0,.125);
-            border-radius: .25rem;
-        }
-        
-        .card-body {
-            flex: 1 1 auto;
-            min-height: 1px;
-            padding: 1rem;
-            height:340px;
-        }
-        
-        .gutters-sm {
-            margin-right: -8px;
-            margin-left: -8px;
-        }
-        
-        .gutters-sm>.col, .gutters-sm>[class*=col-] {
-            padding-right: 8px;
-            padding-left: 8px;
-        }
-        .mb-3, .my-3 {
-            margin-bottom: 1rem!important;
-        }
-        
-        .bg-gray-300 {
-            background-color: #e2e8f0;
-        }
-
-        .h-100 {
-            height: 100%!important;
-        }
-
-        .shadow-none {
-            box-shadow: none!important;
-        }
-        .list-group-item {
-          list-style: decimal; /* or any other style you prefer */
-          margin-left:40px;
-      }
-      a{
-        text-decoration: none;
-      }
-      
-    </style>
-    <script>
-      // JavaScript code to hide the alert after 3 seconds
-      document.addEventListener('DOMContentLoaded', function() {
-          const divTag = document.querySelector('.alert.alert-warning.alert-dismissible.fade.show');
-          setTimeout(function(){
-              if (divTag) {
-                  divTag.style.display = "none";
-              }
-          }, 3000);
-      });
+      }, 3000);
+    });
   </script>
 </head>
 <body>
-    <div class="container">
-        <div class="main-body">
-        
-            
-              <div class="row gutters-sm">
-                <div class="col-md-4 mb-3">
-                  <div class="card">
-                    <div class="card-body" >
-                      <div class="d-flex flex-column align-items-center text-center">
-                        
-                        <img src="/media/{{image}}" alt="Admin" class="rounded-circle" width="200">
-                        <div class="mt-5">
-                          <h4>{{user.username}}</h4>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-8">
-                  <div class="card mb-3">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Pin Number</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          {{user}}
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Full Name</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          {{fullname}}
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Email</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          {{user.email}}
-                        </div>
-                      </div>
-                      <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Phone</h6>
-                        </div>
-                        <div class="col-sm-9 text-secondary">
-                          {{phone}}
-                        </div>
-                      </div>
-                      <hr>
-                      {% comment %} <hr>
-                      <div class="row">
-                        <div class="col-sm-3">
-                          <h6 class="mb-0">Address</h6>
-                        </div> 
-                        <div class="col-sm-9 text-secondary">
-                          {{address}}
-                        </div>
-                      </div>
-                      <hr> {% endcomment %}
-                      <div class="row">
-                        <div class="col-sm-12">
-                          <a class="btn btn-info "  href="../profile-update">Edit</a>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+  <div class="container">
+    <div class="main-body">
+      <div class="row gutters-sm">
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex flex-column align-items-center text-center">
+                <img src="/media/{{image}}" alt="Admin" class="rounded-circle" width="200">
+                <div class="mt-5">
+                  <h4>{{ user.username }}</h4>
                 </div>
               </div>
             </div>
-            {% comment %} <div class="generated-code-area" style="margin-left:1rem;">
-            
-            
-            {% comment %} <div class="card" style="max-width: 50rem; max-height:50rem;">
-              <ol class="list-group list-group-flush">
-                {% for code in codes %}
-                <a href="{% url 'show-attendance-status' code.code %}"><li class="list-group-item">{{ code.code }} &nbsp; &nbsp; &nbsp; &nbsp;{{ code.created_date }}</li></a>
-              
-                {% endfor %}
-              </ol>
-              
-            </div> 
-            </div>   {% endcomment %}
+          </div>
         </div>
+        <div class="col-md-8">
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Pin Number</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{ user }}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Full Name</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{ fullname }}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Email</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{ user.email }}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-3">
+                  <h6 class="mb-0">Phone</h6>
+                </div>
+                <div class="col-sm-9 text-secondary">
+                  {{ phone }}
+                </div>
+              </div>
+              <hr>
+              <div class="row">
+                <div class="col-sm-12">
+                  <a class="btn btn-info" href="../profile-update">Edit</a>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% if isLecturer %}
+          <div class="card mb-3">
+            <div class="card-body">
+              <h4 class="mb-3">Quizzes</h4>
+              <ul class="list-group">
+                {% for quiz in quizzes %}
+                <li class="list-group-item">
+                    <a href="/quiz/{{quiz.quiz_id}}">{{quiz.title}}</a>&nbsp&nbsp<span class="created-date">{{quiz.created_date}}</span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% endif %}        
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

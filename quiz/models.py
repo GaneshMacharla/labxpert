@@ -7,16 +7,19 @@ from django.contrib.auth.models import User
 class Quiz(models.Model):
     host=models.ForeignKey(User,on_delete=models.CASCADE)
     title=models.CharField(max_length=200)
-    unique_id=models.UUIDField(default=uuid.uuid4,unique=True)
-
+    quiz_id=models.UUIDField(default=uuid.uuid4,unique=True)
+    created_date=models.DateTimeField(null=True,blank=True)
     def __str__(self):
         return self.title
     
 class Question(models.Model):
     quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE)
-    question = models.CharField(max_length=200)
+    question = models.CharField(max_length=200) 
 
- 
+class Responses(models.Model):
+    quiz=models.ForeignKey(Quiz,on_delete=models.CASCADE)
+    pin=models.CharField(max_length=200)
+    correct_answers=models.IntegerField
     
 
 class Answer(models.Model):

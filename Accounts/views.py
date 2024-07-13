@@ -7,6 +7,7 @@ from django.http import JsonResponse
 import re
 from django.contrib.auth.decorators import login_required
 from .models import Profile
+from quiz.models import Quiz
 # Create your views heref.
 
 
@@ -32,6 +33,7 @@ def registration_validation(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         confirm_password = request.POST.get('confirmpassword')
+        isLecturer=request.POST.get('isLecturer')
         # phone=request.POST.get('phone')
         # address=request.POST.get('address')
         # Generate fingerprint and store
@@ -60,11 +62,15 @@ def registration_validation(request):
         user.save()
         #store some more information about the user into the database
         user_profile=Profile()
+        if isLecturer is not None:
+            user_profile.isLecturer=True
         user_profile.pin=user
         user_profile.phone="0000-0000-00"
         # user_profile.address=address
         user_profile.fullname=fullname
         user_profile.save()
+        
+
         messages.success(request, 'Successfully registered.')
         return redirect('../login')
     else:
@@ -78,7 +84,7 @@ def login_validation(request):
         #fingerprint = generate_fingerprint(request) 1
         # Authenticate the user
         user = authenticate(username=pin, password=password)
-        print(user)
+        # print(user)
         if user is not None:
             login(request,user)
             messages.success(request,'sucessfully logged in')
@@ -98,15 +104,21 @@ def logout_user(request):
 
 @login_required(redirect_field_name='login')
 def profile_view(request):
-    print(request.user)
+    # print(request.user)
     user_profile = get_object_or_404(Profile, pin=request.user)
+    print(user_profile.isLecturer)
+
+    quizzes=Quiz.objects.filter(host=request.user)
+    print(f"Quizzes: {quizzes}")
+
+    # print(quizzes)
     # users=UserDetails.objects.filter(user=request.user)
     if not user_profile.image:
         user_profile.image="images/avatar7.png"
     # Prepare the details to pass to the template
-    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone}
+    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes}
     # Render the profile template with the details
-    return render(request, 'Accounts/profile.html', details)        
+    return render(request, 'Accounts/profile.html', details)  
 
 
 @login_required(redirect_field_name='login')

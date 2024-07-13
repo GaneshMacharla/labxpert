@@ -26,17 +26,7 @@
       height: 10px;
     }
   </style>
-  <script>
-    // JavaScript code to hide the alert after 3 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-        const divTag = document.querySelector('.alert.alert-warning.alert-dismissible.fade.show');
-        setTimeout(function(){
-            if (divTag) {
-                divTag.style.display = "none";
-            }
-        }, 3000);
-    });
-</script>
+
 </head>
 
 <body>
@@ -65,11 +55,17 @@
                 <form action="../login-validation/" method="POST">
                   <div class="row gy-3 overflow-hidden">
                     {% csrf_token %}
+                    <div class="form-check">
+                      <input class="form-check-input isLecturer" type="checkbox" value="lecturer" name="isLecturer" id="isLecturer" >
+                      <label class="form-check-label text-secondary" for="isLecturer">
+                          Are you a lecturer
+                      </label>
+                    </div>
                     <div class="col-12">
                       <div class="form-floating mb-3">
                         <input type="text" class="form-control custom-input" name="pin" id="pin" placeholder="pin"
                           required>
-                        <label for="pin" class="form-label">Pin Number</label>
+                        <label for="pin" class="pinLabel">Pin Number</label>
                       </div>
                     </div>
                     <div class="col-12">
@@ -111,6 +107,32 @@
       </div>
   </div>
   </section>
+  <script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+      const divTag = document.querySelector('.alert.alert-warning.alert-dismissible.fade.show');
+      setTimeout(function(){
+          if (divTag) {
+              divTag.style.display = "none";
+          }
+      }, 3000);
+  });
+
+    var checkbox = document.querySelector('.isLecturer');
+    var pinInput = document.getElementById('pin');
+    var pinLabel = document.querySelector('.pinLabel');
+    
+    checkbox.addEventListener('change', function() {
+        if (this.checked) {
+            pinInput.placeholder = 'Enter your username';
+            pinLabel.textContent = 'Username';
+        } else {
+            pinInput.placeholder = 'pin';
+            pinLabel.textContent = 'Pin Number';
+        }
+    });
+
+  </script>
 </body>
 </html>
 

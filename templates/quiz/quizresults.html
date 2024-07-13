@@ -104,17 +104,23 @@
                 </div>
             {% endfor %}
         </div>
-
         <div class="section">
             <h2>Wrong Answers</h2>
             {% for question, answer in wrong_answers.items %}
                 <div class="question wrong">
                     <p><strong>{{ forloop.counter }}. {{ question.question }}</strong></p>
                     <p class="your-answer">Your Answer: {{ answer }}</p>
-                    <p class="answer correct">Correct Answer: {{ corrected_answers|default_if_none:"No correct answer found" }}</p>
+                    {% for q, a in corrected_answers.items %}
+                        {% if q == question %}
+                            <p class="correct-answer">Correct Answer: {{ a }}</p>
+                        {% endif %}
+                    {% empty %}
+                        <p class="correct-answer">Correct Answer: No correct answer found</p>
+                    {% endfor %}
                 </div>
             {% endfor %}
         </div>
+        
     </div>
 </body>
 </html>

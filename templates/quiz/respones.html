@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Quiz Responses</title>
+</head>
+<body>
+    <h1>Responses for {{ title }}</h1>
+    <iframe src="{% url 'responses' quiz_id %}" width="100%" height="600"></iframe>
+    <form method="get" action="{% url 'download_pdf' quiz_id %}">
+        <button type="submit">Download PDF</button>
+    </form>
+</body>
+</html>

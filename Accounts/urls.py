@@ -28,4 +28,5 @@ urlpatterns = [
     path('profile-update/',views.profile_update,name='profile-update'),
     path('profile-picture-update/',views.profile_picture_update,name='profile-picture-update'),
     path('profile-update-save/',views.profile_update_save,name='profile-update-save'),
+    path('logout/',views.logout_user,name='logout'),
 ]

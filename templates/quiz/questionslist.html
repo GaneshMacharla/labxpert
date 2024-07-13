@@ -83,10 +83,15 @@
                     </ul>
                 </div> 
             {% endfor %}
-            <div class="button-container">
-                <button type="submit">Submit Answers</button>
+           {% if not profile.isLecturer %}
+           <div class="button-container">
+            <button type="submit">Submit Answers</button>
             </div>
+            {%else%}
+            <a href="/quiz/responses/{{quiz_id}}/">See Responses</a>
+        {%endif %}
         </form>
+        
     </div>
 </body>
 </html>

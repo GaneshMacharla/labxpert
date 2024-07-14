@@ -19,8 +19,8 @@ class Question(models.Model):
 class Responses(models.Model):
     quiz=models.ForeignKey(Quiz,on_delete=models.CASCADE)
     pin=models.CharField(max_length=200)
-    correct_answers=models.IntegerField
-    
+    correct_answers=models.IntegerField(null=True,default=0)    
+
 
 class Answer(models.Model):
     question=models.ForeignKey(Question,on_delete=models.CASCADE,related_name='answers')

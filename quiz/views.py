@@ -89,7 +89,7 @@ def submit_answers(request):
             i=i+1
         total_correct_answers=len(correct_answers)
         total_wrong_answers=num_questions-total_correct_answers
-        student=Responses.objects.create(quiz=quiz,username=request.user,correct_answers=total_correct_answers)
+        student=Responses.objects.create(quiz=quiz,pin=request.user,correct_answers=total_correct_answers)
         return render(request,'quiz/quizresults.html',{'total_correct_answers':total_correct_answers,'total_wrong_answers':total_wrong_answers,'num_questions':num_questions,'correct_answers':correct_answers,'wrong_answers':wrong_answers,'corrected_answers':corrected_answers})
     return redirect('submit-quiz')
         
@@ -111,7 +111,6 @@ def generate_pdf(quiz):
 
     p.setFont("Helvetica-Bold", 12)
     p.drawString(100, height - 120, "S.No")
-    p.drawString(150, height - 120, "Username")
     p.drawString(300, height - 120, "PIN")
     p.drawString(450, height - 120, "Correct Answers")
 
@@ -121,9 +120,10 @@ def generate_pdf(quiz):
         y_position = height - 140
         for i, response in enumerate(responses, start=1):
             p.drawString(100, y_position, str(i))
-            p.drawString(150, y_position, response.user.username)
+            # p.drawString(150, y_position, response.)
             p.drawString(300, y_position, response.pin)
             p.drawString(450, y_position, str(response.correct_answers))
+
 
             # Draw lines for the columns
             p.line(90, y_position + 10, 550, y_position + 10)
@@ -149,10 +149,14 @@ def responses(request, quiz_id):
     response['Content-Disposition'] = 'inline; filename="{}-responses.pdf"'.format(quiz.title)
     return response
 
+def join_quiz(request,quiz_id):
+    return quiz_questions(request,quiz_id)
+
+
 def download_pdf(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)
     pdf_buffer = generate_pdf(quiz)
 
     response = HttpResponse(pdf_buffer, content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="{}-responses.pdf"'.format(quiz.name)
+    response['Content-Disposition'] = 'attachment; filename="{}-responses.pdf"'.format(quiz.title)
     return response

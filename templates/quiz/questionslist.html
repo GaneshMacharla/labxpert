@@ -67,7 +67,7 @@
         <p><strong>Quiz ID:</strong> {{ quiz_id }}</p>
         <p><strong>Quiz Title:</strong>{{title}}</p>
 
-        <form action="../submit-answers/?quiz_id={{quiz_id}}&total_questions={{total_questions}}" method="POST">
+        <form action="/quiz/submit-answers/?quiz_id={{quiz_id}}&total_questions={{total_questions}}" method="POST">
             {% comment %} <input type=number value={{total_questions}} name="numQuestions" readonly/> {% endcomment %}
             {% csrf_token %}
             {% for question, choices in questions_choices.items %}

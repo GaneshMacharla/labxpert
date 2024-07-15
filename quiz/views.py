@@ -12,10 +12,19 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from django.contrib.auth.decorators import login_required
 
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+from reportlab.platypus import Table, TableStyle
+from django.utils import timezone
+
+@login_required(login_url='/Accounts/login/')
 def create_quiz(request):
-    return render(request,'quiz/questions.html')
+    return render(request,'quiz/createquizquestions.html')
 
+
+@login_required(login_url='/Accounts/login/')
 def quiz_questions(request,quiz_id):
     current_quiz = get_object_or_404(Quiz, quiz_id=quiz_id)
     profile=get_object_or_404(Profile,pin=request.user)
@@ -26,18 +35,18 @@ def quiz_questions(request,quiz_id):
     for question in questions:
         choices = question.choice_set.all()
         questions_choices[question] = choices
-        
     return render(request, 'quiz/questionslist.html', {'quiz_id': quiz_id, 'questions_choices': questions_choices,'title':current_quiz.title,'total_questions':len(questions),'profile':profile})
 
-
+@login_required(login_url='/Accounts/login/')
 def submit_quiz(request):
     if request.method == 'POST':
         num_questions = int(request.POST.get('numQuestions', 0))
         # print(request.POST.get('numQuestions'))
         title = request.POST.get('title')
-        profile=get_object_or_404(Profile,pin=request.user)
-        quiz = Quiz.objects.create(host=request.user, title=title, quiz_id=uuid.uuid4())
-        quiz_id = quiz.quiz_id
+        # profile=get_object_or_404(Profile,pin=request.user)
+        quiz = Quiz.objects.create(host=request.user, title=title, quiz_id=uuid.uuid4(),created_date=timezone.now())
+        # quiz_id = quiz.quiz_id
+    
         
         for i in range(num_questions):
             question_text = request.POST.get(f'question{i}')
@@ -56,7 +65,7 @@ def submit_quiz(request):
 
 
 #student can submit answers
-
+@login_required(login_url='/Accounts/login/')
 def submit_answers(request):
     
     if request.method=="POST":
@@ -100,58 +109,66 @@ def submit_answers(request):
 #     print(usernames)
 #     # print("Ganesh")
 
+    
+
 def generate_pdf(quiz):
     buffer = io.BytesIO()
     p = canvas.Canvas(buffer, pagesize=letter)
     width, height = letter
 
-    p.setFont("Helvetica-Bold", 16)
+    # Title and quiz information
+    p.setFont("Helvetica-Bold", 20)
+    p.setFillColor(colors.darkblue)
     p.drawString(100, height - 50, f"Quiz ID: {quiz.quiz_id}")
-    p.drawString(100, height - 70, f"Title: {quiz.title}")
+    p.drawString(100, height - 80, f"Title: {quiz.title}")
 
-    p.setFont("Helvetica-Bold", 12)
-    p.drawString(100, height - 120, "S.No")
-    p.drawString(300, height - 120, "PIN")
-    p.drawString(450, height - 120, "Correct Answers")
+    # Table headers
+    headers = ["S.No", "PIN", "Correct Answers"]
 
+    # Fetch and prepare response data
     responses = quiz.responses_set.all()
+    data = [headers]  # Add headers as the first row
     if responses.exists():
-        p.setFont("Helvetica", 12)
-        y_position = height - 140
         for i, response in enumerate(responses, start=1):
-            p.drawString(100, y_position, str(i))
-            # p.drawString(150, y_position, response.)
-            p.drawString(300, y_position, response.pin)
-            p.drawString(450, y_position, str(response.correct_answers))
-
-
-            # Draw lines for the columns
-            p.line(90, y_position + 10, 550, y_position + 10)
-            y_position -= 20
+            data.append([str(i), response.pin, str(response.correct_answers)])
     else:
-        p.setFont("Helvetica", 12)
-        p.drawString(200, height -200, "No responses have been submitted yet.")
+        data.append(["-", "-", "No responses have been submitted yet."])
 
-    # Draw the horizontal line after the headers
-    p.line(90, height - 130, 550, height - 130)
+    # Create table
+    table = Table(data, colWidths=[50, 200, 200])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    # Calculate position to draw the table
+    table.wrapOn(p, width, height)
+    table.drawOn(p, 70, height - 200)
 
     p.showPage()
     p.save()
     buffer.seek(0)
     return buffer
 
-        
+
+
 def responses(request, quiz_id):
     quiz = get_object_or_404(Quiz,quiz_id=quiz_id)
+    print(quiz)
     pdf_buffer = generate_pdf(quiz)
-
     response = HttpResponse(pdf_buffer, content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="{}-responses.pdf"'.format(quiz.title)
     return response
 
+@login_required(login_url='/Accounts/login/')
 def join_quiz(request,quiz_id):
     return quiz_questions(request,quiz_id)
-
 
 def download_pdf(request, quiz_id):
     quiz = get_object_or_404(Quiz, id=quiz_id)

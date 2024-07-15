@@ -102,7 +102,7 @@ def logout_user(request):
     logout(request)
     return redirect('index')
 
-@login_required(redirect_field_name='login')
+@login_required(login_url='/Accounts/login/')
 def profile_view(request):
     # print(request.user)
     user_profile = get_object_or_404(Profile, pin=request.user)
@@ -121,7 +121,7 @@ def profile_view(request):
     return render(request, 'Accounts/profile.html', details)  
 
 
-@login_required(redirect_field_name='login')
+@login_required(login_url='/Accounts/login/')
 def profile_update(request):
     user=get_object_or_404(Profile,pin=request.user)
     if not user.image:
@@ -129,7 +129,7 @@ def profile_update(request):
     details={'fullname':user.fullname,'image':user.image,'phone':user.phone}
     return render(request,'Accounts/profileupdate.html',details)
 
-@login_required(redirect_field_name='login')
+@login_required(login_url='/Accounts/login/')
 def profile_update_save(request):
     fullname=request.POST.get('fullname')
     phone=request.POST.get('phone')
@@ -153,7 +153,7 @@ def profile_update_save(request):
     user.save()
     return redirect('profile-view')
 
-@login_required(redirect_field_name='login')
+@login_required(login_url='/Accounts/login/')
 def profile_picture_update(request):
     profile =get_object_or_404(Profile,pin=request.user)
     profile.image = request.FILES.get('image')

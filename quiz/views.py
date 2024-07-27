@@ -166,6 +166,7 @@ def responses(request, quiz_id):
     response['Content-Disposition'] = 'inline; filename="{}-responses.pdf"'.format(quiz.title)
     return response
 
+
 @login_required(login_url='/Accounts/login/')
 def join_quiz(request,quiz_id):
     return quiz_questions(request,quiz_id)

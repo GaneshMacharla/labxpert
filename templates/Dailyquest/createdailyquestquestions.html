@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Generator</title>
+    <style>
+        body {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            font-weight: bold;
+        }
+        textarea,
+        input[type="number"],
+        button,.title {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+        .button-container button {
+            flex: 1;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Questions Generator</h1>
+      
+        <form id="questForm" action="../submit-questions/" method="POST">
+            {% csrf_token %}
+            <label for="title">Enter the Subject Name:</label>
+            <input type="text" class="title" name="subject" required />
+            <label for="title">Enter the title of the Daily Quest:</label>
+            <input type="text" class="title" name="title" required />
+            <label for="numQuestions">Number of Daily Quest Questions:</label>
+            <input type="number" id="numQuestions" name="numQuestions" min="1" max="50" required>
+            <div class="button-container">
+                <button type="button" onclick="generateQuestions(event)">Create Questions</button>
+            </div>
+            <div id="questionsContainer"></div>
+            <div class="button-container">
+                <button type="submit">Submit Questions</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function generateQuestions(event) {
+            event.preventDefault();
+            const numQuestions = document.getElementById('numQuestions').value;
+            const questionsContainer = document.getElementById('questionsContainer');
+            questionsContainer.innerHTML = ''; // Clear previous questions
+
+            for (let i = 0; i < numQuestions; i++) {
+                // Create question container
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+
+                // Create question label and textarea
+                const questionLabel = document.createElement('label');
+                questionLabel.textContent = `Question ${i + 1}:`;
+                const questionInput = document.createElement('textarea');
+                questionInput.name = `question${i}`;
+                questionInput.placeholder = `Enter question ${i + 1}`;
+                questionInput.required = true;
+                questionDiv.appendChild(questionLabel);
+                questionDiv.appendChild(questionInput);
+                questionsContainer.appendChild(questionDiv);
+            }
+        }
+    </script>
+</body>
+</html>

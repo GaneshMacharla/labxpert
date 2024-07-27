@@ -79,7 +79,7 @@
             padding-right: 100px;
             padding-left: 100px;
         }
-        .module {
+        .module,.l-module {
             padding: 20px;
             color: white;
             font-size: 18px;
@@ -91,11 +91,11 @@
             transition: background-color 0.4s, transform 0.4s;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
-        .module:hover {
+        .module:hover,.l-module:hover{
             background-color: #2980b9;
             transform: translateY(-7px);
         }
-        .module img {
+        .module img,l-module img {
             height: 180px;
             width: 180px;
             border-radius: 10px;
@@ -193,22 +193,43 @@
         </div>
     </div>
     <div class="content">
-        <div class="module" onclick="showPopup()">
+        {% if profile.isLecturer%}
+        <a href="/quiz/create-quiz/">
+            <div class="l-module">
+                <img src="https://via.placeholder.com/150" alt="Quiz">
+                <div class="module-text">Create Quiz</div>
+            </div>
+        </a>
+        {%else%}
+        <div class="module" onclick="showPopup('quiz')">
             <img src="https://via.placeholder.com/150" alt="Quiz">
-            <div class="module-text">Quiz</div>
+            <div class="module-text">Join Quiz</div>
         </div>
-        <div class="module" onclick="location.href='daily_quest.html'">
+        {%endif%}
+        {% if profile.isLecturer%}
+        <a href="/Dailyquest/createdailyquestquestions/"><div class="l-module" >
             <img src="https://via.placeholder.com/150" alt="Daily Quest">
-            <div class="module-text">Daily Quest</div>
+            <div class="module-text">Create Daily Quest</div>
+        </div></a>
+        {%else%}
+        <div class="module" onclick="showPopup('quest')">
+            <img src="https://via.placeholder.com/150" alt="Daily Quest">
+            <div class="module-text">Attempt Daily Quest</div>
         </div>
+        {%endif%}
+        
+        <a href="/Accounts/profile-view/">
+            <div class="module" onclick="location.href='dashboard.html'">
+                <img src="https://via.placeholder.com/150" alt="Dashboard">
+                <div class="module-text">Dashboard</div>
+            </div>
+        </a>
+
         <div class="module" onclick="location.href='attendance.html'">
             <img src="https://via.placeholder.com/150" alt="My Attendance">
             <div class="module-text">My Attendance</div>
         </div>
-        <div class="module" onclick="location.href='dashboard.html'">
-            <img src="https://via.placeholder.com/150" alt="Dashboard">
-            <div class="module-text">Dashboard</div>
-        </div>
+        
         <div class="module" onclick="location.href='exam.html'">
             <img src="https://via.placeholder.com/150" alt="Exam">
             <div class="module-text">Exam</div>
@@ -218,9 +239,9 @@
             <div class="module-text">Feedback</div>
         </div>
     </div>
-    <div class="popup" id="quizPopup">
+    <div class="popup">
         <div class="popup-content">
-            <h2>Enter Quiz ID</h2>
+            <h2 id="popupTitle">Enter Quiz ID</h2>
             {% csrf_token%}
             <input type="text" id="quizId" placeholder="Quiz ID">
             <button type="button" onclick="submitQuizId()">Submit</button>
@@ -240,19 +261,34 @@
         </div>
     </div>
     <script>
-        function showPopup() {
-            document.getElementById('quizPopup').style.display = 'flex';
+        function showPopup(temp) {
+            if (temp === 'quiz') {
+                document.getElementById('popupTitle').innerText = 'Enter Quiz ID';
+                document.getElementById('quizId').placeholder = 'Quiz ID';
+                document.querySelector('.popup').style.display = 'flex';
+            } else if (temp === 'quest') {
+                document.getElementById('popupTitle').innerText = 'Enter Quest ID';
+                document.getElementById('quizId').placeholder = 'Quest ID';
+                document.querySelector('.popup').style.display = 'flex';
+            }
         }
+    
         function closePopup() {
-            document.getElementById('quizPopup').style.display = 'none';
+            document.querySelector('.popup').style.display = 'none';
         }
+    
         function submitQuizId() {
             const quizId = document.getElementById('quizId').value;
             if (quizId) {
-                // Replace with the URL to handle the quiz ID
-                window.location.href = `quiz/joinquiz/${quizId}`;
+                // Replace with the URL to handle the quiz or quest ID
+                const popupTitle = document.getElementById('popupTitle').innerText;
+                if (popupTitle.includes('Quiz')) {
+                    window.location.href = `quiz/joinquiz/${quizId}`;
+                } else if (popupTitle.includes('Quest')) {
+                    window.location.href = `Dailyquest/joinquest/${quizId}`;
+                }
             } else {
-                alert('Please enter a quiz ID');
+                alert('Please enter an ID');
             }
         }
     </script>

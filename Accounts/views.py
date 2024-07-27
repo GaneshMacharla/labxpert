@@ -8,6 +8,7 @@ import re
 from django.contrib.auth.decorators import login_required
 from .models import Profile
 from quiz.models import Quiz
+from Dailyquest.models import Quest
 # Create your views heref.
 
 
@@ -111,12 +112,14 @@ def profile_view(request):
     quizzes=Quiz.objects.filter(host=request.user)
     print(f"Quizzes: {quizzes}")
 
+    quests=Quest.objects.filter(host=request.user)
+
     # print(quizzes)
     # users=UserDetails.objects.filter(user=request.user)
     if not user_profile.image:
         user_profile.image="images/avatar7.png"
     # Prepare the details to pass to the template
-    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes}
+    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes,'quests':quests}
     # Render the profile template with the details
     return render(request, 'Accounts/profile.html', details)  
 

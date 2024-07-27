@@ -144,6 +144,7 @@
             </div>
           </div>
           {% if isLecturer %}
+          {% comment %} quiz field {% endcomment %}
           <div class="card mb-3">
             <div class="card-body">
               <h4 class="mb-3">Quizzes</h4>
@@ -151,6 +152,19 @@
                 {% for quiz in quizzes %}
                 <li class="list-group-item">
                     <a href="/quiz/{{quiz.quiz_id}}">{{quiz.title}}</a>&nbsp&nbsp<span class="created-date">{{quiz.created_date}}</span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+          {% comment %} quest field {% endcomment %}
+          <div class="card mb-3">
+            <div class="card-body">
+              <h4 class="mb-3">Quests</h4>
+              <ul class="list-group">
+                {% for quest in quests %}
+                <li class="list-group-item">
+                    <a href="/Dailyquest/{{quest.quest_id}}">{{quest.title}}</a>&nbsp&nbsp<span class="created-date">{{quest.created_date}}</span>
                 </li>
                 {% endfor %}
               </ul>

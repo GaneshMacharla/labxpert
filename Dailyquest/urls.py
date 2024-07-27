@@ -16,13 +16,17 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from django.conf import settings
-from django.conf.urls.static import static 
+
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include("home.urls")),
-    path('Accounts/',include('Accounts.urls')),
-    path('quiz/',include('quiz.urls')),
-    path('Dailyquest/',include('Dailyquest.urls')),
-]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+    path('createdailyquestquestions/',views.create_daily_quest_questions,name='createdailyquestquestions'),
+    path('submit-questions/',views.submit_questions,name='submit-questions'),
+    path('joinquest/<uuid:quest_id>/',views.join_quest,name="quest-questions"),
+    path('<uuid:quest_id>/',views.quest_questions,name="quest-questions"),
+    path('submit-quest-answers/<uuid:quest_id>/',views.submit_quest_answers,name="submit-quest-answers"),
+
+    # path('responses/<uuid:quest_id>/',views.responses,name='resposnes'),
+
+]

@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'home.apps.HomeConfig',
     'Accounts.apps.AccountsConfig',
     'quiz.apps.QuizConfig',
+    'Dailyquest.apps.DailyquestConfig',
 ]
 
 MIDDLEWARE = [

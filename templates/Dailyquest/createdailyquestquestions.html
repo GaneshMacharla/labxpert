@@ -53,6 +53,8 @@
     </style>
 </head>
 <body>
+    {% comment %} {% include 'Accounts/header.html'%} {% endcomment %}
+
     <div class="container">
         <h1>Questions Generator</h1>
       
@@ -61,7 +63,7 @@
             <label for="title">Enter the Subject Name:</label>
             <input type="text" class="title" name="subject" required />
             <label for="title">Enter the title of the Daily Quest:</label>
-            <input type="text" class="title" name="title" required />
+            <input type="text" class="title" name="title" required />   
             <label for="numQuestions">Number of Daily Quest Questions:</label>
             <input type="number" id="numQuestions" name="numQuestions" min="1" max="50" required>
             <div class="button-container">

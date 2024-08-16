@@ -1,0 +1,89 @@
+<!-- header.html -->
+<style>
+    .header {
+        background: #2c3e50;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 30px;
+        height: 97px;
+    }
+    .header h1 {
+        font-family: 'Audiowide', sans-serif;
+        color: #ecf0f1;
+        font-size: 55px;
+    }
+    .nav-bar {
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        background: #3498db;
+        height: 60px;
+        padding: 0 30px;
+    }
+    .nav-bar button {
+        margin-bottom: 5px;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        background-color: #3498db;
+        color: white;
+        cursor: pointer;
+        font-size: 20px;
+    }
+    .nav-bar button:hover {
+        background-color: #2980b9;
+    }
+    .profile {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 40px;
+        box-shadow: 0 4px 8px rgba(68, 66, 116, 0.1);
+        font-family: 'Times New Roman', Times, serif;
+        color: #ecf0f1;
+        height: 60px;
+        padding: 0 10px;
+    }
+    .profile-photo {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-left: 10px;
+    }
+    .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 49;
+        font-size: 31px;
+    }
+    .home {
+        display: flex;
+        justify-content: left;
+    }
+    .Lab {
+        color: #e3f70b;
+        font-size: 60px;
+      }
+</style>
+<div class="header">
+    <h1>Lab<span class="Lab">X</span>pert</h1>
+</div>
+<div class="nav-bar">
+    <button type="button" style="background: transparent; border: none;" class="home" onclick="location.href='/'">
+        <span class="material-symbols-outlined">
+          house
+        </span>
+      </button>
+    <div class="nav">
+        {% if user.is_authenticated %}
+        <a href="./Accounts/logout" class="Account">Logout</a>
+        <div class="profile">
+            <span class="Account"><b>{{ user }}</b></span>
+            <a href="./Accounts/profile-view"><img class="profile-photo" src="/media/images/cse_pic.jpeg" alt="profile"></a>
+        </div>
+        {% else %}
+        <a href="./Accounts/signup" class="Account">signup</a>&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="./Accounts/login" class="Account">login</a>
+        {% endif %}
+    </div>
+</div>

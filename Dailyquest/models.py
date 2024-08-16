@@ -24,6 +24,9 @@ class Answer(models.Model):
 class Responses(models.Model):
     quest=models.ForeignKey(Quest,on_delete=models.CASCADE)
     pin=models.CharField(max_length=200)
+    submitted_date=models.DateTimeField(null=True,blank=True)
+    total_points=models.IntegerField(null=True,default=0) 
+    
 
 
     

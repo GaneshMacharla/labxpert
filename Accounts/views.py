@@ -7,8 +7,9 @@ from django.http import JsonResponse
 import re
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-from quiz.models import Quiz
+from quiz.models import Quiz,Responses
 from Dailyquest.models import Quest
+from Dailyquest import models
 # Create your views heref.
 
 
@@ -110,19 +111,21 @@ def profile_view(request):
     print(user_profile.isLecturer)
 
     quizzes=Quiz.objects.filter(host=request.user)
-    print(f"Quizzes: {quizzes}")
+    # print(f"Quizzes: {quizzes}")
 
     quests=Quest.objects.filter(host=request.user)
-
+    #quiz responses
+    attended_quizes=Responses.objects.filter(pin=request.user)
+    attended_quests=models.Responses.objects.filter(pin=request.user)
     # print(quizzes)
     # users=UserDetails.objects.filter(user=request.user)
     if not user_profile.image:
         user_profile.image="images/avatar7.png"
     # Prepare the details to pass to the template
-    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes,'quests':quests}
+    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes,'quests':quests,'attended_quizes':attended_quizes,'attended_quests':attended_quests}
     # Render the profile template with the details
     return render(request, 'Accounts/profile.html', details)  
-
+    
 
 @login_required(login_url='/Accounts/login/')
 def profile_update(request):

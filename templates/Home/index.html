@@ -170,7 +170,7 @@
     </style>
 </head>
 <body>
-    <div class="header">
+    {% comment %} <div class="header">
         <h1>Lab<span class="Lab">X</span>pert</h1>
     </div>
     <div class="nav-bar">
@@ -191,7 +191,8 @@
             <a href="./Accounts/login" class="Account">login</a>
             {% endif %}
         </div>
-    </div>
+    </div> {% endcomment %}
+    {% include 'Accounts/header.html'%}
     <div class="content">
         {% if profile.isLecturer%}
         <a href="/quiz/create-quiz/">

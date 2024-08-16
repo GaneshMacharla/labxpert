@@ -139,8 +139,10 @@
     </style>
 </head>
 <body>
+    {% comment %} {% include 'Accounts/header.html'%} {% endcomment %}
+
     <div class="container">
-        {% if not isLecturer %}
+        {% if isLecturer %}
             <h1>Lab Xpert - Daily Quests</h1>
             {% for question in questions %}
                 <div class="question">
@@ -165,7 +167,7 @@
             {% endfor %}
         {% else %}
             <h1>Lab Xpert - Daily Quests</h1>
-                <form action="../submit-quest-answers/{{quest_id}}/" enctype="multipart/form-data"  method="POST" >
+                <form action="../../submit-quest-answers/{{quest_id}}/" enctype="multipart/form-data"  method="POST" >
                     {% for question in questions %}
                     {%csrf_token%}
                     <div class="question">

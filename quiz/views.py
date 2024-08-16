@@ -67,7 +67,6 @@ def submit_quiz(request):
 #student can submit answers
 @login_required(login_url='/Accounts/login/')
 def submit_answers(request):
-    
     if request.method=="POST":
         num_questions=int(request.GET.get("total_questions"))
         quiz_id=request.GET.get("quiz_id")
@@ -98,7 +97,8 @@ def submit_answers(request):
             i=i+1
         total_correct_answers=len(correct_answers)
         total_wrong_answers=num_questions-total_correct_answers
-        student=Responses.objects.create(quiz=quiz,pin=request.user,correct_answers=total_correct_answers)
+        response=Responses.objects.create(quiz=quiz,pin=request.user,correct_answers=total_correct_answers,submitted_date=timezone.now())
+        
         return render(request,'quiz/quizresults.html',{'total_correct_answers':total_correct_answers,'total_wrong_answers':total_wrong_answers,'num_questions':num_questions,'correct_answers':correct_answers,'wrong_answers':wrong_answers,'corrected_answers':corrected_answers})
     return redirect('submit-quiz')
         

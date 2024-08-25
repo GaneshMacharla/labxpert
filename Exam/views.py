@@ -4,6 +4,9 @@ from .models import Exam,Question,Answer
 from django.utils import timezone
 from Accounts.models import Profile
 from .models import Responses
+import os
+import google.generativeai as genai
+
 # Create your views here.
 api_key = 'AIzaSyBiwzkDo3NW1vau6UaNlMlppIhdBGQzF7o'
 
@@ -78,7 +81,7 @@ def check_code(api_key,code,question,max_points):
     
     # Define the prompt
     prompt =f"""
-    question:{question},
+    question:{question},zx
     code:{code},
     max_points:{max_points},
     I have given question,code and max_points You should evaluate the code based on the question and you have to allot points for that code.

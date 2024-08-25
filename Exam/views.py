@@ -1,48 +1,46 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Quest,Question,Answer,Responses
 import uuid
+from .models import Exam,Question,Answer
 from django.utils import timezone
 from Accounts.models import Profile
-import openai
-from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
-from django.conf import settings
-import os
-import google.generativeai as genai
+from .models import Responses
 # Create your views here.
-
 api_key = 'AIzaSyBiwzkDo3NW1vau6UaNlMlppIhdBGQzF7o'
 
+def create_exam(request):
+    return render(request,'Exam/createexamquestions.html')
 
-def create_daily_quest_questions(request):
-    return render(request,'Dailyquest/createdailyquestquestions.html')
 
 def submit_questions(request):
+
     if request.method=='POST':
         num_quesetions=int(request.POST.get('numQuestions',0))
         subject=request.POST.get('subject')
         title=request.POST.get('title')
-        quest=Quest.objects.create(host=request.user,subject=subject,title=title,quest_id=uuid.uuid4(),created_date=timezone.now())
+        exam=Exam.objects.create(host=request.user,subject=subject,title=title,exam_id=uuid.uuid4(),created_date=timezone.now())
         for i in range(num_quesetions):
             question_text=request.POST.get(f'question{i}')
-            question=Question.objects.create(quest=quest,question_text=question_text)
+            question=Question.objects.create(quest=exam,question_text=question_text)
         
         return redirect('profile-view')
+    
 
-def quest_questions(request,quest_id):
-    quest=get_object_or_404(Quest,quest_id=quest_id)
-    questions=quest.question_set.all()
-    # print(questions)
+def exam_questions(request,exam_id):
+    exam=get_object_or_404(Exam,exam_id=exam_id)
+    questions=exam.question_set.all()
     profile=get_object_or_404(Profile,pin=request.user)
+    return render(request,'Exam/examquestionslist.html',{'questions':questions,'isLecturer':profile.isLecturer,'exam_id':exam.exam_id})
 
-    return render(request,'Dailyquest/questquestionslists.html',{'questions':questions,'isLecturer':profile.isLecturer,'quest_id':quest.quest_id})
 
 
-def join_quest(request,quest_id):
-    return quest_questions(request,quest_id)
 
-def submit_quest_answers(request,quest_id):
-    quest=get_object_or_404(Quest,quest_id=quest_id)
+
+def join_exam(request,exam_id):
+    return exam_questions(request,exam_id)
+
+
+def submit_exam_answers(request,quest_id):
+    quest=get_object_or_404(Exam,quest_id=quest_id)
     response=Responses.objects.create(quest=quest,pin=request.user)
     response.submitted_date=timezone.now()
     questions=quest.question_set.all()
@@ -63,7 +61,6 @@ def submit_quest_answers(request,quest_id):
         counter+=1
     
     response.total_points=total_points
-    # print("Ganesh")
 
 
 

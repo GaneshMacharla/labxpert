@@ -16,7 +16,7 @@
         body {
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             margin: 0;
-            background-color: #f0f4f8;
+            background-color: #ffffff;
         }
         .header {
             background: #2c3e50;
@@ -95,9 +95,9 @@
             background-color: #2980b9;
             transform: translateY(-7px);
         }
-        .module img,l-module img {
-            height: 180px;
-            width: 180px;
+        .module img,.l-module img {
+            height: 150px;
+            width: 150px;
             border-radius: 10px;
             margin-bottom: 10px;
         }
@@ -197,46 +197,53 @@
         {% if profile.isLecturer%}
         <a href="/quiz/create-quiz/">
             <div class="l-module">
-                <img src="https://via.placeholder.com/150" alt="Quiz">
+                <img src="\media\images\quiz.png" alt="Quiz">
                 <div class="module-text">Create Quiz</div>
             </div>
         </a>
         {%else%}
         <div class="module" onclick="showPopup('quiz')">
-            <img src="https://via.placeholder.com/150" alt="Quiz">
+            <img src="\media\images\quiz.png" alt="Quiz">
             <div class="module-text">Join Quiz</div>
         </div>
         {%endif%}
         {% if profile.isLecturer%}
         <a href="/Dailyquest/createdailyquestquestions/"><div class="l-module" >
-            <img src="https://via.placeholder.com/150" alt="Daily Quest">
+            <img src="\media\images\quest.png" alt="Daily Quest">
             <div class="module-text">Create Daily Quest</div>
         </div></a>
         {%else%}
         <div class="module" onclick="showPopup('quest')">
-            <img src="https://via.placeholder.com/150" alt="Daily Quest">
+            <img src="\media\images\quest.png" alt="Daily Quest">
             <div class="module-text">Attempt Daily Quest</div>
         </div>
         {%endif%}
         
         <a href="/Accounts/profile-view/">
             <div class="module" onclick="location.href='dashboard.html'">
-                <img src="https://via.placeholder.com/150" alt="Dashboard">
+                <img src="\media\images\dashboard.png" alt="Dashboard">
                 <div class="module-text">Dashboard</div>
             </div>
         </a>
 
         <div class="module" onclick="location.href='attendance.html'">
-            <img src="https://via.placeholder.com/150" alt="My Attendance">
+            <img src="\media\images\attendance.jpeg" alt="My Attendance">
             <div class="module-text">My Attendance</div>
         </div>
-        
-        <div class="module" onclick="location.href='exam.html'">
-            <img src="https://via.placeholder.com/150" alt="Exam">
-            <div class="module-text">Exam</div>
+        {% if profile.isLecturer%}
+        <a href="/Exam/create-exam/"><div class="l-module" >
+            <img src="\media\images\exam.jpeg" alt="Exam">
+            <div class="module-text">Create Exam</div>
+        </div></a>
+        {%else%}
+        <div class="module" onclick="showPopup('exam')">
+            <img src="\media\images\exam.jpeg" alt="Exam">
+            <div class="module-text">Join Exam</div>
         </div>
+        {%endif%}
+        
         <div class="module" onclick="location.href='feedback.html'">
-            <img src="https://via.placeholder.com/150" alt="Feedback">
+            <img src="\media\images\feedback.png" alt="Feedback">
             <div class="module-text">Feedback</div>
         </div>
     </div>
@@ -256,6 +263,7 @@
             <p>B.Revanth</p>
             <p>N.ajay</p>
             <p>M.Lenin</p>
+            <p>Y.Ajay</p>
         </div>
         <div style="display: flex; justify-content: center;">
             <p>&copy; GPT Masabtank</p>
@@ -270,6 +278,12 @@
             } else if (temp === 'quest') {
                 document.getElementById('popupTitle').innerText = 'Enter Quest ID';
                 document.getElementById('quizId').placeholder = 'Quest ID';
+                document.querySelector('.popup').style.display = 'flex';
+            }
+            else if(temp==='exam')
+            {
+                document.getElementById('popupTitle').innerText = 'Enter Exam ID';
+                document.getElementById('quizId').placeholder = 'Exam ID';
                 document.querySelector('.popup').style.display = 'flex';
             }
         }
@@ -288,6 +302,10 @@
                 } else if (popupTitle.includes('Quest')) {
                     window.location.href = `Dailyquest/joinquest/${quizId}`;
                 }
+                else if(popupTitle.includes('Exam')){
+                    window.location.href=`Exam/joinexam/${quizId}`;
+                }
+
             } else {
                 alert('Please enter an ID');
             }

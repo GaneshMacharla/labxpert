@@ -16,14 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from django.conf import settings
-from django.conf.urls.static import static 
+
+from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('',include("home.urls")),
-    path('Accounts/',include('Accounts.urls')),
-    path('quiz/',include('quiz.urls')),
-    path('Dailyquest/',include('Dailyquest.urls')),
-    path('Exam/',include('Exam.urls')),
-]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+    path('create-exam/',views.create_exam,name="create-exam"),
+    # path('responses/<uuid:quest_id>/',views.responses,name='resposnes'),
+    path('submit-questions/',views.submit_questions,name="submit-questions"),
+    path('<uuid:exam_id>/',views.exam_questions,name='exam-questions'),
+    path('joinexam/<uuid:exam_id>/',views.join_exam,name='join-exam'),
+    # path('responses/<uuid:quest_id>/',views.responses,name='resposnes'),
+
+]

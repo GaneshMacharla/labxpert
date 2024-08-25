@@ -10,6 +10,7 @@ from .models import Profile
 from quiz.models import Quiz,Responses
 from Dailyquest.models import Quest
 from Dailyquest import models
+from Exam.models import Exam
 # Create your views heref.
 
 
@@ -108,21 +109,22 @@ def logout_user(request):
 def profile_view(request):
     # print(request.user)
     user_profile = get_object_or_404(Profile, pin=request.user)
-    print(user_profile.isLecturer)
+    # print(user_profile.isLecturer)
 
+    
     quizzes=Quiz.objects.filter(host=request.user)
-    # print(f"Quizzes: {quizzes}")
-
     quests=Quest.objects.filter(host=request.user)
+    exams=Exam.objects.filter(host=request.user)
     #quiz responses
     attended_quizes=Responses.objects.filter(pin=request.user)
+    #quest responses
     attended_quests=models.Responses.objects.filter(pin=request.user)
     # print(quizzes)
     # users=UserDetails.objects.filter(user=request.user)
     if not user_profile.image:
         user_profile.image="images/avatar7.png"
     # Prepare the details to pass to the template
-    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes,'quests':quests,'attended_quizes':attended_quizes,'attended_quests':attended_quests}
+    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes,'quests':quests,'attended_quizes':attended_quizes,'attended_quests':attended_quests,'exams':exams}
     # Render the profile template with the details
     return render(request, 'Accounts/profile.html', details)  
     

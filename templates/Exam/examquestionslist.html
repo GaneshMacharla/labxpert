@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lab Xpert - Daily Quests</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 30px;
+            background: #fff;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+        .container:hover {
+            transform: scale(1.02);
+        }
+        .question {
+            margin-bottom: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        .columns {
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+        }
+        @media (min-width: 768px) {
+            .columns {
+                flex-direction: row;
+            }
+        }
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .output-div {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s;
+        }
+        .output-div:hover {
+            border-color: #007bff;
+        }
+        .output-div img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        textarea {
+            width: 100%;
+            height: 200px;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-family: inherit;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+        }
+        textarea:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: inherit;
+            background: #007bff;
+            color: #fff;
+            margin-top: 10px;
+            align-self: flex-start;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        p {
+            font-size: 20px;
+            margin: 0;
+        }
+        .question-text {
+            text-align: left;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .output-heading {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .column-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .loading {
+            display: none;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .output-div.loading .loading {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    {% comment %} {% include 'Accounts/header.html'%} {% endcomment %}
+
+    <div class="container">
+        {% if isLecturer %}
+            <h1>Lab Xpert - Exam</h1>
+            {% for question in questions %}
+                <div class="question">
+                    <p class="question-text">{{forloop.counter}}.{{ question.question_text }}</p>
+                    <div class="columns">
+                        <div class="column">
+                            <div class="column-title">Code Snippet</div>
+                            <textarea placeholder="Start coding" readonly></textarea>
+                            {% comment %} <button onclick="saveText(this)">Submit</button> {% endcomment %}
+                        </div>
+                        <div class="column">
+                            <div class="column-title">Output</div>
+                            <div class="output-div" onclick="openFileInput(this)">
+                                {% comment %} <input type="file" accept="image/*" style="display:none;" onchange="displayImage(event, this.parentNode)" readonly> {% endcomment %}
+                                <img style="display:none;" name="image{{forloop.counter}}"/>
+                                <div class="loading">Uploading...</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            <a href="">See Responses</a>
+
+        {% else %}
+            <h1>Lab Xpert - Exam</h1>
+                <form action="../../submit-quest-answers/{{quest_id}}/" enctype="multipart/form-data"  method="POST" >
+                    {% for question in questions %}
+                    {%csrf_token%}
+                    <div class="question">
+                        <p class="question-text">{{forloop.counter}}. {{ question.question_text }}</p>
+                        <div class="columns">
+                            <div class="column">
+                                <div class="column-title">Code Snippet</div>
+                                <textarea placeholder="Enter your answer here..." name="code{{forloop.counter}}"></textarea>
+                            </div>
+                            <div class="column">
+                                <div class="column-title">Output</div>
+                                <div class="output-div" onclick="openFileInput(this)">
+                                    <input type="file" accept="image/*" value="/media/quest/outputs/nocode.jpeg" name="image{{forloop.counter}}" style="display:none;" placeholder="upload your output here" onchange="displayImage(event, this.parentNode)">
+                                    <img src="/media/quest/outputs/nocode.jpeg" />
+                                    <div class="loading">Uploading...</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    <button type="Submit" onclick="saveText(this)">Submit</button>
+
+                </form>
+        {% endif %}
+    </div>
+
+    <script>
+        function saveText(button) {
+            const textarea = button.previousElementSibling;
+            if (!textarea.value.trim()) {
+                alert('Please enter some code.');
+                return;
+            }
+            button.disabled = true;
+            button.textContent = 'Saving...';
+            // Simulate save operation
+            setTimeout(() => {
+                button.textContent = 'Saved!';
+                setTimeout(() => {
+                    button.disabled = false;
+                    button.textContent = 'Submit';
+                }, 2000);
+            }, 1000);
+        }
+
+        function openFileInput(div) {
+            const fileInput = div.querySelector('input[type="file"]');
+            fileInput.click();
+        }
+
+        function displayImage(event, div) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                const loading = div.querySelector('.loading');
+                loading.style.display = 'block';
+                reader.onload = function(e) {
+                    const img = div.querySelector('img');
+                    console.log(e.target.result);
+                    img.src = e.target.result;
+                    img.style.display = 'block';
+                    loading.style.display = 'none';
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>

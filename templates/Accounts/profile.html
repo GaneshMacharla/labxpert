@@ -185,6 +185,16 @@
               {% endfor %}
             </ul>
           </div>
+          <div class="exams">
+            <h4 class="mb-3">Exams</h4>
+            <ul>
+              {% for exam in exams%}
+              <li>
+                <a href="/Exam/{{exam.exam_id}}">{{exam.title}}</a>&nbsp&nbsp<span class="created-date">{{exam.created_date}}</span>
+              </li>
+              {%endfor%}
+            </ul>
+          </div>
           {% else %}
           <div class="attended-quizes">
             <h4>Attended-quizes</h4>
@@ -214,6 +224,7 @@
             </ul>
           </div>
           {% endif%}
+
         
   </div>
 

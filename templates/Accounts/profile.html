@@ -24,6 +24,7 @@
     }
     .main-body {
       padding: 15px;
+
     }
     .card {
       box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
@@ -36,12 +37,18 @@
       background-clip: border-box;
       border: 0 solid rgba(0,0,0,.125);
       border-radius: .25rem;
+      box-shadow:8px 8px 49px -4px #a5a1e1;
+
     }
+    /* .row{
+
+    } */
     .card-body {
       flex: 1 1 auto;
       min-height: 1px;
       padding: 1rem;
       height: 300px;
+      /* background-color: #57b8f9; */
     }
     .gutters-sm {
       margin-right: -8px;
@@ -78,6 +85,13 @@
       align-items:center;
       padding:30px;
       margin-left:50px;
+      margin-right:52px;  
+      /* border: 1px solid rgb(92, 89, 89); */
+      box-shadow:8px 8px 49px -4px #a5a1e1;
+      /* background:  #d4d4d463; */
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
       
     }
     
@@ -152,7 +166,7 @@
               <hr>
               <div class="row">
                 <div class="col-sm-12">
-                  <a class="btn btn-info" href="../profile-update">Edit</a>
+                  <a class="btn btn-primary" href="../profile-update">Edit</a>
                 </div>
               </div>
             </div>
@@ -165,7 +179,8 @@
     {% if isLecturer %}
           {% comment %} quiz field {% endcomment %}
           <div class="quizes">
-            <h4 class="mb-3">Quizzes</h4>
+            <h5 class="mb-3">Created Quizzes :-</h5>
+            {% if quizzes|length > 0 %}
             <ul >
               {% for quiz in quizzes %}
               <li>
@@ -173,31 +188,43 @@
               </li>
               {% endfor %}
             </ul>
+            {%else%}
+            <p>ooop's till now you haven't created any quizes</p>
+            {%endif%}
           </div>
-          {% comment %} quest field {% endcomment %}
           <div class="quests">
-            <h4 class="mb-3">Quests</h4>
+            <h5 class="mb-3">Created Quests :-</h5>
+            {% if quests|length > 0%}
             <ul >
+              
               {% for quest in quests %}
-              <li >
+              <li>
                   <a href="/Dailyquest/{{quest.quest_id}}">{{quest.title}}</a>&nbsp&nbsp<span class="created-date">{{quest.created_date}}</span>
               </li>
               {% endfor %}
             </ul>
+            {%else%}
+            <p>ooops's till now you haven't created any quests</p>
+            {% endif%}
           </div>
           <div class="exams">
-            <h4 class="mb-3">Exams</h4>
-            <ul>
+            <h5 class="mb-3">Created Exams :- </h5>
+            {% if exams|length > 0%}
+            <ul></ul>
               {% for exam in exams%}
               <li>
                 <a href="/Exam/{{exam.exam_id}}">{{exam.title}}</a>&nbsp&nbsp<span class="created-date">{{exam.created_date}}</span>
               </li>
               {%endfor%}
             </ul>
+          {% else %}
+          <p>ooops' till now you haven't created any exams</p>
+          {% endif %}
           </div>
           {% else %}
           <div class="attended-quizes">
-            <h4>Attended-quizes</h4>
+            <h5>Attended-quizes :-</h5>
+            {% if attended_quizes|length > 0 %}
             <ul>
               {% for attended_quiz in attended_quizes%}
                 <li>{{attended_quiz.quiz.title}}&nbsp; total points:
@@ -209,19 +236,26 @@
                 </li>
                 {% endfor%}
             </ul>
+            {% else %}
+            <p>ooop's you haven't attempted any quizes till now.</p>
+            {%endif%}
           </div>
           <div class="attended-quests">
-            <h4>Attended-quests</h4>
-            <ul>
-              {% for attended_quest in attended_quests%}
-              <li>
-                {{attended_quest.quest.title}}&nbsp;
-                total points:{{attended_quest.total_points}}
-                &nbsp;
-                {{attended_quest.submitted_date}}
-              </li>
-              {% endfor%}
-            </ul>
+            <h5>Attended-quests :-</h5>
+           {% if attended_quests|length > 0 %}
+           <ul>
+            {% for attended_quest in attended_quests%}
+            <li>
+              {{attended_quest.title}}&nbsp;
+              total points:{{attended_quest.total_points}}
+              &nbsp;
+              {{attended_quest.submitted_date}}
+            </li>
+            {% endfor%}
+          </ul>
+          {% else %}
+          <p>ooop's you haven't attempted any quests till now</p>
+          {%endif%}
           </div>
           {% endif%}
 

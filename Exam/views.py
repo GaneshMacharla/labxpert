@@ -1,12 +1,19 @@
+import io
 from django.shortcuts import render,redirect,get_object_or_404
 import uuid
 from .models import Exam,Question,Answer
 from django.utils import timezone
 from Accounts.models import Profile
-from .models import Responses
+from .models import Responses,Exam
 import os
-import google.generativeai as genai
-
+# import google.generativeai as genai
+from reportlab.lib import colors
+from reportlab.lib.units import inch
+from reportlab.platypus import Table, TableStyle
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+from Dailyquest.views import check_code
 # Create your views here.
 api_key = 'AIzaSyBiwzkDo3NW1vau6UaNlMlppIhdBGQzF7o'
 
@@ -15,7 +22,6 @@ def create_exam(request):
 
 
 def submit_questions(request):
-
     if request.method=='POST':
         num_quesetions=int(request.POST.get('numQuestions',0))
         subject=request.POST.get('subject')
@@ -42,11 +48,11 @@ def join_exam(request,exam_id):
     return exam_questions(request,exam_id)
 
 
-def submit_exam_answers(request,quest_id):
-    quest=get_object_or_404(Exam,quest_id=quest_id)
-    response=Responses.objects.create(quest=quest,pin=request.user)
+def submit_exam_answers(request,exam_id):
+    exam=get_object_or_404(Exam,exam_id=exam_id)
+    response=Responses.objects.create(exam=exam,pin=request.user)
     response.submitted_date=timezone.now()
-    questions=quest.question_set.all()
+    questions=exam.question_set.all()
     counter=1
     total_points=0
     for question in questions:
@@ -62,37 +68,59 @@ def submit_exam_answers(request,quest_id):
         total_points+=int(check_code(api_key,code,question.question_text,10))
         # answer=Answer.objects.create(question=question,code=code,output=output)
         counter+=1
-    
     response.total_points=total_points
+    return redirect('profile-view')
 
 
+def generate_pdf(exam):
+    buffer = io.BytesIO()
+    p = canvas.Canvas(buffer, pagesize=letter)
+    width, height = letter
+    # Title and quiz information
+    p.setFont("Helvetica-Bold", 20)
+    p.setFillColor(colors.darkblue)
+    p.drawString(100, height - 50, f"Quiz ID: {exam.exam_id}")
+    p.drawString(100, height - 80, f"Title: {exam.title}")
+
+    # Table headers
+    headers = ["S.No", "PIN", "Correct Answers"]
+
+    # Fetch and prepare response data
+    responses = exam.responses_set.all()
+    data = [headers]  # Add headers as the first row
+    if responses.exists():
+        for i, response in enumerate(responses, start=1):
+            data.append([str(i), response.pin, str(response.total_points)])
+    else:
+        data.append(["-", "-", "No responses have been submitted yet."])
+
+    # Create table
+    table = Table(data, colWidths=[50, 200, 200])
+    table.setStyle(TableStyle([
+        ('BACKGROUND', (0, 0), (-1, 0), colors.lightgrey),
+        ('TEXTCOLOR', (0, 0), (-1, 0), colors.black),
+        ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTSIZE', (0, 0), (-1, 0), 12),
+        ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+        ('BACKGROUND', (0, 1), (-1, -1), colors.whitesmoke),
+        ('GRID', (0, 0), (-1, -1), 1, colors.black),
+    ]))
+
+    # Calculate position to draw the table
+    table.wrapOn(p, width, height)
+    table.drawOn(p, 70, height - 200)
+    p.showPage()
+    p.save()
+    buffer.seek(0)
+    return buffer
 
 
-
-def check_code(api_key,code,question,max_points):
-    # Set the API key as an environment variable
-    os.environ['API_KEY'] = api_key
-    
-    # Configure the API key
-    genai.configure(api_key=os.environ['API_KEY'])
-    
-    # Choose a model that's appropriate for your use case
-    model = genai.GenerativeModel('gemini-1.5-flash')
-    
-    # Define the prompt
-    prompt =f"""
-    question:{question},zx
-    code:{code},
-    max_points:{max_points},
-    I have given question,code and max_points You should evaluate the code based on the question and you have to allot points for that code.
-    Main points:you have to see is the user written correct code and following the syntaxes.
-    conditions:You should give to me only points and you must not exceed the max_points range while alloting the points to the code. 
-"""
-    
-    # Generate content based on the prompt
-    response = model.generate_content(prompt)
-    print(response.text)
-    # Return the generated content
-    return response.text
-
+def responses(request, exam_id):
+    quest = get_object_or_404(Exam,exam_id=exam_id)
+    # print(quiz)
+    pdf_buffer = generate_pdf(quest)
+    response = HttpResponse(pdf_buffer, content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="{}-responses.pdf"'.format(quest.title)
+    return response
 

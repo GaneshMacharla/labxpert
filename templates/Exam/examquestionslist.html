@@ -144,6 +144,7 @@
     <div class="container">
         {% if isLecturer %}
             <h1>Lab Xpert - Exam</h1>
+            <h4>Exam id:{{exam_id}}</h4>
             {% for question in questions %}
                 <div class="question">
                     <p class="question-text">{{forloop.counter}}.{{ question.question_text }}</p>
@@ -164,11 +165,11 @@
                     </div>
                 </div>
             {% endfor %}
-            <a href="">See Responses</a>
+            <a href="../responses/{{exam_id}}/">See Responses</a>
 
         {% else %}
             <h1>Lab Xpert - Exam</h1>
-                <form action="../../submit-quest-answers/{{quest_id}}/" enctype="multipart/form-data"  method="POST" >
+                <form action="../../submit-exam-answers/{{exam_id}}/" enctype="multipart/form-data"  method="POST" >
                     {% for question in questions %}
                     {%csrf_token%}
                     <div class="question">
@@ -190,11 +191,9 @@
                     </div>
                     {% endfor %}
                     <button type="Submit" onclick="saveText(this)">Submit</button>
-
                 </form>
         {% endif %}
     </div>
-
     <script>
         function saveText(button) {
             const textarea = button.previousElementSibling;
@@ -238,3 +237,6 @@
     </script>
 </body>
 </html>
+
+
+

@@ -110,8 +110,6 @@ def profile_view(request):
     # print(request.user)
     user_profile = get_object_or_404(Profile, pin=request.user)
     # print(user_profile.isLecturer)
-
-    
     quizzes=Quiz.objects.filter(host=request.user)
     quests=Quest.objects.filter(host=request.user)
     exams=Exam.objects.filter(host=request.user)

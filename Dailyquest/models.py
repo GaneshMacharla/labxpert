@@ -9,8 +9,15 @@ class Quest(models.Model):
     title=models.CharField(max_length=200)
     quest_id=models.UUIDField(default=uuid.uuid4,unique=True)
     created_date=models.DateTimeField(null=True,blank=True)
+    start_time=models.DateTimeField(null=True,blank=True)
+    end_time=models.DateTimeField(null=True,blank=True)
+    shift=models.CharField(max_length=200,default="")
+    semester=models.CharField(max_length=200,default="")
+
+    # remaining_time=models.DateTimeField(null=True,blank=True)
     def __str__(self):
         return self.title
+    
     
 class Question(models.Model):
     quest = models.ForeignKey(Quest, on_delete=models.CASCADE)
@@ -25,11 +32,15 @@ class Responses(models.Model):
     quest=models.ForeignKey(Quest,on_delete=models.CASCADE)
     pin=models.CharField(max_length=200)
     submitted_date=models.DateTimeField(null=True,blank=True)
-    total_points=models.IntegerField(null=True,default=0) 
-    
+    total_points=models.IntegerField(null=True,default=0)
+    shift=models.CharField(max_length=200,default="")
+    semester=models.CharField(max_length=200,default="") 
+    subject=models.CharField(max_length=200,default="")
 
 
     
 # class Answer(models.Model):
 # question=models.ForeignKey(Question,on_delete=models.CASCADE)
+
+
 

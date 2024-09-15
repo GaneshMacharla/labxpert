@@ -1,17 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+
     <title>Quiz Generator</title>
     <style>
-        body {
+        * {
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            background-color: #f4f4f4;
+            /* background-color: #f4f4f4; */
             margin: 0;
-            padding: 20px;
+            /* padding: 20px; */
             box-sizing: border-box;
         }
+
         .container {
             max-width: 800px;
             margin: 0 auto;
@@ -20,18 +26,107 @@
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
+
         h1 {
             text-align: center;
             color: #333;
         }
+
         label {
             display: block;
             margin: 10px 0 5px;
             font-weight: bold;
         }
+
+       
+
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .button-container button {
+            flex: 1;
+        }
+
+        .question {
+            margin-bottom: 20px;
+        }
+
+        .date-time,
+        .start-time,
+        .end-time {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Select option styling */
+        .branch option,
+        .semester option,
+        .subject option,
+        .shift option {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            /* background-color: #1bc8db; */
+            /* color: #df15b7; */
+        }
+
+        button:hover,select:hover{
+            cursor: pointer;
+        }
+        /* Dropdown styling */
+        .branch,
+        .semester,
+        .subject,
+        .shift,
+        #starttime,
+        #endtime,
+        .title,
+        #numQuestions,button
+         {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            /* Gradient background */
+            background-image: linear-gradient(to bottom, #fff, #f2f2f2);
+            margin-bottom: 10px;
+            /* Added margin-bottom for spacing */
+        }
+
+        .semester {
+            margin-top: 40px;
+        }
+
+        /* Dropdown arrow styling */
+        .dropdown-arrow,
+        .dropdown1-arrow,
+        .dropdown2-arrow {
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            position: absolute;
+            right: 10px;
+            top: calc(50% - 4px);
+            pointer-events: none;
+            color: #be13d4;
+        }
+
+        #semester,
+        #shift,
+        #subject,
+        #branch {
+            display: inline-block;
+        }
+
         textarea,
         input[type="number"],
-        button,.title {
+        button,
+        .title,
+        #numQuestions {
             width: 100%;
             padding: 10px;
             margin: 5px 0 15px;
@@ -39,31 +134,68 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-        .button-container {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-        }
-        .button-container button {
-            flex: 1;
-        }
-        .question {
-            margin-bottom: 20px;
-        }
     </style>
 </head>
+
 <body>
     {% comment %} {% include 'Accounts/header.html'%} {% endcomment %}
 
     <div class="container">
         <h1>Questions Generator</h1>
-      
+
+        <div class="mt-5"></div>
         <form id="questForm" action="../submit-questions/" method="POST">
             {% csrf_token %}
-            <label for="title">Enter the Subject Name:</label>
-            <input type="text" class="title" name="subject" required />
+            <div class="date-time">
+                <div class="start-time"> <label for="starttime">Starting time:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="datetime-local" id="starttime" name="starttime">
+                </div>
+                <div class="end-time">
+                    <label for="endtime">Ending time:</label>
+                    <input type="datetime-local" id="endtime" name="endtime" />
+                </div>
+            </div>
+            <div class="mt-4"></div>
+            <label id="branch"
+            for="branch">Branch:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <select class="branch" name="branch">
+            <option value="CSE" name="branch">CSE</option>
+            <option value="ECE" name="ece">ECE</option>
+        </select>
+        <br>    
+            <label id="semester" for="semester">Semester:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <select class="semester" name="semester">
+                <option value="I" name="I">I</option>
+                <option value="II" name="II">II</option>
+                <option value="III" name="III">III</option>
+                <option value="IV" name="IV">IV</option>
+                <option value="V" name="V">V</option>
+                <option value="VI" name="VI">VI</option>
+            </select>
+            <br><br>
+            <label id="shift"
+                for="shift">Shift:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <select class="shift" name="shift">
+                <option value="shift1" name="shift 1">Shift 1</option>
+                <option value="shift2" name="shift 2">Shift 2</option>
+            </select>
+            <br><br>
+            <label id="subject" for="subject">Subject name:</label>&nbsp;&nbsp;
+            <select class="subject" name="subject">
+                <option value="option1" name="Sub1">Sub1</option>
+                <option value="option2" name="Sub2">Sub2</option>
+                <option value="option3" name="Sub3">Sub3</option>
+                <option value="option4" name="Sub4">Sub4</option>
+                <option value="option5" name="Sub5">Sub5</option>
+                <option value="option6" name="Sub6">Sub6</option>
+                <option value="option7" name="Sub7">Sub7</option>
+                <option value="option8" name="Sub8">Sub8</option>
+                <option value="option9" name="Sub9">Sub9</option>
+                <option value="option10" name="Sub10">Sub10</option>
+            </select>
+
             <label for="title">Enter the title of the Daily Quest:</label>
-            <input type="text" class="title" name="title" required />   
+            <input type="text" class="title" name="title" required />
             <label for="numQuestions">Number of Daily Quest Questions:</label>
             <input type="number" id="numQuestions" name="numQuestions" min="1" max="50" required>
             <div class="button-container">
@@ -77,6 +209,137 @@
     </div>
 
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Your function call here
+            changeSubject();
+        }); 
+
+        // Define an array to store subjects for each semester
+        const cseBranch = [];
+        // Semester I subjects
+        const semester1 = [
+            "HU-101 Basic English",
+            "SC-102 Basic Engineering Mathematics",
+            "SC-103 Basic Physics",
+            "SC-104 General Engineering Chemistry & Environmental Studies",
+            "EC-105 Basic Electrical & Electronics Engineering",
+            "ME-106 Basic Engineering Drawing",
+            "ME-107 Basic AutoCAD Lab",
+            "EC-108 Basic Electrical & Electronics Engineering Lab",
+            "SC-109 Basic Science Lab",
+            "CS-110 Basic Computer Science Lab",
+            "CS-111 Skill Upgradation"
+        ];
+
+        // Semester II subjects
+        const semester2 = [
+            "HU-201 Advanced English",
+            "SC-202 Engineering Mathematics",
+            "SC-203 Applied Physics",
+            "SC-204 Engineering Chemistry & Environmental Studies",
+            "CS-205 Programming In C",
+            "ME-206 Advanced Engineering Drawing",
+            "ME-207 Advanced AutoCAD Lab",
+            "CS-208 Basic Animation Lab",
+            "SC-209 Applied Science Lab",
+            "CS-210 Programming in C Lab",
+            "CS-211 Skill Upgradation"
+        ];
+
+        // Semester III subjects
+        const semester3 = [
+            "SC-301 Applied Engineering Mathematics",
+            "EC-302 Digital Electronics",
+            "CS-303 Computer Architecture",
+            "CS-304 Data Structures Through C",
+            "CS-305 Oops Through C++",
+            "CS-306 Data Structures Through C Lab",
+            "CS-307 C++ Lab",
+            "CS-308 Digital Electronics Lab",
+            "CS-309 Multimedia Technologies Lab",
+            "HU-310 Communication and Life Skills Lab",
+            "CS-311 Skill Upgradation"
+        ];
+
+        // Semester IV subjects
+        const semester4 = [
+            "SC-401 Advanced Engineering Mathematics",
+            "CS-402 Relational Database Management Systems",
+            "CS-403 Java Programming",
+            "CS-404 Computer Hardware & Ntetworking",
+            "CS-405 Operating Systems",
+            "CS-406 Relational Database Management Systems Lab",
+            "CS-407 Java Programming Lab",
+            "CS-408 Computer Hardware & Networking Lab",
+            "CS-409 Micro Processors Lab",
+            "HU-410 Employability Skills Lab",
+            "CS-411 Skill Upgradation"
+        ];
+
+        // Semester V subjects
+        const semester5 = [
+            "CS-502 Web Designing",
+            "CS-503 Python Programming",
+            "CS-574 .Net Programming Through C#",
+            "CS-506 Web Designing Lab",
+            "CS-507 Python Programming Lab",
+            "CS-584 Android Programming",
+            "CS-575 Artificial Intelligence",
+            "CS-509 System Administration Lab",
+            "CS-510 Project Work",
+            "CS-511 Skill Upgradation"
+        ];
+
+        // Semester VI subjects
+        const semester6 = [
+            "Industrial Training (CS-601)"
+        ];
+
+        // Add all semesters to the array
+        cseBranch.push(semester1, semester2, semester3, semester4, semester5, semester6);
+
+        const branch = document.querySelector(".branch");
+        const semester = document.querySelector(".semester");
+        const subject = document.querySelector(".subject");
+        semester.addEventListener("change", changeSubject);
+
+        function changeTheValueOfSubject(sem) {
+            for (var i = 0; i < subject.options.length; i++) {
+                var sub = subject.options[i];
+                sub.textContent = cseBranch[sem][i];
+                sub.value = cseBranch[sem][i];
+            }
+        }
+
+        function changeSubject() {
+
+            if (branch.value == "CSE") {
+                if (semester.value === "I") {
+                    changeTheValueOfSubject(0);
+                }
+                else if (semester.value === "II") {
+                    changeTheValueOfSubject(1);
+                }
+                else if (semester.value === "III") {
+                    changeTheValueOfSubject(2);
+                } else if (semester.value === "IV") {
+                    changeTheValueOfSubject(3);
+                }
+                else if (semester.value === "V") {
+                    changeTheValueOfSubject(4);
+                }
+                else {
+                    changeTheValueOfSubject(5);
+                }
+            }
+        }
+
+        const questForm = document.getElementById('questForm');
+        questForm.addEventListener('keydown', function (event) {
+            if (event.key == 'Enter') {
+                event.preventDefault();
+            }
+        });
         function generateQuestions(event) {
             event.preventDefault();
             const numQuestions = document.getElementById('numQuestions').value;
@@ -102,4 +365,5 @@
         }
     </script>
 </body>
+
 </html>

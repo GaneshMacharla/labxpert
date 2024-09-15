@@ -1,17 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lab Xpert - Daily Quests</title>
     <style>
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             background-color: #f0f2f5;
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
         }
+
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -21,31 +23,37 @@
             border-radius: 12px;
             transition: transform 0.2s;
         }
+
         .container:hover {
             transform: scale(1.02);
         }
+
         .question {
             margin-bottom: 40px;
             display: flex;
             flex-direction: column;
             gap: 25px;
         }
+
         .columns {
             display: flex;
             flex-direction: column;
             gap: 25px;
         }
+
         @media (min-width: 768px) {
             .columns {
                 flex-direction: row;
             }
         }
+
         .column {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
+
         .output-div {
             border: 1px solid #ccc;
             border-radius: 8px;
@@ -59,9 +67,11 @@
             background-color: #f9f9f9;
             transition: border-color 0.3s;
         }
+
         .output-div:hover {
             border-color: #007bff;
         }
+
         .output-div img {
             width: 100%;
             height: 100%;
@@ -70,6 +80,7 @@
             top: 0;
             left: 0;
         }
+
         textarea {
             width: 100%;
             height: 200px;
@@ -80,10 +91,12 @@
             box-sizing: border-box;
             transition: border-color 0.3s;
         }
+
         textarea:focus {
             border-color: #007bff;
             outline: none;
         }
+
         button {
             padding: 12px 24px;
             border: none;
@@ -96,32 +109,39 @@
             align-self: flex-start;
             transition: background-color 0.3s;
         }
+
         button:hover {
             background-color: #0056b3;
         }
+
         button:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
         }
+
         p {
             font-size: 20px;
             margin: 0;
         }
+
         .question-text {
             text-align: left;
             font-size: 22px;
             font-weight: bold;
             margin-bottom: 10px;
         }
+
         .output-heading {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
         }
+
         .column-title {
             font-weight: bold;
             margin-bottom: 5px;
         }
+
         .loading {
             display: none;
             position: absolute;
@@ -133,65 +153,129 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .output-div.loading .loading {
             display: block;
         }
+        #countdownTimer{
+            font-size: 20px;
+            font-style: bold;
+            position: fixed;
+            right:10px;
+            top:40px;
+        }
+        .show-msg{
+           
+            box-shadow:8px 8px 49px -4px #a5a1e1;
+            border-radius:10px;
+            font-size:40px;
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+
+        }
+        .popup{
+            width:100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            position: fixed;
+            top:0px;
+            left:0px;
+        }
+        .ok-button{
+            position: relative;
+    bottom:0px;
+    right: 0px;
+    width: 30%;
+    height: 10%;
+    text-align: center;
+    background-color: #2980b9;;
+            
+        }
     </style>
 </head>
+
 <body>
+   
     {% comment %} {% include 'Accounts/header.html'%} {% endcomment %}
+
 
     <div class="container">
         {% if isLecturer %}
-            <h1>Lab Xpert - Daily Quests</h1>
+        <h1>Lab Xpert - Daily Quests</h1>
+        <h3>Quest Id:{{quest_id}}</h3>
+        <h3>Title:{{title}}</h3>
+        <h3>Subject:{{subject}}</h3>
+        
+        {% for question in questions %}
+        <div class="question">
+            <p class="question-text">{{forloop.counter}}.{{ question.question_text }}</p>
+            <div class="columns">
+                <div class="column">
+                    <div class="column-title">Code Snippet</div>
+                    <textarea placeholder="Start coding" readonly></textarea>
+                    {% comment %} <button onclick="saveText(this)">Submit</button> {% endcomment %}
+                </div>
+                <div class="column">
+                    <div class="column-title">Output</div>
+                    <div class="output-div" onclick="openFileInput(this)">
+                        {% comment %} <input type="file" accept="image/*" style="display:none;"
+                            onchange="displayImage(event, this.parentNode)" readonly> {% endcomment %}
+                        <img style="display:none;" name="image{{forloop.counter}}" />
+                        <div class="loading">Uploading...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <a href="../responses/{{quest_id}}">See Responses</a>
+        {% endfor %}
+        {% else %}
+        <h1>Lab Xpert - Daily Quests</h1>
+        <h3>Title:{{title}}</h3>
+        <h3>Subject:{{subject}}</h3>
+
+        <div id="countdownTimer">
+
+        </div> 
+ 
+        
+        <form action="../../submit-quest-answers/{{quest_id}}/" enctype="multipart/form-data" method="POST">
             {% for question in questions %}
-                <div class="question">
-                    <p class="question-text">{{forloop.counter}}.{{ question.question_text }}</p>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="column-title">Code Snippet</div>
-                            <textarea placeholder="Start coding" readonly></textarea>
-                            {% comment %} <button onclick="saveText(this)">Submit</button> {% endcomment %}
-                        </div>
-                        <div class="column">
-                            <div class="column-title">Output</div>
-                            <div class="output-div" onclick="openFileInput(this)">
-                                {% comment %} <input type="file" accept="image/*" style="display:none;" onchange="displayImage(event, this.parentNode)" readonly> {% endcomment %}
-                                <img style="display:none;" name="image{{forloop.counter}}"/>
-                                <div class="loading">Uploading...</div>
-                            </div>
+            {%csrf_token%}
+            <div class="question">
+                <p class="question-text">{{forloop.counter}}. {{ question.question_text }}</p>
+                <div class="columns">
+                    <div class="column">
+                        <div class="column-title">Code Snippet</div>
+                        <textarea placeholder="Enter your answer here..." name="code{{forloop.counter}}"></textarea>
+                    </div>
+                    <div class="column">
+                        <div class="column-title">Output</div>
+                        <div class="output-div" onclick="openFileInput(this)">
+                            <input type="file" accept="image/*" value="/media/quest/outputs/nocode.jpeg"
+                                name="image{{forloop.counter}}" style="display:none;"
+                                placeholder="upload your output here" onchange="displayImage(event, this.parentNode)">
+                            <img src="/media/quest/outputs/nocode.jpeg" />
+                            <div class="loading">Uploading...</div>
                         </div>
                     </div>
                 </div>
-                <a href="">See Responses</a>
+            </div>
+            <button type="Submit" onclick="saveText(this)">Submit</button>
             {% endfor %}
-        {% else %}
-            <h1>Lab Xpert - Daily Quests</h1>
-                <form action="../../submit-quest-answers/{{quest_id}}/" enctype="multipart/form-data"  method="POST" >
-                    {% for question in questions %}
-                    {%csrf_token%}
-                    <div class="question">
-                        <p class="question-text">{{forloop.counter}}. {{ question.question_text }}</p>
-                        <div class="columns">
-                            <div class="column">
-                                <div class="column-title">Code Snippet</div>
-                                <textarea placeholder="Enter your answer here..." name="code{{forloop.counter}}"></textarea>
-                            </div>
-                            <div class="column">
-                                <div class="column-title">Output</div>
-                                <div class="output-div" onclick="openFileInput(this)">
-                                    <input type="file" accept="image/*" value="/media/quest/outputs/nocode.jpeg" name="image{{forloop.counter}}" style="display:none;" placeholder="upload your output here" onchange="displayImage(event, this.parentNode)">
-                                    <img src="/media/quest/outputs/nocode.jpeg" />
-                                    <div class="loading">Uploading...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <button type="Submit" onclick="saveText(this)">Submit</button>
-                    {% endfor %}
-                </form>
+        </form>
         {% endif %}
+     
     </div>
+    <div class="popup">
+        <div class="show-msg">
+            <p>The Quest has been ended</p>
+            <button type="button" class="ok-button" onclick="closeMsg()">Ok</button>
+        </div>
+       </div>
 
     <script>
         function saveText(button) {
@@ -223,7 +307,7 @@
                 const reader = new FileReader();
                 const loading = div.querySelector('.loading');
                 loading.style.display = 'block';
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const img = div.querySelector('img');
                     console.log(e.target.result);
                     img.src = e.target.result;
@@ -233,6 +317,42 @@
                 reader.readAsDataURL(file);
             }
         }
+
+        //timer
+
+
+    // Get the end time from the server
+    const endTime = new Date("{{ quest.end_time|date:'Y-m-d H:i:s' }}").getTime();
+    const showMsg=document.querySelector(".popup")
+    // Update the countdown every second
+    const interval = setInterval(function () {
+        const now = new Date().getTime();
+        const timeLeft = endTime - now;
+
+        // Calculate time left in hours, minutes, and seconds
+        const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+        const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+        // Display the result
+        document.getElementById("countdownTimer").innerHTML = "Remaining Time: "+hours + ":" + minutes + ":" + seconds;
+
+        // If the time is up, stop the timer and display a message
+        if (timeLeft < 0) {
+            showMsg.style.display='flex';
+            clearInterval(interval);
+            document.getElementById("countdownTimer").innerHTML = "Remaining Time: 0:0:0 ";
+
+            
+        }
+    }, 1000);
+
+    function closeMsg()
+    {
+        window.location.href="/";
+    }
+</script>
+
     </script>
 </body>
 </html>

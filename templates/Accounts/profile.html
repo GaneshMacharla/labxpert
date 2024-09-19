@@ -1,14 +1,17 @@
-
 {% load custom_filters %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>LabXpert</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
   <style>
     * {
       padding: 0;
@@ -16,18 +19,21 @@
       box-sizing: border-box;
       font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     }
+
     body {
       margin-top: 20px;
       color: #1a202c;
       text-align: left;
       background-color: white;
     }
+
     .main-body {
       padding: 15px;
 
     }
+
     .card {
-      box-shadow: 0 1px 3px 0 rgba(0,0,0,.1), 0 1px 2px 0 rgba(0,0,0,.06);
+      background: linear-gradient(45deg, rgb(76, 126, 142), rgb(33, 255, 255), rgb(0, 243, 255));
       position: relative;
       display: flex;
       flex-direction: column;
@@ -35,11 +41,23 @@
       word-wrap: break-word;
       background-color: #fff;
       background-clip: border-box;
-      border: 0 solid rgba(0,0,0,.125);
+      border: 0 solid rgba(0, 0, 0, .125);
       border-radius: .25rem;
-      box-shadow:8px 8px 49px -4px #a5a1e1;
-
     }
+
+    button {
+      padding: 4px 20px;
+      border: none;
+      border-radius: 5px;
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #2980b9;
+    }
+
     /* .row{
 
     } */
@@ -50,65 +68,127 @@
       height: 300px;
       /* background-color: #57b8f9; */
     }
+
     .gutters-sm {
       margin-right: -8px;
       margin-left: -8px;
     }
-    .gutters-sm>.col, .gutters-sm>[class*=col-] {
+
+    .gutters-sm>.col,
+    .gutters-sm>[class*=col-] {
       padding-right: 8px;
       padding-left: 8px;
     }
-    .mb-3, .my-3 {
-      margin-bottom: 1rem!important;
+
+    .mb-3,
+    .my-3 {
+      margin-bottom: 1rem !important;
     }
+
     .bg-gray-300 {
       background-color: #e2e8f0;
     }
+
     .h-100 {
-      height: 100%!important;
+      height: 100% !important;
     }
+
     .shadow-none {
-      box-shadow: none!important;
+      box-shadow: none !important;
     }
+
     .list-group-item {
       list-style: decimal;
       margin-left: 40px;
     }
+
     a {
       text-decoration: none;
     }
-    .btn-info{
-      background-color:#3498db;
+
+    .btn-info {
+      background-color: #3498db;
     }
-    .quizes-quests
-    {
-      align-items:center;
-      padding:30px;
-      margin-left:50px;
-      margin-right:52px;  
+
+    .student-area {
+      align-items: center;
+      padding: 30px;
+      margin-left: 50px;
+      margin-right: 52px;
       /* border: 1px solid rgb(92, 89, 89); */
-      box-shadow:8px 8px 49px -4px #a5a1e1;
+      box-shadow: 0px 12px 37px -6px #a1c4e7;
       /* background:  #d4d4d463; */
       border-radius: 10px;
       padding: 20px;
       margin-bottom: 30px;
-      
+      background-color: #d4dfe7;
     }
-    
+
+    .username {
+      color: black;
+      font-size: 16px;
+    }
+
+    .alert {
+      max-width: 100%;
+      padding: 14px;
+      border-radius: 9px;
+      position: fixed;
+      top: 23px;
+      left: 404px;
+      z-index: 999;
+    }
+
+    .attended-quizes,
+    .attended-quests,
+    .attended-exams,
+    .quizes,
+    .quests,
+    .exams {
+
+      background: linear-gradient(45deg, rgb(76, 126, 142), rgb(33, 255, 255), rgb(0, 243, 255));
+      padding: 10px;
+      border-radius: 10px;
+      color: black;
+      margin-bottom: 20px;
+    }
+
+    a {
+      color: #df14d5;
+    }
   </style>
-  <script>
-    // JavaScript code to hide the alert after 3 seconds
-    document.addEventListener('DOMContentLoaded', function() {
-      const divTag = document.querySelector('.alert.alert-warning.alert-dismissible.fade.show');
-      setTimeout(function() {
-        if (divTag) {
-          divTag.style.display = "none";
-        }
-      }, 3000);
-    });
-  </script>
+
 </head>
+
 <body>
+  <div class="msgs">
+    <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+      <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+      </symbol>
+      <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path
+          d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z" />
+      </symbol>
+      <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+        <path
+          d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z" />
+      </symbol>
+    </svg>
+    {% for message in messages %}
+
+
+    <div class="alert alert-{{message.tags}} d-flex align-items-center" role="alert">
+      <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+        <use xlink:href="#check-circle-fill" />
+      </svg>
+      <div>
+        {{message}}
+      </div>
+    </div>
+    {% endfor %}
+  </div>
   {% comment %} {% include 'Accounts/header.html'%} {% endcomment %}
   <div class="container">
     <div class="main-body">
@@ -117,9 +197,10 @@
           <div class="card">
             <div class="card-body">
               <div class="d-flex flex-column align-items-center text-center">
-                <img src="/media/{{image}}" alt="Admin" class="rounded-circle" style="object-fit:fill;" width="200" height="200">
+                <img src="/media/{{image}}" alt="Admin" class="rounded-circle" style="object-fit:fill;" width="200"
+                  height="200">
                 <div class="mt-5">
-                  <h4>{{ user.username }}</h4>
+                  <h4 class="username">{{ user.username }}</h4>
                 </div>
               </div>
             </div>
@@ -166,101 +247,129 @@
               <hr>
               <div class="row">
                 <div class="col-sm-12">
-                  <a class="btn btn-primary" href="../profile-update">Edit</a>
+                  <a href="../profile-update"><button>Edit</button></a>
                 </div>
               </div>
             </div>
           </div>
-          </div>
+        </div>
       </div>
     </div>
   </div>
-  <div class="quizes-quests">
+  <div class="student-area">
     {% if isLecturer %}
-          {% comment %} quiz field {% endcomment %}
-          <div class="quizes">
-            <h5 class="mb-3">Created Quizzes :-</h5>
-            {% if quizzes|length > 0 %}
-            <ul >
-              {% for quiz in quizzes %}
-              <li>
-                  <a href="/quiz/{{quiz.quiz_id}}">{{quiz.title}}</a>&nbsp&nbsp<span class="created-date">{{quiz.created_date}}</span>
-              </li>
-              {% endfor %}
-            </ul>
-            {%else%}
-            <p>ooop's till now you haven't created any quizes</p>
-            {%endif%}
-          </div>
-          <div class="quests">
-            <h5 class="mb-3">Created Quests :-</h5>
-            {% if quests|length > 0%}
-            <ul >
-              
-              {% for quest in quests %}
-              <li>
-                  <a href="/Dailyquest/{{quest.quest_id}}">{{quest.title}}</a>&nbsp&nbsp<span class="created-date">{{quest.created_date}}</span>
-              </li>
-              {% endfor %}
-            </ul>
-            {%else%}
-            <p>ooops's till now you haven't created any quests</p>
-            {% endif%}
-          </div>
-          <div class="exams">
-            <h5 class="mb-3">Created Exams :- </h5>
-            {% if exams|length > 0%}
-            <ul></ul>
-              {% for exam in exams%}
-              <li>
-                <a href="/Exam/{{exam.exam_id}}">{{exam.title}}</a>&nbsp&nbsp<span class="created-date">{{exam.created_date}}</span>
-              </li>
-              {%endfor%}
-            </ul>
-          {% else %}
-          <p>ooops' till now you haven't created any exams</p>
-          {% endif %}
-          </div>
-          {% else %}
-          <div class="attended-quizes">
-            <h5>Attended-quizes :-</h5>
-            {% if attended_quizes|length > 0 %}
-            <ul>
-              {% for attended_quiz in attended_quizes%}
-                <li>{{attended_quiz.quiz.title}}&nbsp; total points:
-                  {% with total_points=attended_quiz.correct_answers|mul:10 %}
-                  {{ total_points }}
-                  {% endwith %}
-                  &nbsp;
-                  {{attended_quiz.submitted_date}}
-                </li>
-                {% endfor%}
-            </ul>
-            {% else %}
-            <p>ooop's you haven't attempted any quizes till now.</p>
-            {%endif%}
-          </div>
-          <div class="attended-quests">
-            <h5>Attended-quests :-</h5>
-           {% if attended_quests|length > 0 %}
-           <ul>
-            {% for attended_quest in attended_quests%}
-            <li>
-              {{attended_quest.title}}&nbsp;
-              total points:{{attended_quest.total_points}}
-              &nbsp;
-              {{attended_quest.submitted_date}}
-            </li>
-            {% endfor%}
-          </ul>
-          {% else %}
-          <p>ooop's you haven't attempted any quests till now</p>
-          {%endif%}
-          </div>
-          {% endif%}
+    {% comment %} quiz field {% endcomment %}
+    <div class="quizes">
+      <h5 class="mb-3">Created Quizzes :-</h5>
+      {% if quizzes|length > 0 %}
+      <ul>
+        {% for quiz in quizzes %}
+        <li>
+          <a href="/quiz/{{quiz.quiz_id}}">{{quiz.title}}</a>&nbsp&nbsp<span
+            class="created-date">{{quiz.created_date}}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {%else%}
+      <p>ooop's till now you haven't created any quizes</p>
+      {%endif%}
+    </div>
+    <div class="quests">
+      <h5 class="mb-3">Created Quests :-</h5>
+      {% if quests|length > 0%}
+      <ul>
 
-        
+        {% for quest in quests %}
+        <li>
+          <a href="/Dailyquest/{{quest.quest_id}}">{{quest.title}}</a>&nbsp&nbsp<span
+            class="created-date">{{quest.created_date}}</span>
+        </li>
+        {% endfor %}
+      </ul>
+      {%else%}
+      <p>ooops's till now you haven't created any quests</p>
+      {% endif%}
+    </div>
+    <div class="exams">
+      <h5 class="mb-3">Created Exams :- </h5>
+      {% if exams|length > 0%}
+      <ul></ul>
+      {% for exam in exams%}
+      <li>
+        <a href="/Exam/{{exam.exam_id}}">{{exam.title}}</a>&nbsp&nbsp<span
+          class="created-date">{{exam.created_date}}</span>
+      </li>
+      {%endfor%}
+      </ul>
+      {% else %}
+      <p>ooops' till now you haven't created any exams</p>
+      {% endif %}
+    </div>
+    {% else %}
+    <div class="attended-quizes">
+      <h5>Attended-quizes :-</h5>
+      {% if attended_quizes|length > 0 %}
+      <ul>
+        {% for attended_quiz in attended_quizes%}
+        <li>{{attended_quiz.quiz.title}}&nbsp; total points:
+          {% with total_points=attended_quiz.correct_answers|mul:10 %}
+          {{ total_points }}
+          {% endwith %}
+          &nbsp;
+          {{attended_quiz.submitted_date}}
+        </li>
+        {% endfor%}
+      </ul>
+      {% else %}
+      <p>ooop's you haven't attempted any quizes till now.</p>
+      {%endif%}
+    </div>
+    <div class="attended-quests">
+      <h5>Attended-quests :-</h5>
+      {% if attended_quests|length > 0 %}
+      <ul>
+        {% for attended_quest in attended_quests%}
+        <li>
+          {{attended_quest.title}}&nbsp;
+          total points:{{attended_quest.total_points}}
+          &nbsp;
+          {{attended_quest.submitted_date}}
+        </li>
+        {% endfor%}
+      </ul>
+      {% else %}
+      <p>ooop's you haven't attempted any quests till now</p>
+      {%endif%}
+    </div>
+    <div class="attended-exams">
+      <h5>Attended-exams :-</h5>
+      {% if attended_exams|length > 0 %}
+      <ul>
+        {% for attended_exam in attended_exams%}
+        <li>
+          {{attended_exam.title}}&nbsp;
+          total points:{{attended_exam.total_points}}
+          &nbsp;
+          {{attended_exam.submitted_date}}
+        </li>
+        {% endfor%}
+      </ul>
+      {% else %}
+      <p>ooop's you haven't attempted any quests till now</p>
+      {%endif%}
+    </div>
+    {% endif%}
+
+
   </div>
-
+  <script>
+    const divTag = document.querySelector('.msgs');
+    setTimeout(function () {
+      if (divTag) {
+        divTag.style.display = "none";
+      }
+    }, 3000);
+  </script>
 </body>
+
 </html>

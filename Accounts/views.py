@@ -2,18 +2,16 @@ from django.shortcuts import render,redirect,get_object_or_404
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import authenticate,login,logout
-from django.http import HttpRequest
-from django.http import JsonResponse
 import re
 from django.contrib.auth.decorators import login_required
 from .models import Profile
-from quiz.models import Quiz,Responses
+from quiz.models import Quiz
 from Dailyquest.models import Quest
-from Dailyquest import models
 from Exam.models import Exam
+import Dailyquest
+import quiz
+from Exam.models import Responses
 # Create your views heref.
-
-
 def is_valid_email(email):
     # Regular expression for basic email validation
     email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -44,16 +42,16 @@ def registration_validation(request):
         
         #check edge cases for user details
         if password!=confirm_password:
-            messages.error(request,'passwords did not match ')
+            messages.warning(request,'passwords did not match ')
             return redirect('../signup')
         if User.objects.filter(username=pin).exists():
-            messages.error(request, 'Username already exists.')
+            messages.warning(request, 'Username already exists.')
             return redirect('../signup')
         if User.objects.filter(email=email).exists():
-            messages.error(request,'email already exists')
+            messages.warning(request,'email already exists')
             return redirect('../signup')
         if len(password)<5:
-            messages.error(request,'password is to short,please enter a valid password.')
+            messages.warning(request,'password is to short,please enter a valid password.')
             return redirect('../signup')
         if not is_valid_email(email):
             messages.error(request,'email is invalid')
@@ -64,7 +62,7 @@ def registration_validation(request):
         user=User.objects.create_user(pin,email,password)
         user.save()
         #store some more information about the user into the database
-        user_profile=Profile()
+        user_profile=Profile.objects.create(pin=user.username)
         if isLecturer is not None:
             user_profile.isLecturer=True
         user_profile.pin=user
@@ -84,17 +82,20 @@ def login_validation(request):
     if request.method == 'POST':
         pin= request.POST.get('pin')
         password = request.POST.get('password') 
+        print(pin)
+        print(password)
         #fingerprint = generate_fingerprint(request) 1
         # Authenticate the user
         user = authenticate(username=pin, password=password)
+        print(user)
         # print(user)
         if user is not None:
             login(request,user)
-            messages.success(request,'sucessfully logged in')
+            messages.success(request,'Sucessfully logged in..')
             return redirect('index')
         else:
             # Authentication failed
-            messages.error(request, 'Invalid username or password')
+            messages.warning(request, 'Invalid username or password')
             return redirect('login')
         
     else:
@@ -102,6 +103,7 @@ def login_validation(request):
         return render(request, 'Accounts/login.html')
 
 def logout_user(request):
+    messages.success(request,'Sucessfully logged out..')
     logout(request)
     return redirect('index')
 
@@ -114,17 +116,19 @@ def profile_view(request):
     quests=Quest.objects.filter(host=request.user)
     exams=Exam.objects.filter(host=request.user)
     #quiz responses
-    attended_quizes=Responses.objects.filter(pin=request.user)
+    attended_quizes=quiz.models.Responses.objects.filter(pin=request.user)
     #quest responses
-    attended_quests=models.Responses.objects.filter(pin=request.user)
+    attended_quests=Dailyquest.models.Responses.objects.filter(pin=request.user)
+    #exam responses
+    attended_exams=Responses.objects.filter(pin=request.user)
     # print(quizzes)
     # users=UserDetails.objects.filter(user=request.user)
     if not user_profile.image:
         user_profile.image="images/avatar7.png"
     # Prepare the details to pass to the template
-    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes,'quests':quests,'attended_quizes':attended_quizes,'attended_quests':attended_quests,'exams':exams}
+    details = { 'fullname': user_profile.fullname,'image':user_profile.image,'phone':user_profile.phone,'isLecturer':user_profile.isLecturer,'quizzes':quizzes,'quests':quests,'attended_quizes':attended_quizes,'attended_quests':attended_quests,'exams':exams,'attended_exams':attended_exams}
     # Render the profile template with the details
-    return render(request, 'Accounts/profile.html', details)  
+    return render(request, 'Accounts/profile.html', details)
     
 
 @login_required(login_url='/Accounts/login/')

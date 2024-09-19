@@ -26,4 +26,5 @@ urlpatterns = [
     path('quiz/',include('quiz.urls')),
     path('Dailyquest/',include('Dailyquest.urls')),
     path('Exam/',include('Exam.urls')),
+    path('feedback/',include('feedback.urls')),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

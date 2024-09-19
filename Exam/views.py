@@ -14,9 +14,14 @@ from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from Dailyquest.views import check_code
+from labxpert.generateid import generate_id
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+
 # Create your views here.
 api_key = 'AIzaSyBiwzkDo3NW1vau6UaNlMlppIhdBGQzF7o'
 
+@login_required(login_url='/Accounts/login/')
 def create_exam(request):
     return render(request,'Exam/createexamquestions.html')
 
@@ -25,12 +30,17 @@ def submit_questions(request):
     if request.method=='POST':
         num_quesetions=int(request.POST.get('numQuestions',0))
         subject=request.POST.get('subject')
+        shift=request.POST.get('shift')
+        semester=request.POST.get('semester')
         title=request.POST.get('title')
-        exam=Exam.objects.create(host=request.user,subject=subject,title=title,exam_id=uuid.uuid4(),created_date=timezone.now())
+        starting_time=request.POST.get('starttime')
+        ending_time=request.POST.get('endtime')
+        exam=Exam.objects.create(host=request.user,subject=subject,title=title,quest_id=generate_id(),created_date=timezone.now(),start_time=starting_time,end_time=ending_time,shift=shift,semester=semester)
         for i in range(num_quesetions):
             question_text=request.POST.get(f'question{i}')
             question=Question.objects.create(quest=exam,question_text=question_text)
         
+        messages.success(request,'Exam has been created Sucessfully..')
         return redirect('profile-view')
     
 
@@ -38,23 +48,25 @@ def exam_questions(request,exam_id):
     exam=get_object_or_404(Exam,exam_id=exam_id)
     questions=exam.question_set.all()
     profile=get_object_or_404(Profile,pin=request.user)
-    return render(request,'Exam/examquestionslist.html',{'questions':questions,'isLecturer':profile.isLecturer,'exam_id':exam.exam_id})
+    return render(request,'Exam/examquestionslist.html',{'questions':questions,'isLecturer':profile.isLecturer,'exam_id':exam.exam_id,'title':exam.title,'subject':exam.subject,'exam':exam})
 
 
 
 
-
+@login_required(login_url='/Accounts/login/')
 def join_exam(request,exam_id):
     return exam_questions(request,exam_id)
 
 
 def submit_exam_answers(request,exam_id):
     exam=get_object_or_404(Exam,exam_id=exam_id)
-    response=Responses.objects.create(exam=exam,pin=request.user)
-    response.submitted_date=timezone.now()
+    user=User.objects.get(username=request.user)
+
     questions=exam.question_set.all()
     counter=1
     total_points=0
+    min_points=(len(questions)*10)//4
+
     for question in questions:
         code=request.POST.get(f"code{counter}")
         answer=Answer()
@@ -69,6 +81,16 @@ def submit_exam_answers(request,exam_id):
         # answer=Answer.objects.create(question=question,code=code,output=output)
         counter+=1
     response.total_points=total_points
+    response=Responses.objects.create(exam=exam,pin=user.username,submitted_date=timezone.now())
+    response.total_points=total_points
+    response.subject=exam.subject
+    response.shift=exam.shift
+    response.semester=exam.semester  
+    if total_points>min_points:
+        response.attendance_status=True
+
+    response.save()
+    messages.success(request, "Your answers has been saved Sucessfully..")
     return redirect('profile-view')
 
 
@@ -123,4 +145,9 @@ def responses(request, exam_id):
     response = HttpResponse(pdf_buffer, content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="{}-responses.pdf"'.format(quest.title)
     return response
+
+
+
+
+
 

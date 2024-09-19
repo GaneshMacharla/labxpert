@@ -19,6 +19,8 @@ from reportlab.lib.units import inch
 from reportlab.platypus import Table, TableStyle
 from django.utils import timezone
 
+from labxpert.generateid import generate_id
+
 @login_required(login_url='/Accounts/login/')
 def create_quiz(request):
     return render(request,'quiz/createquizquestions.html')
@@ -44,7 +46,7 @@ def submit_quiz(request):
         # print(request.POST.get('numQuestions'))
         title = request.POST.get('title')
         # profile=get_object_or_404(Profile,pin=request.user)
-        quiz = Quiz.objects.create(host=request.user, title=title, quiz_id=uuid.uuid4(),created_date=timezone.now())
+        quiz = Quiz.objects.create(host=request.user, title=title, quiz_id=generate_id(),created_date=timezone.now())
         # quiz_id = quiz.quiz_id
     
         

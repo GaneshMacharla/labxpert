@@ -23,10 +23,10 @@ urlpatterns = [
 
     path('createdailyquestquestions/',views.create_daily_quest_questions,name='createdailyquestquestions'),
     path('submit-questions/',views.submit_questions,name='submit-questions'),
-    path('joinquest/<uuid:quest_id>/',views.join_quest,name="quest-questions"),
-    path('<uuid:quest_id>/',views.quest_questions,name="quest-questions"),
-    path('submit-quest-answers/<uuid:quest_id>/',views.submit_quest_answers,name="submit-quest-answers"),
-    path('responses/<uuid:quest_id>/',views.responses,name="responses"),
+    path('joinquest/<int:quest_id>/',views.join_quest,name="quest-questions"),
+    path('<int:quest_id>/',views.quest_questions,name="quest-questions"),
+    path('submit-quest-answers/<int:quest_id>/',views.submit_quest_answers,name="submit-quest-answers"),
+    path('responses/<int:quest_id>/',views.responses,name="responses"),
     path('check-attendance/',views.check_attendance,name="check-attendance"),
     path('show-attendance',views.show_attendance,name='show-attendance '),
     

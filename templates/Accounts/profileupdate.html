@@ -10,7 +10,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
       <style>
-    <style>
+  
         *{
             padding:0px;
             margin:0px;
@@ -44,6 +44,23 @@
             color: transparent;
             display: none;
         }
+        button ,input{
+            padding: 4px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
+        }
+         button:hover {
+            background-color: #2980b9;
+            cursor:pointer;
+        }
+        .username{
+            color:#4d4e50;
+            font-size:16px;
+          }
+      
     </style>
     
 </head>
@@ -60,16 +77,16 @@
                             <div class="d-flex flex-column align-items-center text-center">
                                 <img src="/media/{{image}}" alt="Admin" class="rounded-circle" width="200" height="200">
                                 <div class="mt-3">
-                                    <h4>{{user.username}}</h4>
+                                    <h4 class="username">{{user.username}}</h4>
                                 </div>
                                 <div class="mt-3">
                                     <form action="../profile-picture-update/" method="post"
                                         enctype="multipart/form-data">
                                         {% csrf_token %}
-                                        <label for="image" id="prompt" class="btn btn-primary">edit profile</label>
-                                        <input type="file" id="image" name="image" accept="image/*"
-                                            class="btn btn-primary">
-                                        <button type="submit" id="upload" style="display:none" class="btn btn-primary"
+                                        <button type="button" id="editButton" onclick="openFiles()">Edit Profile Image</button>
+                                            <input type="file" id="image" name="image" accept="image/*"
+                                           >
+                                        <button type="submit" id="upload" style="display:none" 
                                             >Upload Image</button>
                                     </form>
                                 </div>
@@ -91,6 +108,8 @@
                                             readonly>
                                     </div> 
                                 </div>
+                       
+                       
                                 <div class="row mb-3">
                                     <div class="col-sm-3">
                                         <h6 class="mb-0">Full Name</h6>
@@ -127,7 +146,7 @@
                                 <div class="row">
                                     <div class="col-sm-3"></div>
                                     <div class="col-sm-9 text-secondary">
-                                        <input type="submit" class="btn btn-primary px-4" value="Save Changes">
+                                        <button type="Submit">Save Changes</button>
                                     </div>
                                 </div>
                             </form>
@@ -141,14 +160,22 @@
     </div>
 </body>
 <script>
-    const imageButton = document.getElementById("prompt");
+    
+    const editButton = document.getElementById("editButton");
     const uploadButton = document.getElementById("upload");
     const imageInput = document.getElementById("image");
 
-    imageButton.addEventListener("click", function () {
-        imageButton.style.display = "none";
+
+    function openFiles()
+    {
+        document.getElementById('image').click();
+        closeButtons();
+    }
+    function closeButtons()
+    {
+        editButton.style.display = "none";
         uploadButton.style.display = "block";
         imageInput.style.display = "none";
-    });
+    }
 </script>
 </html>

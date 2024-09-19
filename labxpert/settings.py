@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'quiz.apps.QuizConfig',
     'Dailyquest.apps.DailyquestConfig',
     'Exam.apps.ExamConfig',
+    'feedback.apps.FeedbackConfig',
 ]
 
 MIDDLEWARE = [

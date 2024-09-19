@@ -7,7 +7,7 @@ class Quest(models.Model):
     host=models.ForeignKey(User,on_delete=models.CASCADE)
     subject=models.CharField(max_length=200)
     title=models.CharField(max_length=200)
-    quest_id=models.UUIDField(default=uuid.uuid4,unique=True)
+    quest_id=models.IntegerField(null=True,default=0)
     created_date=models.DateTimeField(null=True,blank=True)
     start_time=models.DateTimeField(null=True,blank=True)
     end_time=models.DateTimeField(null=True,blank=True)
@@ -36,11 +36,10 @@ class Responses(models.Model):
     shift=models.CharField(max_length=200,default="")
     semester=models.CharField(max_length=200,default="") 
     subject=models.CharField(max_length=200,default="")
+    attendance_status=models.BooleanField(default=False)
+
+
 
 
     
-# class Answer(models.Model):
-# question=models.ForeignKey(Question,on_delete=models.CASCADE)
-
-
 

@@ -13,10 +13,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <style>
-        /* *{
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-
-        } */
+     
         body {
             margin: 0;
             background-color: #ffffff;
@@ -35,13 +32,12 @@
             font-size: 55px;
         }
         .nav-bar {
-            display: flex;
-            justify-content: end;
-            align-items: center;
+         
             background: #3498db;
             height: 60px;
             padding: 0 30px;
         }
+       
         .nav-bar button {
             margin-bottom: 5px;
             padding: 10px 20px;
@@ -55,17 +51,10 @@
         .nav-bar button:hover {
             background-color: #2980b9;
         }
-        .profile {
-            display: flex;
-            justify-content: right;
-            align-items: center;
-            border-top-right-radius: 50px;
-            border-bottom-right-radius: 40px;
-            box-shadow: 0 4px 8px rgba(68, 66, 116, 0.1);
-            font-family: 'Times New Roman', Times, serif;
-            color: #ecf0f1;
-            height: 60px;
-            padding: 0 10px;
+      
+        #popupTitle{
+            color:#535257;
+            font-size: 23px;
         }
         .profile-photo {
             width: 50px;
@@ -122,14 +111,26 @@
             text-decoration: none;
             color: inherit;
         }
-        .Account {
-            font-size: 21px;
-            color: white;
-        }
-        .material-symbols-outlined {
-            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 49;
-            font-size: 31px;
-        }
+      .accounts{
+        position: absolute;
+        top: 103px;
+        right: 9px;
+        font-size: 21px;
+      }
+      
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 1, 'wght' 700, 'GRAD' 100, 'opsz' 48;  /* Stronger fill, weight, and gradient */
+        font-size: 31px;  /* Slightly larger icon */
+        color: black;  /*Choose a vibrant color, like blue */
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);  /* Add subtle shadow for depth */
+        transition: transform 0.3s, color 0.3s;  /* Smooth animation for hover effect */
+    }
+    
+    .material-symbols-outlined:hover {
+        color: black;  /* Darker blue on hover */
+        transform: scale(1.1);  /* Slight scaling on hover */
+    }
+    
         .home {
             display: flex;
             justify-content: left;
@@ -156,11 +157,11 @@
         }
         .popup-content input {
             width: 80%;
-            padding: 10px;
+            padding: 5px;
             margin: 10px 0;
         }
         .popup-content button {
-            padding: 10px 20px;
+            padding: 4px 20px;
             border: none;
             border-radius: 5px;
             background-color: #3498db;
@@ -170,111 +171,161 @@
         .popup-content button:hover {
             background-color: #2980b9;
         }
+        .main{
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+
+        }
+        .home-icon{
+            position: relative;
+            top: 5px;
+            left: -43px;
+        }
+        .alert{
+            max-width: 100%;
+            padding: 14px;
+            border-radius: 9px;
+            position: fixed;
+            top: 15px;
+            left: 404px;
+            z-index: 999;
+        }
     </style>
 </head>
 <body>
-    {% comment %} <div class="header">
+    
+    <div class="header">
         <h1>Lab<span class="Lab">X</span>pert</h1>
     </div>
-    <div class="nav-bar">
-        <button type="button" style="background: transparent; border: none;" class="home" onclick="location.href='/'">
-            <span class="material-symbols-outlined">
-              house
-            </span>
-          </button>
-        <div class="nav">
-            {% if user.is_authenticated %}
-            <a href="./Accounts/logout" class="Account">Logout</a>
-            <div class="profile">
-                <span class="Account"><b>{{ user }}</b></span>
+    <div class="main">
+        <div class="msgs">
+            <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+            <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+            </symbol>
+            <symbol id="info-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+            </symbol>
+            <symbol id="exclamation-triangle-fill" fill="currentColor" viewBox="0 0 16 16">
+              <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5zm.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
+            </symbol>
+          </svg>
+          {% for message in messages %}
+    
+          <div class="alert alert-{{message.tags}} d-flex align-items-center" role="alert">
+            <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>    
+         
+              
+              {{message}}      
+            </div>
+          {% endfor %}
+          </div> 
+        <div class="nav-bar">
+            <button type="button" style="background: transparent; border: none;" class="home-icon" onclick="location.href='/'">
+                <span class="material-symbols-outlined">
+                  house
+                </span>
+              </button>
+            <div class="accounts">
+                
+                {% if user.is_authenticated %}
+                <a href="./Accounts/logout" >Logout</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                   
+                {% else %}
+                <a href="./Accounts/signup">signup</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                <a href="./Accounts/login" >login</a>&nbsp;&nbsp;&nbsp;&nbsp;
+                {% endif %}
+                <span ><b>{{ user }}</b></span>
                 <a href="./Accounts/profile-view"><img class="profile-photo" src="/media/images/cse_pic.jpeg" alt="profile"></a>
             </div>
-            {% else %}
-            <a href="./Accounts/signup" class="Account">signup</a>&nbsp;&nbsp;&nbsp;&nbsp;
-            <a href="./Accounts/login" class="Account">login</a>
-            {% endif %}
         </div>
-    </div> {% endcomment %}
-    {% include 'Accounts/header.html'%}
-    <div class="content">
-        {% if profile.isLecturer%}
-        <a href="/quiz/create-quiz/">
-            <div class="l-module">
+        <div class="content">
+            {% if profile.isLecturer%}
+            <a href="/quiz/create-quiz/">
+                <div class="l-module">
+                    <img src="\media\images\quiz.png" alt="Quiz">
+                    <div class="module-text">Create Quiz</div>
+                </div>
+            </a>
+            {%else%}
+            <div class="module" onclick="showPopup('quiz')">
                 <img src="\media\images\quiz.png" alt="Quiz">
-                <div class="module-text">Create Quiz</div>
+                <div class="module-text">Join Quiz</div>
             </div>
-        </a>
-        {%else%}
-        <div class="module" onclick="showPopup('quiz')">
-            <img src="\media\images\quiz.png" alt="Quiz">
-            <div class="module-text">Join Quiz</div>
+            {%endif%}
+            {% if profile.isLecturer%}
+            <a href="/Dailyquest/createdailyquestquestions/"><div class="l-module" >
+                <img src="\media\images\quest.png" alt="Daily Quest">
+                <div class="module-text">Create Daily Quest</div>
+            </div></a>
+            {%else%}
+            <div class="module" onclick="showPopup('quest')">
+                <img src="\media\images\quest.png" alt="Daily Quest">
+                <div class="module-text">Attempt Daily Quest</div>
+            </div>
+            {%endif%}
+            
+            <a href="/Accounts/profile-view/">
+                <div class="module">
+                    <img src="\media\images\dashboard.png" alt="Dashboard">
+                    <div class="module-text">Dashboard</div>
+                </div>
+            </a>
+    
+            <a href="/Dailyquest/check-attendance">
+                <div class="module">
+                    <img src="\media\images\attendance.jpeg" alt="My Attendance">
+                    <div class="module-text">My Attendance</div>
+                </div>
+            </a>
+            {% if profile.isLecturer%}
+            <a href="/Exam/create-exam/"><div class="l-module" >
+                <img src="\media\images\exam.jpeg" alt="Exam">
+                <div class="module-text">Create Exam</div>
+            </div></a>
+            {%else%}
+            <div class="module" onclick="showPopup('exam')">
+                <img src="\media\images\exam.jpeg" alt="Exam">
+                <div class="module-text">Join Exam</div>
+            </div>
+            {%endif%}
+            
+            <div class="module" onclick="location.href='/feedback'">
+                <img src="\media\images\feedback.png" alt="Feedback">
+                <div class="module-text">Feedback</div>
+            </div>
         </div>
-        {%endif%}
-        {% if profile.isLecturer%}
-        <a href="/Dailyquest/createdailyquestquestions/"><div class="l-module" >
-            <img src="\media\images\quest.png" alt="Daily Quest">
-            <div class="module-text">Create Daily Quest</div>
-        </div></a>
-        {%else%}
-        <div class="module" onclick="showPopup('quest')">
-            <img src="\media\images\quest.png" alt="Daily Quest">
-            <div class="module-text">Attempt Daily Quest</div>
+        <div class="popup">
+            <div class="popup-content">
+                <h2 id="popupTitle">Enter Quiz ID</h2>
+                {% csrf_token%}
+                <input type="text" id="quizId" placeholder="Quiz ID">
+                <button type="button" onclick="submitQuizId()">Submit</button>
+                <button type="button" onclick="closePopup()">Close</button>
+            </div>
         </div>
-        {%endif%}
+        <div class="footer">
+            <div style="padding-left: 15px;">
+                <h1>About us</h1>
+                <p>M.Ganesh</p>
+                <p>B.Revanth</p>
+                <p>N.ajay</p>
+                <p>M.Lenin</p>
+                <p>Y.Ajay</p>
+            </div>
+            <div style="display: flex; justify-content: center;">
+                <p>&copy; GPT Masabtank</p>
+            </div>
+        </div>
         
-        <a href="/Accounts/profile-view/">
-            <div class="module">
-                <img src="\media\images\dashboard.png" alt="Dashboard">
-                <div class="module-text">Dashboard</div>
-            </div>
-        </a>
+    </div>
 
-        <a href="/Dailyquest/check-attendance">
-            <div class="module">
-                <img src="\media\images\attendance.jpeg" alt="My Attendance">
-                <div class="module-text">My Attendance</div>
-            </div>
-        </a>
-        {% if profile.isLecturer%}
-        <a href="/Exam/create-exam/"><div class="l-module" >
-            <img src="\media\images\exam.jpeg" alt="Exam">
-            <div class="module-text">Create Exam</div>
-        </div></a>
-        {%else%}
-        <div class="module" onclick="showPopup('exam')">
-            <img src="\media\images\exam.jpeg" alt="Exam">
-            <div class="module-text">Join Exam</div>
-        </div>
-        {%endif%}
-        
-        <div class="module" onclick="location.href='feedback.html'">
-            <img src="\media\images\feedback.png" alt="Feedback">
-            <div class="module-text">Feedback</div>
-        </div>
-    </div>
-    <div class="popup">
-        <div class="popup-content">
-            <h2 id="popupTitle">Enter Quiz ID</h2>
-            {% csrf_token%}
-            <input type="text" id="quizId" placeholder="Quiz ID">
-            <button type="button" onclick="submitQuizId()">Submit</button>
-            <button type="button" onclick="closePopup()">Close</button>
-        </div>
-    </div>
-    <div class="footer">
-        <div style="padding-left: 15px;">
-            <h1>About us</h1>
-            <p>M.Ganesh</p>
-            <p>B.Revanth</p>
-            <p>N.ajay</p>
-            <p>M.Lenin</p>
-            <p>Y.Ajay</p>
-        </div>
-        <div style="display: flex; justify-content: center;">
-            <p>&copy; GPT Masabtank</p>
-        </div>
-    </div>
-    <script>
+     <script>
+        const divTag = document.querySelector('.msgs');
+        setTimeout(function() {
+          if (divTag) {
+            divTag.style.display = "none";
+          }
+        }, 3000);
         function showPopup(temp) {
             if (temp === 'quiz') {
                 document.getElementById('popupTitle').innerText = 'Enter Quiz ID';

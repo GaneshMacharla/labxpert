@@ -4,9 +4,7 @@ from .models import Quest,Question,Answer,Responses
 import uuid
 from django.utils import timezone
 from Accounts.models import Profile
-
-import openai
-from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 # from django.views.decorators.csrf import csrf_exempt
 from django.conf import settings
 import os
@@ -18,6 +16,8 @@ from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from django.contrib.auth.models import User
+from labxpert.generateid import generate_id
+from django.contrib import messages
 # Create your views here.
 
 api_key = 'AIzaSyBiwzkDo3NW1vau6UaNlMlppIhdBGQzF7o'
@@ -35,13 +35,15 @@ def submit_questions(request):
         title=request.POST.get('title')
         starting_time=request.POST.get('starttime')
         ending_time=request.POST.get('endtime')
-        quest=Quest.objects.create(host=request.user,subject=subject,title=title,quest_id=uuid.uuid4(),created_date=timezone.now(),start_time=starting_time,end_time=ending_time,shift=shift,semester=semester)
+        quest=Quest.objects.create(host=request.user,subject=subject,title=title,quest_id=generate_id(),created_date=timezone.now(),start_time=starting_time,end_time=ending_time,shift=shift,semester=semester)
         for i in range(num_quesetions):
             question_text=request.POST.get(f'question{i}')
             question=Question.objects.create(quest=quest,question_text=question_text)
         
+        messages.success(request,'Dailyquest has been created Sucessfully..')
         return redirect('profile-view')
 
+@login_required(login_url='/Accounts/login/')
 def quest_questions(request,quest_id):
     quest=get_object_or_404(Quest,quest_id=quest_id)
     questions=quest.question_set.all()
@@ -53,7 +55,7 @@ def quest_questions(request,quest_id):
     return render(request,'Dailyquest/questquestionslists.html',
                   {'questions':questions,'isLecturer':profile.isLecturer,'quest_id':quest.quest_id,'title':quest.title,'subject':quest.subject,'quest':quest})
 
-
+@login_required(login_url='/Accounts/login/')
 def join_quest(request,quest_id):
     return quest_questions(request,quest_id)
 
@@ -68,6 +70,8 @@ def submit_quest_answers(request,quest_id):
     total_points=0
     for question in questions:
         code=request.POST.get(f"code{counter}")
+        if len(code)==0:
+            code="0"
         answer=Answer()
         answer.output=request.FILES.get(f"image{counter}")
         if answer.output==None or answer.output=="":
@@ -79,17 +83,20 @@ def submit_quest_answers(request,quest_id):
         total_points+=int(check_code(api_key,code,question.question_text,10))
         # answer=Answer.objects.create(question=question,code=code,output=output)
         counter+=1
-    
+    response=Responses.objects.create(quest=quest,pin=user.username,submitted_date=timezone.now())
+    response.total_points=total_points
+    response.subject=quest.subject
+    response.shift=quest.shift
+    response.semester=quest.semester    
     print(total_points)
     if total_points>min_points:
-         response=Responses.objects.create(quest=quest,pin=user.username,submitted_date=timezone.now())
-         response.total_points=total_points
-         response.subject=quest.subject
-         response.shift=quest.shift
-         response.semester=response.semester
-         response.save()
+        response.attendance_status=True
+
+    response.save()
+
     # print(min_points)
     # print("Ganesh")
+    messages.success(request,'your answers has been saved Sucessfully..')
     return redirect('profile-view')
 
 
@@ -105,6 +112,7 @@ def check_code(api_key,code,question,max_points):
     # Choose a model that's appropriate for your use case
     model = genai.GenerativeModel('gemini-1.5-flash')
     
+    print(code)
     # Define the prompt
     prompt =f"""
     question:{question},
@@ -112,8 +120,8 @@ def check_code(api_key,code,question,max_points):
     max_points:{max_points},
     if the code is empty give 0 points for the code.
     I have given question,code and max_points You should evaluate the code based on the question and you have to allot points for that code.
-    Main points:you have to see is the user written correct code and following the syntaxes.
-    conditions:You should give to me only points and you must not exceed the max_points range while alloting the points to the code. 
+    Main points:you have to see, is the user written correct code and following the syntaxes  based on langauge.if the code allot zero marks.
+    conditions:You should give to me only points and you must not exceed the max_points range while alloting the points to the code. Don't give any extra information.
 """
     
     # Generate content based on the prompt
@@ -162,7 +170,7 @@ def generate_pdf(quest):
 
     # Calculate position to draw the table
     table.wrapOn(p, width, height)
-    table.drawOn(p, 70, height - 600)
+    table.drawOn(p, 70, height - 450)
     p.showPage()
     p.save()
     buffer.seek(0)
@@ -178,7 +186,7 @@ def responses(request, quest_id):
     response['Content-Disposition'] = 'inline; filename="{}-responses.pdf"'.format(quest.title)
     return response
 
-
+@login_required(login_url='/Accounts/login/')
 def check_attendance(request):
     return render(request,'Dailyquest/checkattendance.html')
 
@@ -192,10 +200,26 @@ def show_attendance(request):
         profile=get_object_or_404(Profile,pin=request.user)
         attended_students_attendance=None
         semester_attendance=None
+        print(semester)
+        print(shift)
         if profile.isLecturer:
-            attended_students_attendance=Responses.objects.filter(subject=subject)
+            attended_students_attendance=Responses.objects.filter(subject=subject,shift=shift,semester=semester,attendance_status=True)
             # print("HELLO WORLD")
         else:
-            semester_attendance=Responses.objects.filter(pin=request.user,subject=subject)
+            semester_attendance=Responses.objects.filter(pin=request.user,subject=subject,shift=shift,semester=semester)
+        
+        messages.success(request,'Attendance has been fetched Sucessfully..')
         return  render(request,'Dailyquest/showattendance.html',{'attended_students_attendance':attended_students_attendance,'semester_attendance':semester_attendance,'isLecturer':profile.isLecturer})
     
+
+
+
+
+
+
+
+
+
+
+
+

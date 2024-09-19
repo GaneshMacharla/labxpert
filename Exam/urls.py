@@ -24,10 +24,10 @@ urlpatterns = [
     path('create-exam/',views.create_exam,name="create-exam"),
     # path('responses/<uuid:quest_id>/',views.responses,name='resposnes'),
     path('submit-questions/',views.submit_questions,name="submit-questions"),
-    path('<uuid:exam_id>/',views.exam_questions,name='exam-questions'),
-    path('joinexam/<uuid:exam_id>/',views.join_exam,name='join-exam'),
-    path('responses/<uuid:exam_id>/',views.responses,name='responses'),
-    path('submit-exam-answers/<uuid:exam_id>/',views.submit_exam_answers,name='submit-exam-answers'),
+    path('<int:exam_id>/',views.exam_questions,name='exam-questions'),
+    path('joinexam/<int:exam_id>/',views.join_exam,name='join-exam'),
+    path('responses/<int:exam_id>/',views.responses,name='responses'),
+    path('submit-exam-answers/<int:exam_id>/',views.submit_exam_answers,name='submit-exam-answers'),
     # path('responses/<uuid:quest_id>/',views.responses,name='resposnes'),
 
 ]

@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 class Quiz(models.Model):
     host=models.ForeignKey(User,on_delete=models.CASCADE)
     title=models.CharField(max_length=200)
-    quiz_id=models.UUIDField(default=uuid.uuid4,unique=True)
+    quiz_id=models.IntegerField(null=True,default=0)
     created_date=models.DateTimeField(null=True,blank=True)
     def __str__(self):
         return self.title

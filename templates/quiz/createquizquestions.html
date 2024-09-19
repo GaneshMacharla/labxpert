@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Generator</title>
     <style>
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
         body {
             font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             background-color: #f4f4f4;
@@ -57,11 +63,35 @@
             display: block;
             margin-top: 5px;
         }
+        .header {
+            background: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 30px;
+            height: 97px;
+            border-radius:10px;
+            font-size:30px;
+        }
+        .header h1 {
+            font-family: 'Audiowide', sans-serif;
+            color: #ecf0f1;
+            font-size: 46px;
+            font-weight: bold;
+        }
+        .Lab {
+          color: #e3f70b;
+          font-size: 50px;
+        } 
+        
+        
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Quiz Generator</h1>
+        <div class="header">
+            <h1>Lab<span class="Lab">X</span>pert - Check Attendance</h1>
+        </div>
       
         <form id="quizForm" action="../submit-quiz/" method="POST">
             {% csrf_token %}

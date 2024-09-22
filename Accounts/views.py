@@ -60,13 +60,11 @@ def registration_validation(request):
         #     messages.error(request,'phone number is invalid')
         #     return redirect('../signup')
         user=User.objects.create_user(pin,email,password)
-        user=User.objects.get(username=pin)
         user.save()
         #store some more information about the user into the database
-        user_profile=Profile.objects.create(pin=user.username)
+        user_profile=Profile.objects.create(pin=user)
         if isLecturer is not None:
             user_profile.isLecturer=True
-        user_profile.pin=user
         user_profile.phone="0000-0000-00"
         # user_profile.address=address
         user_profile.fullname=fullname

@@ -1,27 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 
 
-    <title>Lab Xpert - Daily Quests</title>
+    <title>Lab Xpert - Exam</title>
+
+
+
     <style>
-        * {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
             background-color: #f0f2f5;
             margin: 0;
             padding: 20px;
             box-sizing: border-box;
         }
+
+        .header {
+            background: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 30px;
+            height: 97px;
+
+            border-radius: 10px;
+        }
+
+        .header h1 {
+            font-family: 'Audiowide', sans-serif;
+            color: #ecf0f1;
+            font-size: 49px;
+            font-weight: bold;
+
+        }
+
+        .Lab {
+            color: #e3f70b;
+            font-size: 50px;
+        }
+
+
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 49;
+            font-size: 31px;
+        }
+
+
+        .quest {
+            margin-right: 170px;
+            margin-top: 44px;
+        }
+
         .container {
             max-width: 900px;
             margin: 0 auto;
@@ -30,34 +66,42 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             transition: transform 0.2s;
+            max-height: 1000%;
         }
+
         .container:hover {
             transform: scale(1.02);
+
         }
+
         .question {
             margin-bottom: 40px;
             display: flex;
             flex-direction: column;
             gap: 25px;
+
         }
+
         .columns {
             display: flex;
             flex-direction: column;
             gap: 25px;
         }
+
         @media (min-width: 768px) {
             .columns {
                 flex-direction: row;
             }
         }
+
         .column {
             flex: 1;
             display: flex;
             flex-direction: column;
             gap: 15px;
         }
+
         .output-div {
-            border: 1px solid #ccc;
             border-radius: 8px;
             height: 200px;
             display: flex;
@@ -69,9 +113,9 @@
             background-color: #f9f9f9;
             transition: border-color 0.3s;
         }
-        .output-div:hover {
-            border-color: #007bff;
-        }
+
+    
+
         .output-div img {
             width: 100%;
             height: 100%;
@@ -80,6 +124,7 @@
             top: 0;
             left: 0;
         }
+
         textarea {
             width: 100%;
             height: 200px;
@@ -90,48 +135,33 @@
             box-sizing: border-box;
             transition: border-color 0.3s;
         }
-        textarea:focus {
-            border-color: #007bff;
-            outline: none;
-        }
-        button {
-            padding: 12px 24px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-family: inherit;
-            background: #007bff;
-            color: #fff;
-            margin-top: 10px;
-            align-self: flex-start;
-            transition: background-color 0.3s;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
+
+      
+
+
         button:disabled {
             background-color: #cccccc;
             cursor: not-allowed;
         }
-        p {
-            font-size: 20px;
-            margin: 0;
-        }
+
+
+
         .question-text {
             text-align: left;
-            font-size: 22px;
-            font-weight: bold;
             margin-bottom: 10px;
         }
+
         .output-heading {
             font-size: 18px;
             font-weight: bold;
             margin-bottom: 5px;
         }
+
         .column-title {
             font-weight: bold;
             margin-bottom: 5px;
         }
+
         .loading {
             display: none;
             position: absolute;
@@ -143,91 +173,183 @@
             border-radius: 5px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
+
         .output-div.loading .loading {
             display: block;
         }
-        .header {
-            background: #2c3e50;
-            display: flex;
-            justify-content: space-between;
+
+        #countdownTimer {
+            font-size: 20px;
+            font-style: bold;
+            position: relative;
+            left: 584px;
+            top: -105px;
+            background-color:#f2f6f6;
+            width: 259px;
+            padding: 12px;
+            border-radius: 10px;
+        }
+
+        .show-msg {
+
+            box-shadow: 8px 8px 49px -4px #a5a1e1;
+            border-radius: 10px;
+            text-align: center;
+            padding: 20px;
+            background-color: white;
+
+        }
+
+        .popup {
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
             align-items: center;
-            padding: 8px 30px;
-            height: 97px;
-            border-radius:10px;
-            font-size:30px;
+            position: fixed;
+            top: 0px;
+            left: 0px;
         }
-        .header h1 {
-            font-family: 'Audiowide', sans-serif;
-            color: #ecf0f1;
-            font-size: 46px;
-            font-weight: bold;
+
+
+        button {
+            padding: 4px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #3498db;
+            color: white;
+            cursor: pointer;
         }
-        .Lab {
-          color: #e3f70b;
-          font-size: 50px;
-        } 
+
+        button:hover {
+            background-color: #2980b9;
+        }
+
+        .question {
+            margin-top: 20px;
+            background-color:#f2f6f6;
+            border-radius: 10px;
+            padding: 20px;
+            max-width: 100%;
+        }
+        input:focus,select:focus {
+            border-color: #2980b9;
+            outline: none;  /* Removes default browser outline */
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */
+        }
         
+        option{
+            color:#2980b9;
+        }
         
+
+        .quest-info {
+            width: 550px;
+        }
+
+        textarea,
+        img {
+            border: none;
+        }
     </style>
 </head>
+
 <body>
-    {% comment %} {% include 'Accounts/header.html'%} {% endcomment %}
+
+
+
 
     <div class="container">
         <div class="header">
-            <h1>Lab<span class="Lab">X</span>pert - Check Attendance</h1>
+            <h1>Lab<span class="Lab">X</span>pert - Exam</h1>
         </div>
-        {% if isLecturer %}
-            <h4>Exam id:{{exam_id}}</h4>
+        <div class="mt-4"></div>
+        <div class="quest-info">
+            <p><strong>Exam Id: </strong>{{exam_id}}</p>
+            <p><strong>Subject: </strong>{{subject}}</p>
+            <p><strong>Title: </strong>{{title}}</p>
+         </div>
+        <div class="lecturer-area">
+            {% if isLecturer %}
+
+
             {% for question in questions %}
+            <div class="question">
+                <p class="question-text"><strong>{{forloop.counter}}</strong>.{{ question.question_text }}</p>
+                <div class="columns">
+                    <div class="column">
+                        <div class="column-title">Code Snippet</div>
+                        <textarea placeholder="Start coding" readonly></textarea>
+                        {% comment %} <button onclick="saveText(this)">Submit</button> {% endcomment %}
+                    </div>
+                    <div class="column">
+                        <div class="column-title">Output</div>
+                        <div class="output-div" onclick="openFileInput(this)">
+                            {% comment %} <input type="file" accept="image/*" style="display:none;"
+                                onchange="displayImage(event, this.parentNode)" readonly> {% endcomment %}
+                                <img src="/media/quest/outputs/nocode.jpeg" />
+                            <div class="loading">Uploading...</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            <a href="../responses/{{exam_id}}">See Responses</a>
+
+        </div>
+        <div class="student-area">
+            {% else %}
+
+            <!-- <h1>Lab Xpert - Daily Quests</h1> -->
+            <!-- <h3>Quest Id:<span>{{quest_id}}</span></h3>
+            <h3>Title:{{title}}</h3>
+            <h3>Subject:{{subject}}</h3> -->
+
+            <div id="countdownTimer">
+                Remaining Time: <span class="countdownTimer-area"></span>
+            </div>
+
+
+            <form action="../../submit-exam-answers/{{exam_id}}/" enctype="multipart/form-data" method="POST">
+                {% for question in questions %}
+                {%csrf_token%}
                 <div class="question">
-                    <p class="question-text">{{forloop.counter}}.{{ question.question_text }}</p>
+                    <p class="question-text">{{forloop.counter}}. {{ question.question_text }}</p>
                     <div class="columns">
                         <div class="column">
                             <div class="column-title">Code Snippet</div>
-                            <textarea placeholder="Start coding" readonly></textarea>
-                            {% comment %} <button onclick="saveText(this)">Submit</button> {% endcomment %}
+                            <textarea placeholder="Enter your answer here..." name="code{{forloop.counter}}"
+                                required></textarea>
                         </div>
                         <div class="column">
                             <div class="column-title">Output</div>
                             <div class="output-div" onclick="openFileInput(this)">
-                                {% comment %} <input type="file" accept="image/*" style="display:none;" onchange="displayImage(event, this.parentNode)" readonly> {% endcomment %}
-                                <img style="display:none;" name="image{{forloop.counter}}"/>
+                                <input type="file" accept="image/*" value="/media/quest/outputs/nocode.jpeg"
+                                    name="image{{forloop.counter}}" style="display:none;"
+                                    placeholder="upload your output here"
+                                    onchange="displayImage(event, this.parentNode)">
+                                <img src="/media/quest/outputs/nocode.jpeg" />
                                 <div class="loading">Uploading...</div>
                             </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
-            <a href="../responses/{{exam_id}}/">See Responses</a>
+                {% endfor %}
+                <button type="Submit" onclick="saveText(this)">Submit</button>
 
-        {% else %}
-            <h1>Lab Xpert - Exam</h1>
-                <form action="../../submit-exam-answers/{{exam_id}}/" enctype="multipart/form-data"  method="POST" >
-                    {% for question in questions %}
-                    {%csrf_token%}
-                    <div class="question">
-                        <p class="question-text">{{forloop.counter}}. {{ question.question_text }}</p>
-                        <div class="columns">
-                            <div class="column">
-                                <div class="column-title">Code Snippet</div>
-                                <textarea placeholder="Enter your answer here..." name="code{{forloop.counter}}"></textarea>
-                            </div>
-                            <div class="column">
-                                <div class="column-title">Output</div>
-                                <div class="output-div" onclick="openFileInput(this)">
-                                    <input type="file" accept="image/*" value="/media/quest/outputs/nocode.jpeg" name="image{{forloop.counter}}" style="display:none;" placeholder="upload your output here" onchange="displayImage(event, this.parentNode)">
-                                    <img src="/media/quest/outputs/nocode.jpeg" />
-                                    <div class="loading">Uploading...</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                    <button type="Submit" onclick="saveText(this)">Submit</button>
-                </form>
+            </form>
+        </div>
         {% endif %}
     </div>
+    <div class="popup">
+        <div class="show-msg">
+            <p>The Quest has been ended</p>
+            <button type="button" class="ok-button" onclick="closeMsg()">Ok</button>
+        </div>
+    </div>
+
     <script>
         function saveText(button) {
             const textarea = button.previousElementSibling;
@@ -258,7 +380,7 @@
                 const reader = new FileReader();
                 const loading = div.querySelector('.loading');
                 loading.style.display = 'block';
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     const img = div.querySelector('img');
                     console.log(e.target.result);
                     img.src = e.target.result;
@@ -268,9 +390,41 @@
                 reader.readAsDataURL(file);
             }
         }
+
+
+
+        // Get the end time from the server
+        const endTime = new Date("{{ exam.end_time|date:'Y-m-d H:i:s' }}").getTime();
+
+        const showMsg = document.querySelector(".popup")
+        // Update the countdown every second
+        const interval = setInterval(function () {
+            const now = new Date().getTime();
+            const timeLeft = endTime - now;
+
+            // Calculate time left in hours, minutes, and seconds
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+
+            // Display the result
+            document.querySelector(".countdownTimer-area").innerHTML = hours + ":" + minutes + ":" + seconds;
+
+            // If the time is up, stop the timer and display a message
+            if (timeLeft < 0) {
+                showMsg.style.display = 'flex';
+                clearInterval(interval);
+                document.querySelector(".countdownTimer-area").innerHTML = "00:00:00 ";
+
+
+            }
+        }, 1000);
+
+        function closeMsg() {
+            window.location.href = "/";
+        }
     </script>
+
 </body>
+
 </html>
-
-
-

@@ -60,8 +60,14 @@ def join_quest(request,quest_id):
     return quest_questions(request,quest_id)
 
 def submit_quest_answers(request,quest_id):
+    
     user=User.objects.get(username=request.user)
     quest=get_object_or_404(Quest,quest_id=quest_id)
+
+    if Responses.objects.filter(pin=request.user,quest=quest).exists():
+        messages.warning(request,"sorry,you have already submitted the answers..")
+        return redirect('index')
+
     # response.submitted_date=timezone.now()
     questions=quest.question_set.all()
     min_points=(len(questions)*10)//4
@@ -170,7 +176,7 @@ def generate_pdf(quest):
 
     # Calculate position to draw the table
     table.wrapOn(p, width, height)
-    table.drawOn(p, 70, height - 450)
+    table.drawOn(p, 70, height - 150)
     p.showPage()
     p.save()
     buffer.seek(0)

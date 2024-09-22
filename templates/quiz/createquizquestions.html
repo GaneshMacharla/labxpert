@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Audiowide|Sofia|Trirong">
+
     <title>Quiz Generator</title>
     <style>
         * {
@@ -35,8 +37,10 @@
             margin: 10px 0 5px;
             font-weight: bold;
         }
-        input[type="number"],
-        input[type="text"],
+        button:hover,select:hover{
+            cursor: pointer;
+        }
+       input,
         button {
             width: 100%;
             padding: 10px;
@@ -44,6 +48,19 @@
             border: 1px solid #ccc;
             border-radius: 4px;
             box-sizing: border-box;
+        }
+        button {
+            width: 200px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            /* Gradient background */
+            background-image: linear-gradient(to bottom, #fff, #f2f2f2);
+            margin-bottom: 10px;
+            /* Added margin-bottom for spacing */
         }
         .button-container {
             display: flex;
@@ -83,6 +100,15 @@
           color: #e3f70b;
           font-size: 50px;
         } 
+        input:focus,select:focus {
+            border-color: #2980b9;
+            outline: none;  /* Removes default browser outline */
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */
+        }
+        
+        option{
+            color:#2980b9;
+        }
         
         
     </style>
@@ -90,11 +116,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>Lab<span class="Lab">X</span>pert - Check Attendance</h1>
+            <h1>Lab<span class="Lab">X</span>pert - Quiz</h1>
         </div>
       
         <form id="quizForm" action="../submit-quiz/" method="POST">
             {% csrf_token %}
+            <label for="title">Enter the time limit of the quiz:</label>
+
+            <input type="time" id="starttime" name="time_limit">
+
             <label for="title">Enter the title of the quiz:</label>
             <input type="text" name="title" required />
             <label for="numQuestions">Number of Questions:</label>

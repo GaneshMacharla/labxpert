@@ -9,6 +9,7 @@ class Quiz(models.Model):
     title=models.CharField(max_length=200)
     quiz_id=models.IntegerField(null=True,default=0)
     created_date=models.DateTimeField(null=True,blank=True)
+    time_limit=models.TimeField(null=True,blank=True)
     def __str__(self):
         return self.title
     

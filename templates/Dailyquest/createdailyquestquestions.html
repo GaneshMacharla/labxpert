@@ -37,6 +37,20 @@
             margin: 10px 0 5px;
             font-weight: bold;
         }
+        button {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            /* Gradient background */
+            background-image: linear-gradient(to bottom, #fff, #f2f2f2);
+            margin-bottom: 10px;
+            /* Added margin-bottom for spacing */
+        }
+
 
        
 
@@ -54,11 +68,14 @@
             font-family: 'Audiowide', sans-serif;
             color: #ecf0f1;
             font-size: 46px;
+            font-weight: bold;
         }
         .Lab {
           color: #e3f70b;
           font-size: 50px;
         } 
+        
+
         .button-container {
             display: flex;
             justify-content: space-between;
@@ -81,16 +98,9 @@
         }
 
         /* Select option styling */
-        .branch option,
-        .semester option,
-        .subject option,
-        .shift option {
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            /* background-color: #1bc8db; */
-            /* color: #df15b7; */
-        }
+   
 
-        button:hover,select:hover{
+        button:hover,select:hover,option:hover{
             cursor: pointer;
         }
         /* Dropdown styling */
@@ -110,27 +120,13 @@
             border-radius: 5px;
             background-color: #fff;
             font-size: 16px;
-            color: #333;
             /* Gradient background */
-            background-image: linear-gradient(to bottom, #fff, #f2f2f2);
             margin-bottom: 10px;
             /* Added margin-bottom for spacing */
         }
 
         .semester {
             margin-top: 40px;
-        }
-
-        /* Dropdown arrow styling */
-        .dropdown-arrow,
-        .dropdown1-arrow,
-        .dropdown2-arrow {
-            font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-            position: absolute;
-            right: 10px;
-            top: calc(50% - 4px);
-            pointer-events: none;
-            color: #be13d4;
         }
 
         #semester,
@@ -153,6 +149,39 @@
             box-sizing: border-box;
             height: 40px;
         }
+        .header {
+            background: #2c3e50;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 8px 30px;
+            height: 97px;
+            border-radius:10px;
+            font-size:30px;
+        }
+        .header h1 {
+            font-family: 'Audiowide', sans-serif;
+            color: #ecf0f1;
+            font-size: 49px;
+            
+
+        }
+
+        .Lab {
+            color: #e3f70b;
+            font-size: 50px;
+        }
+
+        input:focus,select:focus {
+            border-color: #2980b9;
+            outline: none;  /* Removes default browser outline */
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */
+        }
+        
+        option{
+            color:#2980b9;
+        }
+        
     </style>
 </head>
 
@@ -160,7 +189,9 @@
     {% comment %} {% include 'Accounts/header.html'%} {% endcomment %}
 
     <div class="container">
-        <h1>Questions Generator</h1>
+        <div class="header">
+            <h1>Lab<span class="Lab">X</span>pert - Dailyquest</h1>
+        </div>
 
         <div class="mt-5"></div>
         <form id="questForm" action="../submit-questions/" method="POST">
@@ -178,12 +209,12 @@
             <label id="branch"
             for="branch">Branch:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <select class="branch" name="branch">
-            <option value="CSE" name="branch">CSE</option>
+            <option value="CSE" name="branch" selected>CSE</option>
             <option value="ECE" name="ece">ECE</option>
         </select>
         <br>    
             <label id="semester" for="semester">Semester:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            <select class="semester" name="semester">
+            <select class="semester" selected name="semester">
                 <option value="I" name="I">I</option>
                 <option value="II" name="II">II</option>
                 <option value="III" name="III">III</option>
@@ -202,7 +233,7 @@
             <label id="subject" for="subject">Subject name:</label>&nbsp;&nbsp;
             <select class="subject" name="subject">
                 <option value="option1" name="Sub1">Sub1</option>
-                <option value="option2" name="Sub2">Sub2</option>
+                <option class="op" value="option2" name="Sub2">Sub2</option>
                 <option value="option3" name="Sub3">Sub3</option>
                 <option value="option4" name="Sub4">Sub4</option>
                 <option value="option5" name="Sub5">Sub5</option>

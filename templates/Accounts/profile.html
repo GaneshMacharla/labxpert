@@ -33,16 +33,18 @@
     }
 
     .card {
-      background: linear-gradient(45deg, rgb(76, 126, 142), rgb(33, 255, 255), rgb(0, 243, 255));
+            background-color:#f2f6f6;
       position: relative;
       display: flex;
       flex-direction: column;
       min-width: 0;
       word-wrap: break-word;
-      background-color: #fff;
       background-clip: border-box;
       border: 0 solid rgba(0, 0, 0, .125);
       border-radius: .25rem;
+      box-shadow: 0px 0px 40px rgb(26, 44, 26,0.2);
+
+      
     }
 
     button {
@@ -116,12 +118,10 @@
       margin-left: 50px;
       margin-right: 52px;
       /* border: 1px solid rgb(92, 89, 89); */
-      box-shadow: 0px 12px 37px -6px #a1c4e7;
       /* background:  #d4d4d463; */
       border-radius: 10px;
       padding: 20px;
       margin-bottom: 30px;
-      background-color: #d4dfe7;
     }
 
     .username {
@@ -146,16 +146,16 @@
     .quests,
     .exams {
 
-      background: linear-gradient(45deg, rgb(76, 126, 142), rgb(33, 255, 255), rgb(0, 243, 255));
+      background-color:#f2f6f6;
       padding: 10px;
       border-radius: 10px;
       color: black;
       margin-bottom: 20px;
+      box-shadow: 0px 0px 40px rgb(26, 44, 26,0.2);
+
     }
 
-    a {
-      color: #df14d5;
-    }
+
   </style>
 
 </head>
@@ -330,7 +330,7 @@
       <ul>
         {% for attended_quest in attended_quests%}
         <li>
-          {{attended_quest.title}}&nbsp;
+          {{attended_quest.quest.title}}&nbsp;
           total points:{{attended_quest.total_points}}
           &nbsp;
           {{attended_quest.submitted_date}}

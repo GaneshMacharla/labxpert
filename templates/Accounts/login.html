@@ -25,6 +25,10 @@
     .custom-input{
       height: 10px;
     }
+    input[type="checkbox"]:hover{
+      cursor: pointer;
+    }
+
     button {
       padding: 4px 20px;
       border: none;
@@ -45,6 +49,9 @@
     top: 23px;
     left: 404px;
     z-index: 999;
+}
+#isLecturer{
+  margin-left:-12px;
 }
   
   </style>
@@ -67,11 +74,8 @@
       </symbol>
     </svg>
     {% for message in messages %}
-    
-         
     <div class="alert alert-{{message.tags}} d-flex align-items-center" role="alert">
       <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:"><use xlink:href="#exclamation-triangle-fill"/></svg>
-     
          {{message}}      
       </div>
     {% endfor %}
@@ -96,7 +100,7 @@
                     <div class="form-check">
                       <input class="form-check-input isLecturer" type="checkbox" value="lecturer" name="isLecturer" id="isLecturer" >
                       <label class="form-check-label text-secondary" for="isLecturer">
-                          Are you a lecturer
+                         &nbsp; Are you a lecturer ?
                       </label>
                     </div>
                     <div class="col-12">

@@ -189,6 +189,13 @@
             left: 404px;
             z-index: 999;
         }
+        input:focus,select:focus {
+            outline: none;  /* Removes default browser outline */
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */
+        }
+        .team-members{
+            margin-left:122px;
+        }
     </style>
 </head>
 <body>
@@ -305,12 +312,18 @@
         </div>
         <div class="footer">
             <div style="padding-left: 15px;">
-                <h1>About us</h1>
+                <div class="header">
+                    <h1>Lab<span class="Lab">X</span>pert</h1>
+                </div>
+                <p style="margin-left:77px">Designed and developed by</p>
+
+                <div class="team-members">
                 <p>M.Ganesh</p>
                 <p>B.Revanth</p>
                 <p>N.ajay</p>
                 <p>M.Lenin</p>
                 <p>Y.Ajay</p>
+                </div>
             </div>
             <div style="display: flex; justify-content: center;">
                 <p>&copy; GPT Masabtank</p>

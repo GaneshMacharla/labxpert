@@ -38,7 +38,7 @@ class Responses(models.Model):
     subject=models.CharField(max_length=200,default="")
     attendance_status=models.BooleanField(default=False)
 
-
+    
 
 
     

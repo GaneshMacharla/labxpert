@@ -17,6 +17,7 @@ from Dailyquest.views import check_code
 from labxpert.generateid import generate_id
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 
 # Create your views here.
 api_key = 'AIzaSyBiwzkDo3NW1vau6UaNlMlppIhdBGQzF7o'
@@ -35,7 +36,7 @@ def submit_questions(request):
         title=request.POST.get('title')
         starting_time=request.POST.get('starttime')
         ending_time=request.POST.get('endtime')
-        exam=Exam.objects.create(host=request.user,subject=subject,title=title,quest_id=generate_id(),created_date=timezone.now(),start_time=starting_time,end_time=ending_time,shift=shift,semester=semester)
+        exam=Exam.objects.create(host=request.user,subject=subject,title=title,exam_id=generate_id(),created_date=timezone.now(),start_time=starting_time,end_time=ending_time,shift=shift,semester=semester)
         for i in range(num_quesetions):
             question_text=request.POST.get(f'question{i}')
             question=Question.objects.create(quest=exam,question_text=question_text)
@@ -51,8 +52,6 @@ def exam_questions(request,exam_id):
     return render(request,'Exam/examquestionslist.html',{'questions':questions,'isLecturer':profile.isLecturer,'exam_id':exam.exam_id,'title':exam.title,'subject':exam.subject,'exam':exam})
 
 
-
-
 @login_required(login_url='/Accounts/login/')
 def join_exam(request,exam_id):
     return exam_questions(request,exam_id)
@@ -61,7 +60,10 @@ def join_exam(request,exam_id):
 def submit_exam_answers(request,exam_id):
     exam=get_object_or_404(Exam,exam_id=exam_id)
     user=User.objects.get(username=request.user)
-
+    if Responses.objects.filter(pin=request.user,exam=exam).exists():
+        messages.warning(request,"sorry,you have already submitted the answers..")
+        return redirect('index')
+    
     questions=exam.question_set.all()
     counter=1
     total_points=0
@@ -80,7 +82,6 @@ def submit_exam_answers(request,exam_id):
         total_points+=int(check_code(api_key,code,question.question_text,10))
         # answer=Answer.objects.create(question=question,code=code,output=output)
         counter+=1
-    response.total_points=total_points
     response=Responses.objects.create(exam=exam,pin=user.username,submitted_date=timezone.now())
     response.total_points=total_points
     response.subject=exam.subject
@@ -131,7 +132,7 @@ def generate_pdf(exam):
 
     # Calculate position to draw the table
     table.wrapOn(p, width, height)
-    table.drawOn(p, 70, height - 200)
+    table.drawOn(p, 70, height - 150)
     p.showPage()
     p.save()
     buffer.seek(0)

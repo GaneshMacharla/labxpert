@@ -31,13 +31,15 @@ def quiz_questions(request,quiz_id):
     current_quiz = get_object_or_404(Quiz, quiz_id=quiz_id)
     profile=get_object_or_404(Profile,pin=request.user)
     questions = current_quiz.question_set.all()
-    # print(questions)
+    # print(current_quiz.time_limit)
+    # print(questions)  
     questions_choices = {}
         
     for question in questions:
         choices = question.choice_set.all()
         questions_choices[question] = choices
-    return render(request, 'quiz/questionslist.html', {'quiz_id': quiz_id, 'questions_choices': questions_choices,'title':current_quiz.title,'total_questions':len(questions),'profile':profile})
+    return render(request, 'quiz/questionslist.html',
+                   {'quiz_id': quiz_id, 'questions_choices': questions_choices,'title':current_quiz.title,'total_questions':len(questions),'profile':profile,'isLecturer':profile.isLecturer,'quiz':current_quiz,'time_limit':current_quiz.time_limit})
 
 @login_required(login_url='/Accounts/login/')
 def submit_quiz(request):
@@ -45,10 +47,12 @@ def submit_quiz(request):
         num_questions = int(request.POST.get('numQuestions', 0))
         # print(request.POST.get('numQuestions'))
         title = request.POST.get('title')
+        time_limit=request.POST.get('time_limit')
+        print(time_limit)
         # profile=get_object_or_404(Profile,pin=request.user)
-        quiz = Quiz.objects.create(host=request.user, title=title, quiz_id=generate_id(),created_date=timezone.now())
+        quiz = Quiz.objects.create(host=request.user, title=title, quiz_id=generate_id(),created_date=timezone.now(),time_limit=time_limit)
         # quiz_id = quiz.quiz_id
-    
+        
         
         for i in range(num_questions):
             question_text = request.POST.get(f'question{i}')
@@ -75,6 +79,10 @@ def submit_answers(request):
 
         #fetch the quiz object
         quiz=get_object_or_404(Quiz,quiz_id=quiz_id)
+        if Responses.objects.filter(pin=request.user,quiz=quiz).exists():
+            messages.warning(request,"sorry,you have already submitted the answers..")
+            return redirect('index')
+
         questions=quiz.question_set.all()
 
         #processing the answers or checking the answers
@@ -126,7 +134,6 @@ def generate_pdf(quiz):
 
     # Table headers
     headers = ["S.No", "PIN", "Correct Answers"]
-
     # Fetch and prepare response data
     responses = quiz.responses_set.all()
     data = [headers]  # Add headers as the first row
@@ -151,7 +158,7 @@ def generate_pdf(quiz):
 
     # Calculate position to draw the table
     table.wrapOn(p, width, height)
-    table.drawOn(p, 70, height - 200)
+    table.drawOn(p, 70, height - 150)
 
     p.showPage()
     p.save()

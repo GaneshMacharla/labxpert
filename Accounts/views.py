@@ -97,7 +97,6 @@ def login_validation(request):
             # Authentication failed
             messages.warning(request, 'Invalid username or password')
             return redirect('login')
-        
     else:
         # Method Not Allowed for non-POST requests
         return render(request, 'Accounts/login.html')

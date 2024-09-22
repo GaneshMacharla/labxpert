@@ -13,6 +13,6 @@ class Profile(models.Model):
     isLecturer=models.BooleanField(default=False)
     
     def __str__(self) -> str:
-        return f'{self.fullname} profile'
+        return f'{self.pin} profile'
 
         

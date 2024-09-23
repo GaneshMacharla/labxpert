@@ -12,6 +12,40 @@
 
   <title>LabXpert</title>
   <style>
+    @media only screen and (max-width: 600px) {
+      * {
+          font-size: 3vw;
+      }
+      .header {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding: 8px 30px;
+          height: 142px;
+      }
+      .header h1 {
+          font-family: 'Audiowide', sans-serif;
+          color: #ecf0f1;
+          font-size: 31px;
+        }
+      .Lab {
+          color: #e3f70b;
+          font-size: 5vw;
+      }
+      .msgs {
+        position: absolute;
+        top: 20px; /* Distance from the top */
+        left: 50%;
+        transform: translateX(-50%); /* Horizontally center the div */
+        max-width: 1000px;
+        padding: 14px;
+        border-radius: 9px;
+    
+    }
+    
+      
+      
+  }
     * {
       padding: 0;
       margin: 0;
@@ -44,16 +78,17 @@
       text-align: center;
       margin-top: 20px;
     }
-    .alert{
+    .msgs {
+      position: absolute;
+      top: 20px; /* Distance from the top */
+      left: 50%;
+      transform: translateX(-50%); /* Horizontally center the div */
       max-width: 450px;
       padding: 14px;
       border-radius: 9px;
-      position: fixed;
-      transition-duration: 2ms;
-      top: 23px;
-      left: 404px;
-      z-index: 999;
+  
   }
+  
   .header {
     background: #2c3e50;
     display: flex;
@@ -69,6 +104,7 @@
   color: #ecf0f1;
   font-size: 49px;
   font-weight: bold;
+
 
 }
 
@@ -93,6 +129,7 @@ option{
 </head>
 
 <body>
+  <div class="parent-main">
   <div class="msgs">
     <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
     <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
@@ -193,6 +230,7 @@ option{
     <p class="error-msg">Oooop's No results Found</p>
     {% endif %}
     {% endif %}
+  </div>
   </div>
   <script>
     const divTag = document.querySelector('.msgs');

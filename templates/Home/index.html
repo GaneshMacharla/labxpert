@@ -13,7 +13,30 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
     <style>
-     
+
+        @media only screen and (max-width: 600px) {
+            * {
+                font-size: 3vw;
+            }
+            .header {
+                background: #2c3e50;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 8px 30px;
+                height: 97px;
+            }
+            .header h1 {
+                font-family: 'Audiowide', sans-serif;
+                color: #ecf0f1;
+                font-size: 4vw;
+            }
+            .Lab {
+                color: #e3f70b;
+                font-size: 5vw;
+            }
+            
+        }
         body {
             margin: 0;
             background-color: #ffffff;
@@ -29,7 +52,9 @@
         .header h1 {
             font-family: 'Audiowide', sans-serif;
             color: #ecf0f1;
-            font-size: 55px;
+            font-size: 49px;
+            font-weight: bold;
+
         }
         .nav-bar {
          
@@ -103,9 +128,10 @@
             padding: 10px 0;
             margin-top: 20px;
         }
+       
         .Lab {
             color: #e3f70b;
-            font-size: 60px;
+            font-size: 50px;
         }
         a {
             text-decoration: none;
@@ -180,14 +206,15 @@
             top: 5px;
             left: -43px;
         }
-        .alert{
-            max-width: 100%;
+        .alert {
+            max-width: 450px;
             padding: 14px;
             border-radius: 9px;
-            display: flex;
-            justify-content: center;
+            position: fixed;
+            top: 23px;
+            left: 404px;
             z-index: 999;
-        }
+          }
         input:focus,select:focus {
             outline: none;  /* Removes default browser outline */
             box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */

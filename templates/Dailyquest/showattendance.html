@@ -12,40 +12,7 @@
 
   <title>LabXpert</title>
   <style>
-    @media only screen and (max-width: 600px) {
-      * {
-          font-size: 3vw;
-      }
-      .header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          padding: 8px 30px;
-          height: 142px;
-      }
-      .header h1 {
-          font-family: 'Audiowide', sans-serif;
-          color: #ecf0f1;
-          font-size: 31px;
-        }
-      .Lab {
-          color: #e3f70b;
-          font-size: 5vw;
-      }
-      .msgs {
-        position: absolute;
-        top: 20px; /* Distance from the top */
-        left: 50%;
-        transform: translateX(-50%); /* Horizontally center the div */
-        max-width: 1000px;
-        padding: 14px;
-        border-radius: 9px;
-    
-    }
-    
-      
-      
-  }
+   
     * {
       padding: 0;
       margin: 0;
@@ -123,7 +90,44 @@ option{
   color:#2980b9;
 }
 
+@media only screen and (max-width: 600px) {
+  * {
+      font-size: 3vw;
+  }
+  .header {
+    background: #2c3e50;
+    padding: 18px 10px;
+    height:  150px; 
+    
+    }
+.header h1 {
+    font-family: 'Audiowide', sans-serif;
+    color: #ecf0f1;
+    font-size: 49px;
 
+}
+.Lab {
+    color: #e3f70b;
+    font-size: 59px;
+    font-family: 'Audiowide', sans-serif;
+
+}
+  .msgs {
+    position: absolute;
+    top: 20px; /* Distance from the top */
+    left: 50%;
+    align-items: center;
+    transform: translateX(-50%); /* Horizontally center the div */
+    max-width: 1000px;
+    padding: 10px;
+    border-radius: 9px;
+    z-index: 999;
+
+}
+
+  
+  
+}
 
   </style>
 </head>

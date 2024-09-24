@@ -40,20 +40,60 @@
    button:hover {
       background-color: #2980b9;
   }
-  .alert{
-    max-width: 450px;
-    padding: 14px;
+  .msgs {
+    position: absolute;
+    top: 20px; /* Distance from the top */
+    left: 50%;
+    align-items: center;
+    transform: translateX(-50%); /* Horizontally center the div */
+    max-width: 1000px;
+    padding: 5px;
     border-radius: 9px;
-    position: fixed;
-    transition-duration: 2ms;
-    top: 23px;
-    left: 404px;
-    z-index: 999;
+    z-index:999;
+
 }
 #isLecturer{
   margin-left:-12px;
 }
   
+@media only screen and (max-width: 600px) {
+  * {
+      font-size: 3vw;
+  }
+  .header {
+    background: #2c3e50;
+    padding: 18px 10px;
+    height:  150px; 
+    
+    }
+.header h1 {
+    font-family: 'Audiowide', sans-serif;
+    color: #ecf0f1;
+    font-size: 49px;
+
+}
+.Lab {
+    color: #e3f70b;
+    font-size: 59px;
+    font-family: 'Audiowide', sans-serif;
+
+}
+  .msgs {
+    position: absolute;
+    top: 20px; /* Distance from the top */
+    left: 50%;
+    align-items: center;
+    transform: translateX(-50%); /* Horizontally center the div */
+    max-width: 1000px;
+    padding: 10px;
+    border-radius: 9px;
+    z-index: 999;
+
+}
+
+  
+  
+}
   </style>
 
 </head>
@@ -105,7 +145,7 @@
                     </div>
                     <div class="col-12">
                       <div class="form-floating mb-3">
-                        <input type="text" class="form-control custom-input" name="pin" id="pin" placeholder="pin"
+                        <input type="text" class="form-control custom-input" name="pin" id="pin" placeholder="22001-CS-102"
                           required>
                         <label for="pin" class="pinLabel">Pin Number</label>
                       </div>

@@ -14,29 +14,6 @@
 
     <style>
 
-        @media only screen and (max-width: 600px) {
-            * {
-                font-size: 3vw;
-            }
-            .header {
-                background: #2c3e50;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                padding: 8px 30px;
-                height: 97px;
-            }
-            .header h1 {
-                font-family: 'Audiowide', sans-serif;
-                color: #ecf0f1;
-                font-size: 4vw;
-            }
-            .Lab {
-                color: #e3f70b;
-                font-size: 5vw;
-            }
-            
-        }
         body {
             margin: 0;
             background-color: #ffffff;
@@ -206,15 +183,18 @@
             top: 5px;
             left: -43px;
         }
-        .alert {
-            max-width: 450px;
-            padding: 14px;
+        .msgs {
+            position: absolute;
+            top: 20px; /* Distance from the top */
+            left: 50%;
+            align-items: center;
+            transform: translateX(-50%); /* Horizontally center the div */
+            max-width: 1000px;
+            padding: 5px;
             border-radius: 9px;
-            position: fixed;
-            top: 23px;
-            left: 404px;
-            z-index: 999;
-          }
+            z-index:999;
+        
+        }
         input:focus,select:focus {
             outline: none;  /* Removes default browser outline */
             box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */
@@ -222,6 +202,45 @@
         .team-members{
             margin-left:122px;
         }
+        @media only screen and (max-width: 600px) {
+            * {
+                font-size: 3vw;
+            }
+            .header {
+              background: #2c3e50;
+              padding: 18px 10px;
+              
+              }
+          .header h1 {
+              font-family: 'Audiowide', sans-serif;
+              color: #ecf0f1;
+              font-size: 49px;
+              margin-left:40px;
+          
+          }
+          .Lab {
+              color: #e3f70b;
+              font-size: 59px;
+              font-family: 'Audiowide', sans-serif;
+          
+          }
+            .msgs {
+              position: absolute;
+              top: 20px; /* Distance from the top */
+              left: 50%;
+              align-items: center;
+              transform: translateX(-50%); /* Horizontally center the div */
+              max-width: 1000px;
+              padding: 10px;
+              border-radius: 9px;
+              z-index: 999;
+          
+          }
+          .footer h1,.logo{
+            margin-left:70px;
+          }
+            
+          }
     </style>
 </head>
 <body>
@@ -338,20 +357,23 @@
         </div>
         <div class="footer">
             <div style="padding-left: 15px;">
-                <div class="header">
-                    <h1>Lab<span class="Lab">X</span>pert</h1>
-                </div>
-                <p style="margin-left:77px">Designed and developed by</p>
-
-                <div class="team-members">
-                <p>M.Ganesh</p>
-                <p>B.Revanth</p>
-                <p>N.ajay</p>
-                <p>M.Lenin</p>
-                <p>Y.Ajay</p>
+               
+                    <div class="header">
+                        <h1>Lab<span class="Lab">X</span>pert</h1>
+                    </div>
+                    <div class="logo">
+                    <p style="margin-left:77px">Designed and developed by</p>
+    
+                    <div class="team-members">
+                    <p>M.Ganesh</p>
+                    <p>B.Revanth</p>
+                    <p>N.ajay</p>
+                    <p>M.Lenin</p>
+                    <p>Y.Ajay</p>
+                    </div>
                 </div>
             </div>
-            <div style="display: flex; justify-content: center;">
+            <div class="gpt" style="display: flex; justify-content: center;">
                 <p>&copy; GPT Masabtank</p>
             </div>
         </div>

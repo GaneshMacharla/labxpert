@@ -159,6 +159,7 @@ def profile_update_save(request):
     # user.phone=phone
     # user.address=address
     user.save()
+    messages.success(request,"your profile has been successfully updated..")
     return redirect('profile-view')
 
 @login_required(login_url='/Accounts/login/')

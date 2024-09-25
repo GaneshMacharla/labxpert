@@ -130,9 +130,14 @@
             border-radius: 5px;
             background-color: #fff;
             font-size: 16px;
+            color: #333;
             /* Gradient background */
+            background-image: linear-gradient(to bottom, #fff, #f2f2f2);
             margin-bottom: 10px;
             /* Added margin-bottom for spacing */
+        }
+        #endtime{
+            margin-left:20px;
         }
 
         .semester {
@@ -147,6 +152,9 @@
         }
 
         textarea,
+
+
+
         input[type="number"],
         button,
         .title,
@@ -177,10 +185,14 @@
 
         }
 
+       #starttime{
+        margin-left:17px;
+       }
         .Lab {
             color: #e3f70b;
             font-size: 50px;
         }
+
 
         input:focus,select:focus {
             border-color: #2980b9;
@@ -191,27 +203,34 @@
         option{
             color:#2980b9;
         }
+        .end-time{
+            margin-right:20px;
+        }
         @media only screen and (max-width: 600px) {
-            * {
-                font-size: 3vw;
-            }
+            
+           
             .header {
               background: #2c3e50;
-              padding: 18px 10px;
-              height:  150px; 
+              padding: 20px;
               
               }
           .header h1 {
               font-family: 'Audiowide', sans-serif;
               color: #ecf0f1;
-              font-size: 49px;
+              font-size: 10vw;
           
           }
           .Lab {
               color: #e3f70b;
-              font-size: 59px;
+              font-size: 13vw;
               font-family: 'Audiowide', sans-serif;
           
+          }
+          #endtime{
+            margin-left: 0px;
+          }
+          #starttime{
+            margin-left:0px;
           }
             .msgs {
               position: absolute;
@@ -226,10 +245,45 @@
           
           }
           
-            .date-time{
+            .date-time,.datetime-local,.end-time,.start-time{
                 display: block;
             }
-            
+           
+            .container{
+                width:91vw;
+                
+            }
+            input,select,button{
+                height: 5vh;
+                padding:5px;
+            }
+            .branch,.semester,.shift,.title,#semester,#subject,.subject,.semester{
+                display: block;
+                margin-bottom: 0px;
+
+            }
+            .branch{
+                margin-top: 4px;
+            }
+            .semester,#semester{
+                margin-top: -10px;
+            }
+           
+          .shift-area
+          {
+            margin-top:-35px;
+          }
+          #shift{
+            margin-bottom:10px ;
+          }
+          .subject{
+            margin-top: -10px;
+          }
+          select{
+            border:2px solid black;
+          }
+
+
           }
         
     </style>
@@ -247,7 +301,7 @@
         <form id="questForm" action="../submit-questions/" method="POST">
             {% csrf_token %}
             <div class="date-time">
-                <div class="start-time"> <label for="starttime">Starting time:</label>&nbsp;&nbsp;&nbsp;&nbsp;
+                <div class="start-time"> <label for="starttime">Starting time:</label>
                     <input type="datetime-local" id="starttime" name="starttime">
                 </div>
                 <div class="end-time">
@@ -255,7 +309,6 @@
                     <input type="datetime-local" id="endtime" name="endtime" />
                 </div>
             </div>
-            <div class="mt-4"></div>
             <label id="branch"
             for="branch">Branch:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <select class="branch" name="branch">
@@ -273,13 +326,16 @@
                 <option value="VI" name="VI">VI</option>
             </select>
             <br><br>
-            <label id="shift"
+            <div class="shift-area">
+                <label id="shift"
                 for="shift">Shift:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <select class="shift" name="shift">
                 <option value="shift1" name="shift 1">Shift 1</option>
                 <option value="shift2" name="shift 2">Shift 2</option>
             </select>
+            </div>
             <br><br>
+           <div class="shift-area">
             <label id="subject" for="subject">Subject name:</label>&nbsp;&nbsp;
             <select class="subject" name="subject">
                 <option value="option1" name="Sub1">Sub1</option>
@@ -293,6 +349,7 @@
                 <option value="option9" name="Sub9">Sub9</option>
                 <option value="option10" name="Sub10">Sub10</option>
             </select>
+           </div>
 
             <label for="title">Enter the title of the Daily Quest:</label>
             <input type="text" class="title" name="title" required />

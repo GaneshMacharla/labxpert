@@ -11,6 +11,7 @@ from Exam.models import Exam
 import Dailyquest
 import quiz
 from Exam.models import Responses
+
 # Create your views heref.
 def is_valid_email(email):
     # Regular expression for basic email validation
@@ -141,6 +142,7 @@ def profile_update(request):
 def profile_update_save(request):
     fullname=request.POST.get('fullname')
     phone=request.POST.get('phone')
+    email=request.POST.get('email')
     # phone=request.POST.get('phone')
     # address=request.POST.get('address')
     # if not is_valid_phone(phone):
@@ -152,10 +154,12 @@ def profile_update_save(request):
     # if len(address)==0:
     #     messages.error(request,'address cannot be empty')
     #     return redirect('profile-update-save')
-    
+    student=get_object_or_404(User,username=request.user)
     user=get_object_or_404(Profile,pin=request.user)
     user.fullname=fullname
     user.phone=phone
+    student.email=email
+    student.save()
     # user.phone=phone
     # user.address=address
     user.save()

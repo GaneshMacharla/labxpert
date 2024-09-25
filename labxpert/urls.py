@@ -27,4 +27,11 @@ urlpatterns = [
     path('Dailyquest/',include('Dailyquest.urls')),
     path('Exam/',include('Exam.urls')),
     path('feedback/',include('feedback.urls')),
-]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+]
+
+if settings.DEBUG:
+    # This will serve static and media files in development
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+

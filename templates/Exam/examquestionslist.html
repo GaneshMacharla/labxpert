@@ -66,7 +66,6 @@
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             transition: transform 0.2s;
-            max-height: 1000%;
         }
 
         .container:hover {
@@ -114,6 +113,10 @@
             transition: border-color 0.3s;
         }
 
+        .container{
+            width:91vw;
+            
+        }
     
 
         .output-div img {
@@ -253,27 +256,29 @@
             border: none;
         }
         @media only screen and (max-width: 600px) {
-            * {
-                font-size: 3vw;
+
+            *{
+                font-size: 7vw;
             }
+
+            
             .header {
-              background: #2c3e50;
-              padding: 18px 10px;
-              height:  150px; 
-              
-              }
-          .header h1 {
-              font-family: 'Audiowide', sans-serif;
-              color: #ecf0f1;
-              font-size: 49px;
-          
-          }
-          .Lab {
-              color: #e3f70b;
-              font-size: 59px;
-              font-family: 'Audiowide', sans-serif;
-          
-          }
+                background: #2c3e50;
+                padding: 20px;
+                
+                }
+            .header h1 {
+                font-family: 'Audiowide', sans-serif;
+                color: #ecf0f1;
+                font-size: 10vw;
+            
+            }
+            .Lab {
+                color: #e3f70b;
+                font-size: 13vw;
+                font-family: 'Audiowide', sans-serif;
+            
+            }
             .msgs {
               position: absolute;
               top: 20px; /* Distance from the top */
@@ -286,7 +291,27 @@
               z-index: 999;
           
           }
-          
+          #countdownTimer {
+            font-size: 20px;
+            font-style: bold;
+            position: relative;
+            left: -2px;
+            top: -1px;
+            background-color:#f2f6f6;
+            width: 259px;
+            padding: 12px;
+            border-radius: 10px;
+        }
+        .container{
+            width:124vw;
+            margin-left:23vw;
+        }
+        input:focus,select:focus,textarea:focus {
+            border-color: #2980b9;
+            outline: none;  /* Removes default browser outline */
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */
+        }
+        
             
             
           }

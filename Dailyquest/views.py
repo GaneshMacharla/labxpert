@@ -18,6 +18,7 @@ from reportlab.pdfgen import canvas
 from django.contrib.auth.models import User
 from labxpert.generateid import generate_id
 from django.contrib import messages
+from django.conf import settings
 # Create your views here.
 
 api_key = 'AIzaSyBiwzkDo3NW1vau6UaNlMlppIhdBGQzF7o'
@@ -97,6 +98,11 @@ def submit_quest_answers(request,quest_id):
     print(total_points)
     if total_points>min_points:
         response.attendance_status=True
+        send_attendance_email(user.email,request.user,quest.subject,total_points,isPresent=True)
+    else:
+        send_attendance_email(user.email,request.user,quest.subject,total_points,isPresent=False)
+
+
 
     response.save()
 
@@ -219,6 +225,22 @@ def show_attendance(request):
     
 
 
+
+
+#email
+from django.core.mail import send_mail
+from django.conf import settings
+
+def send_attendance_email(student_email, student_name,s,marks,isPresent):
+    subject = 'Quest Attendance Status'
+    if isPresent:
+        message = f'Hi 👋 {student_name},\n\nYour attendance for the today {s} quest has been successfully recorded.\n\n your marks: {marks}\n\nThank you!keep going.. 🙌🙌\n\n    --labxpert TeamMembers'
+    else:
+        message = f'Hi 👋 {student_name},\n\nYour attendance for the today {s} quest has not been recorded.\n\n your marks: {marks}\n\nBecause you got less marks for today daily quest.\n\nAttend well for the upcoming quests\n\n    --labxpert TeamMembers'
+
+    email_from = settings.EMAIL_HOST_USER
+    recipient_list = [student_email]
+    send_mail(subject, message, email_from, recipient_list)
 
 
 

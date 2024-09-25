@@ -137,27 +137,69 @@
         
 
         @media only screen and (max-width: 600px) {
-            * {
-                font-size: 3vw;
-            }
+          
             .header {
-                background: #2c3e50;
-                padding: 18px 10px;
-                height:  150px; 
-                
-                }
-            .header h1 {
-                font-family: 'Audiowide', sans-serif;
-                color: #ecf0f1;
-                font-size: 49px;
+              background: #2c3e50;
+              padding: 20px;
+              
+              }
+          .header h1 {
+              font-family: 'Audiowide', sans-serif;
+              color: #ecf0f1;
+              font-size: 10vw;
+          
+          }
+          .Lab {
+            color: #e3f70b;
+            font-size: 13vw;
+            font-family: 'Audiowide', sans-serif;
+        
+        }
+        .main{
+            width:91vw;
+            
+        }
+        input,select,button{
+            height: 5vh;
+            padding:5px;
+        }
+        .branch,.semester,.shift,.title,#semester,#subject,.subject,.semester{
+            display: block;
+            margin-bottom: 0px;
 
-            }
-            .Lab {
-                color: #e3f70b;
-                font-size: 59px;
-                font-family: 'Audiowide', sans-serif;
-
-            }
+        }
+        #shift{
+            margin-top:-20px;
+        }
+        .branch{
+            margin-top: 4px;
+            margin-bottom: 10px;
+        }
+        .semester{
+            margin-top: -15px;
+        }
+        #semester{
+            margin-top:5px;
+        }
+        #shift{
+            margin-bottom:10px;
+        }
+       
+      .shift-area
+      {
+        margin-top:-33px;
+      }
+    
+      
+      .subject{
+        margin-top: -12px;
+      }
+      select{
+        border:2px solid black;
+      }
+      .button-container{
+        margin-top: 20px;
+      }
             
         }
     </style>
@@ -180,24 +222,29 @@
                     <option value="ECE" name="ece">ECE</option>
                 </select>
                 <br>
+               <div class="shift-area">
                 <label id="semester"
-                    for="semester">Semester:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <select class="semester" name="semester">
-                    <option value="I" name="I">I</option>
-                    <option value="II" name="II">II</option>
-                    <option value="III" name="III">III</option>
-                    <option value="IV" name="IV">IV</option>
-                    <option value="V" name="V">V</option>
-                    <option value="VI" name="VI">VI</option>
-                </select>
+                for="semester">Semester:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <select class="semester" name="semester">
+                <option value="I" name="I">I</option>
+                <option value="II" name="II">II</option>
+                <option value="III" name="III">III</option>
+                <option value="IV" name="IV">IV</option>
+                <option value="V" name="V">V</option>
+                <option value="VI" name="VI">VI</option>
+            </select>
+               </div>
                 <br><br>
-                <label id="shift"
+                <div class="shift-area">
+                    <label id="shift"
                     for="shift">Shift:</label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <select class="shift" name="shift">
                     <option value="shift1" name="shift 1">Shift 1</option>
                     <option value="shift2" name="shift 2">Shift 2</option>
                 </select>
+                </div>
                 <br><br>
+               <div class="shift-area">
                 <label id="subject" for="subject">Subject name:</label>&nbsp;&nbsp;&nbsp;
                 <select class="subject" name="subject">
                     <option value="option1" name="Sub1">Sub1</option>
@@ -211,6 +258,7 @@
                     <option value="option9" name="Sub9">Sub9</option>
                     <option value="option10" name="Sub10">Sub10</option>
                 </select>
+               </div>
                 <div class="button-container">
                     <button type="submit">Check Attendance</button>
                 </div>

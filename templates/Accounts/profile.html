@@ -26,6 +26,9 @@
       text-align: left;
       background-color: white;
     }
+    .exams{
+      padding:30px;
+    }
 
     .main-body {
       padding: 15px;
@@ -42,7 +45,6 @@
       background-clip: border-box;
       border: 0 solid rgba(0, 0, 0, .125);
       border-radius: .25rem;
-      box-shadow: 0px 0px 40px rgb(26, 44, 26,0.2);
 
       
     }
@@ -153,12 +155,11 @@
       border-radius: 10px;
       color: black;
       margin-bottom: 20px;
-      box-shadow: 0px 0px 40px rgb(26, 44, 26,0.2);
 
     }
     @media only screen and (max-width: 600px) {
       * {
-          font-size: 3vw;
+          font-size: 3.5vw;
       }
       .header {
         background: #2c3e50;
@@ -166,6 +167,7 @@
         height:  150px; 
         
         }
+
     .header h1 {
         font-family: 'Audiowide', sans-serif;
         color: #ecf0f1;
@@ -177,6 +179,17 @@
         font-size: 59px;
         font-family: 'Audiowide', sans-serif;
     
+    }
+    .attended-quizes,
+    .attended-quests,
+    .attended-exams,
+    .quizes,
+    .quests,
+    .exams{
+      width:100%;
+    }
+    .student-area{
+      margin:0px;
     }
       .msgs {
         position: absolute;
@@ -332,7 +345,7 @@
     <div class="exams">
       <h5 class="mb-3">Created Exams :- </h5>
       {% if exams|length > 0%}
-      <ul></ul>
+      <ul>
       {% for exam in exams%}
       <li>
         <a href="/Exam/{{exam.exam_id}}">{{exam.title}}</a>&nbsp&nbsp<span

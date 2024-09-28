@@ -1,1 +1,1 @@
-labxpert is a online platform where the lecturers conduct quizes,exams and Dailyquests.
+labxpert is a online platform where the lecturers conduct quize,exam and Dailyquest.

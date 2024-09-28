@@ -234,9 +234,9 @@ from django.conf import settings
 def send_attendance_email(student_email, student_name,s,marks,isPresent):
     subject = 'Quest Attendance Status'
     if isPresent:
-        message = f'Hi 👋 {student_name},\n\nYour attendance for the today {s} quest has been successfully recorded.\n\n your marks: {marks}\n\nThank you!keep going.. 🙌🙌\n\n    --labxpert TeamMembers'
+        message = f'Hi 👋 {student_name},\n\nYour attendance for the today {s} quest has been successfully recorded.\n\n your marks: {marks}\n\n Attendance status:Present \n\nThank you!  keep going.. 🙌🙌\n\n--labxpert TeamMembers'
     else:
-        message = f'Hi 👋 {student_name},\n\nYour attendance for the today {s} quest has not been recorded.\n\n your marks: {marks}\n\nBecause you got less marks for today daily quest.\n\nAttend well for the upcoming quests\n\n    --labxpert TeamMembers'
+        message = f'Hi 👋 {student_name},\n\nYour attendance for the today {s} quest has not been recorded.Because you got less marks for the today daily quest.\n\n your marks: {marks}\n\n Attendance status:Present\n\n\n\nAttend well for the upcoming quests\n\n--labxpert TeamMembers'
 
     email_from = settings.EMAIL_HOST_USER
     recipient_list = [student_email]

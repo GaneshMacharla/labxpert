@@ -154,6 +154,20 @@
             justify-content: center;
             align-items: center;
         }
+        
+        input {
+            width: 200px;
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: #fff;
+            font-size: 16px;
+            color: #333;
+            /* Gradient background */
+            background-image: linear-gradient(to bottom, #fff, #f2f2f2);
+            margin-bottom: 10px;
+            /* Added margin-bottom for spacing */
+        }
         .popup-content {
             background-color: white;
             padding: 20px;
@@ -162,10 +176,19 @@
             width: 300px;
             text-align: center;
         }
+        input:focus,select:focus {
+            border-color: #2980b9;
+            outline: none;  /* Removes default browser outline */
+            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */
+        }
+      
         .popup-content input {
             width: 80%;
             padding: 5px;
             margin: 10px 0;
+        }
+        input{
+            border-color: white;
         }
         .popup-content button {
             padding: 4px 20px;
@@ -199,17 +222,20 @@
             z-index:999;
         
         }
-        input:focus,select:focus {
-            outline: none;  /* Removes default browser outline */
-            box-shadow: 0 0 5px rgba(41, 128, 185, 0.5);  /* Adds a shadow for a glowing effect */
-        }
+        
         .team-members{
             margin-left:122px;
+        }
+        .oh{
+            margin-left:72px;
         }
         @media only screen and (max-width: 600px) {
             
             * {
                 font-size: 4vw;
+            }
+            .oh{
+                margin-left:0px;
             }
             .header {
               background: #2c3e50;
@@ -372,7 +398,7 @@
                         <h1>Lab<span class="Lab">X</span>pert</h1>
                     </div>
                     <div class="logo">
-                    <p>Designed and developed by</p>
+                    <p class="oh">Designed and developed by</p>
     
                     <div class="team-members">
                     <p>M.Ganesh</p>

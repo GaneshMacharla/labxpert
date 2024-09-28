@@ -87,6 +87,9 @@
     
     
   }
+  input:hover{
+    cursor: pointer;
+  }
     </style>
   
   </head>
@@ -185,9 +188,11 @@
     
                       <div class="col-12">
                         <div class="form-floating mb-3">
-                          <input type="password" class="form-control" name="confirmpassword" id="password" value=""
+                          <input type="password" class="form-control" name="confirmpassword" id="confirmPassword" value=""
                             placeholder="Password" required>
                           <label for="password" class="form-label">Confirm Password</label>
+                          <div class="mt-4"></div>
+                          <input class="form-check-input isLecturer" type="checkbox" value="lecturer" id="showPassword" >&nbsp;Show Password
                         </div>
                       </div>
                       <div class="col-12">
@@ -199,6 +204,7 @@
                         </div>
                       
                       </div>
+                      <div class="mt-4"></div>
                       <div class="col-12">
                         <div class="d-grid">
                           <button  type="submit">Sign up</button>
@@ -209,6 +215,7 @@
                   <div class="row">
                     <div class="col-12">
                       <hr class="mt-5 mb-4 border-secondary-subtle">
+                      
                       <p class="m-0 text-secondary text-center">Already have an account? <a href="../login"
                           class="link-primary text-decoration-none ">Sign in</a></p>
                     </div>
@@ -241,6 +248,19 @@
           pinLabel.textContent = 'Pin Number';
       }
   });
+  const passwordInput = document.getElementById("password");
+  const confirmpasswordInput=document.getElementById("confirmPassword");
+        const showPasswordCheckbox = document.getElementById("showPassword");
+
+        showPasswordCheckbox.addEventListener("change", function() {
+            if (this.checked) {
+                passwordInput.type = "text";
+                confirmpasswordInput.type="text";
+            } else {
+                passwordInput.type = "password";
+                confirmpasswordInput.type="password";
+            }
+        });
 
       </script>
     </body>

@@ -11,8 +11,16 @@ from Exam.models import Exam
 import Dailyquest
 import quiz
 from Exam.models import Responses
+from django.shortcuts import render
+from shapely.geometry import Point, Polygon
+from django.contrib.auth import authenticate, login
+# from django.contrib import messages
+# from shapely.geometry import Polygon, Point
+import math
+import geocoder
 
 # Create your views heref.
+
 def is_valid_email(email):
     # Regular expression for basic email validation
     email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
@@ -78,28 +86,77 @@ def registration_validation(request):
         return render(request,'Accounts/signup.html')
     
 
+
 def login_validation(request):
     if request.method == 'POST':
-        pin= request.POST.get('pin')
+        pin = request.POST.get('pin')
         password = request.POST.get('password') 
-        print(pin)
-        print(password)
-        #fingerprint = generate_fingerprint(request) 1
+
+# Fetch location based on IP address
+        check_user_location(request)
         # Authenticate the user
         user = authenticate(username=pin, password=password)
-        print(user)
-        # print(user)
         if user is not None:
-            login(request,user)
-            messages.success(request,'Sucessfully logged in..')
+            login(request, user)    
+            messages.success(request, 'Successfully logged in.')
             return redirect('index')
         else:
             # Authentication failed
             messages.warning(request, 'Invalid username or password')
             return redirect('login')
+    
     else:
         # Method Not Allowed for non-POST requests
         return render(request, 'Accounts/login.html')
+
+
+
+
+
+
+
+# Define the central point (longitude, latitude) and radius in meters
+REGION_CENTER = (78.452350, 17.402179)  # Choose a central coordinate
+ALLOWED_RADIUS_METERS = 100  # Example radius; adjust based on your region
+
+def haversine(lon1, lat1, lon2, lat2):
+    # Convert latitude and longitude from degrees to radians
+    lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
+
+    # Haversine formula
+    dlon = lon2 - lon1
+    dlat = lat2 - lat1
+    a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+    distance = 6371000 *c  # Radius of Earth in meters
+    return distance
+
+def check_user_location(request):
+    try:
+        # Get latitude and longitude from POST request
+        # latitude = float(request.POST.get('latitude'))
+        # longitude = float(request.POST.get('longitude'))
+        latitude=17.402300
+        longitude=78.451851
+        # Round to six decimal places
+        latitude = round(latitude, 6)
+        longitude = round(longitude, 6)
+     
+        # Calculate the distance from the user's location to the central region point
+        distance = haversine(longitude, latitude, REGION_CENTER[0], REGION_CENTER[1])
+        print(distance)
+        # Check if the user is within the allowed radius
+        if distance > ALLOWED_RADIUS_METERS:
+            messages.warning(request, 'Login denied: Outside region not allowed.')
+            return redirect('login')
+    except (TypeError, ValueError): 
+        messages.warning(request, 'Invalid location data')
+        return redirect('login')
+    
+    # If inside the radius, continue the login process
+    # Add any additional login logic here
+
+
 
 def logout_user(request):
     messages.success(request,'Sucessfully logged out..')

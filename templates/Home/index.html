@@ -463,6 +463,11 @@
                 alert('Please enter an ID');
             }
         }
+
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('/logout/');
+        });
     </script>
 </body>
+
 </html>

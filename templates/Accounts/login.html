@@ -161,14 +161,16 @@
                       </div>
                     </div>
 
-                    <div class="col-12">
+                    {% comment %} <div class="col-12">
                       <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" name="remember_me" id="remember_me">
                         <label class="form-check-label text-secondary" for="remember_me">
                           Keep me logged in
                         </label>
                       </div>
-                    </div>
+                    </div> {% endcomment %}
+                    <label>Latitude: <input type="text" id="latitude" name="latitude" readonly></label><br>
+                    <label>Longitude: <input type="text" id="longitude" name="longitude" readonly></label><br>
                     <div class="col-12">
                       <div class="d-grid">
                         <button type="submit" >Log in now</button>
@@ -226,6 +228,30 @@
                   passwordInput.type = "password";
               }
           });
+
+          
+        function getCurrentLocation() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition((position) => {
+                  var lat = position.coords.latitude;
+                  var lng = position.coords.longitude;
+
+                  // Populate the latitude and longitude fields
+                  document.getElementById('latitude').value = lat;
+                  document.getElementById('longitude').value = lng;
+
+                  // Enable the submit button once the location is filled
+                  document.getElementById('submitBtn').disabled = false;
+              }, (error) => {
+                  alert('Unable to retrieve your location. Please enable location services.');
+              });
+          } else {
+              alert('Geolocation is not supported by your browser.');
+          }
+      }
+
+      // Get the user's location when the page loads
+      window.onload = getCurrentLocation;
   </script>
 </body>
 </html>

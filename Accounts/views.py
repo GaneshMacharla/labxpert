@@ -17,9 +17,9 @@ from django.contrib.auth import authenticate, login
 # from django.contrib import messages
 # from shapely.geometry import Polygon, Point
 import math
-import geocoder
 
 # Create your views heref.
+ALLOWED_RADIUS_METERS = 100  # Example radius; adjust based on your region
 
 def is_valid_email(email):
     # Regular expression for basic email validation
@@ -93,7 +93,25 @@ def login_validation(request):
         password = request.POST.get('password') 
 
 # Fetch location based on IP address
-        check_user_location(request)
+        try:
+        # Get latitude and longitude from POST request
+        # latitude = float(request.POST.get('latitude'))
+            # longitude = float(request.POST.get('longitude'))
+            latitude=float(request.POST.get('latitude'))
+            longitude=float(request.POST.get('longitude'))
+            user_location=(latitude,longitude)
+            center_location=(17.402204, 78.452399)
+            # Round to six decimal places    
+            # Calculate the distance from the user's location to the central region point
+            distance = haversine(center_location,user_location)
+            print(distance)
+            # Check if the user is within the allowed radius
+            if distance > ALLOWED_RADIUS_METERS:
+                messages.warning(request, 'Login denied: Outside region not allowed.')
+                return redirect('login')
+        except (TypeError, ValueError): 
+            messages.warning(request, 'Invalid location data')
+            return redirect('login')
         # Authenticate the user
         user = authenticate(username=pin, password=password)
         if user is not None:
@@ -116,45 +134,28 @@ def login_validation(request):
 
 
 # Define the central point (longitude, latitude) and radius in meters
-REGION_CENTER = (78.452350, 17.402179)  # Choose a central coordinate
-ALLOWED_RADIUS_METERS = 100  # Example radius; adjust based on your region
+  # Choose a central coordinate
 
-def haversine(lon1, lat1, lon2, lat2):
+def haversine(coord1, coord2):
+    # Radius of Earth in meters
+    R = 6371000  
+
     # Convert latitude and longitude from degrees to radians
-    lon1, lat1, lon2, lat2 = map(math.radians, [lon1, lat1, lon2, lat2])
+    lat1, lon1 = map(math.radians, coord1)
+    lat2, lon2 = map(math.radians, coord2)
+
+    # Compute differences
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
 
     # Haversine formula
-    dlon = lon2 - lon1
-    dlat = lat2 - lat1
     a = math.sin(dlat / 2)**2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2)**2
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
-    distance = 6371000 *c  # Radius of Earth in meters
+
+    # Distance in meters
+    distance = R * c
     return distance
 
-def check_user_location(request):
-    try:
-        # Get latitude and longitude from POST request
-        # latitude = float(request.POST.get('latitude'))
-        # longitude = float(request.POST.get('longitude'))
-        latitude=17.402300
-        longitude=78.451851
-        # Round to six decimal places
-        latitude = round(latitude, 6)
-        longitude = round(longitude, 6)
-     
-        # Calculate the distance from the user's location to the central region point
-        distance = haversine(longitude, latitude, REGION_CENTER[0], REGION_CENTER[1])
-        print(distance)
-        # Check if the user is within the allowed radius
-        if distance > ALLOWED_RADIUS_METERS:
-            messages.warning(request, 'Login denied: Outside region not allowed.')
-            return redirect('login')
-    except (TypeError, ValueError): 
-        messages.warning(request, 'Invalid location data')
-        return redirect('login')
-    
-    # If inside the radius, continue the login process
-    # Add any additional login logic here
 
 
 
@@ -229,4 +230,3 @@ def profile_picture_update(request):
     profile.image = request.FILES.get('image')
     profile.save()
     return redirect('profile-view')  # Redirect to the user's profile page after image update
-

@@ -417,6 +417,10 @@
     </div>
 
      <script>
+        window.addEventListener('beforeunload', function() {
+            navigator.sendBeacon('/logout/');
+        }); 
+        
         const divTag = document.querySelector('.msgs');
         setTimeout(function() {
           if (divTag) {
@@ -464,9 +468,7 @@
             }
         }
 
-        window.addEventListener('beforeunload', function() {
-            navigator.sendBeacon('/logout/');
-        });
+      
     </script>
 </body>
 
